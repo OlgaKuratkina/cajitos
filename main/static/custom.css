@@ -1,3 +1,6 @@
+@page {
+  background-color: #f4c3ff; }
+
 .success, .warning, .error {
   font-family: sans-serif;
   font-size: 18px;
@@ -5,12 +8,3 @@
   border: 1px solid black;
   padding: 20px;
   margin: 20px; }
-
-.success {
-  background-color: green; }
-
-.warning {
-  background-color: orange; }
-
-.error {
-  background-color: red; }
