@@ -1,12 +1,12 @@
 from flask import Flask, render_template
-app = Flask(__name__)
+application = Flask(__name__)
 
 
-@app.route("/")
+@application.route("/")
 def hello():
     return render_template('index.html', notes=[1,2,3])
 
 
-@app.route("/example")
+@application.route("/example")
 def index():
     return 'lalalal'
