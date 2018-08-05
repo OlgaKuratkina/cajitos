@@ -1,4 +1,4 @@
-@page {
+html, body {
   background-color: #f4c3ff; }
 
 .success, .warning, .error {
