@@ -1,5 +1,6 @@
-html, body {
-  background-color: #f4c3ff; }
+body {
+  background-color: rgba(255,0,0,0.1);
+  }
 
 .success, .warning, .error {
   font-family: sans-serif;
@@ -8,3 +9,10 @@ html, body {
   border: 1px solid black;
   padding: 20px;
   margin: 20px; }
+
+.navbar {
+  margin-bottom:  2rem;
+}
+.jumbotron {
+  margin-bottom: 0;
+}
