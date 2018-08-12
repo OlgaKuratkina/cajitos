@@ -1,44 +1,38 @@
 {% extends "index.html" %}
 
 {% block content %}
-<!--<form action="{{ url_for('cards') }}" method="post">-->
-        <!--<input type="text" name="origin_word" placeholder="Word">-->
-        <!--<input type="text" name="translation" placeholder="Translation">-->
-        <!--<input type="text" name="part_speech" placeholder="Part of speech, i.e. Noun">-->
-        <!--<input type="text" name="language" list="langs" placeholder="Language">-->
-                <!--<datalist id="langs">-->
-                    <!--<option value="en">-->
-                    <!--<option value="es">-->
-                    <!--<option value="ru">-->
-                <!--</datalist>-->
-        <!--<button>Add Word and it's translation</button>-->
-    <!--</form>-->
 
 <form action="{{ url_for('cards') }}" method="post">
-  <div class="row">
-    <div class="col">
-      <input type="text" class="form-control" name="origin_word" placeholder="Word">
+    <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" name="origin_word" placeholder="Word" required>
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" name="translation" placeholder="Translation" required>
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Part of speech">
+        </div>
+        <div class="col">
+            <select class="form-control" id="exampleFormControlSelect1" name="language" required>
+                <option>es</option>
+                <option>en</option>
+                <option>ru</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-light">Add translation</button>
     </div>
-    <div class="col">
-      <input type="text" class="form-control" name="translation" placeholder="Translation">
-    </div>
-     <div class="col">
-      <input type="text" class="form-control" placeholder="Part of speech, i.e. Noun">
-    </div>
-      <div class="col">
-    <select class="form-control" id="exampleFormControlSelect1" name="language">
-      <option>es</option>
-      <option>en</option>
-      <option>ru</option>
-    </select>
-      </div>
-      <button type="submit" class="btn btn-primary">Add translation</button>
-  </div>
 </form>
 
-<ul>
-    {% for card in cards %}
-        <li>{{ card }}}</li>
-    {% endfor %}
-</ul>
+<div class="container">
+    <br>
+    <h2>Recently added translations</h2>
+    <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+            {% for card in cards %}
+            <li class="list-group-item">{{ card }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}

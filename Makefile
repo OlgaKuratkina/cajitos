@@ -6,3 +6,6 @@ start:
 
 db:
 	docker run --name postgres-d -p 5432:5432 -e POSTGRES_DB='cajitos' -e POSTGRES_PASSWORD='password' -d postgres:9.5.6
+
+clean_db:
+	source main/database.clean_db

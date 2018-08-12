@@ -11,3 +11,8 @@ db = pw.PostgresqlDatabase(
 def init_db():
     from main.models import VocabularyCard
     db.create_tables([VocabularyCard])
+
+
+def clean_db():
+    from main.models import VocabularyCard
+    VocabularyCard.delete()

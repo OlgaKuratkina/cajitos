@@ -8,7 +8,7 @@ init_db()
 
 
 @application.route("/")
-def hello():
+def start():
     return render_template('index.html')
 
 
@@ -27,5 +27,5 @@ def cards():
 
 
 def get_cards():
-    list_cards = list(VocabularyCard.select().tuples())
+    list_cards = list(VocabularyCard.select().order_by(VocabularyCard.id.desc()).limit(20))
     return list_cards
