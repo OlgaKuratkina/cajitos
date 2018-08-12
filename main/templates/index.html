@@ -40,20 +40,25 @@
     </div>
 </nav>
 
-<div class="container">
+<!--<div class="container">-->
     <div class="row">
-        <div class="col-1">
-            <!--One of three columns-->
+        <div class="col-2">
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action">Start</a>
+                <a href="#" class="list-group-item list-group-item-action">Next</a>
+                <a href="#" class="list-group-item list-group-item-action">Next</a>
+                <a href="#" class="list-group-item list-group-item-action">Other</a>
+            </div>
         </div>
         <div class="col-10">
             {% block content %}
             {% endblock %}
         </div>
-        <div class="col-1">
+        <div class="col-0">
             <!--One of three columns-->
         </div>
     </div>
-</div>
+<!--</div>-->
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
