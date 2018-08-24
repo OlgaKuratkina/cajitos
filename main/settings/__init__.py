@@ -1,6 +1,6 @@
 from .env import *
 
 try:
-    from .settings_local import *
+    from .local import *
 except ImportError:
     pass
