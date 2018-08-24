@@ -8,15 +8,14 @@ db = pw.PostgresqlDatabase(
     host=DB_HOST, port=DB_PORT, password=DB_PASS)
 
 
-def init_db():
-    from main.models import VocabularyCard
-    db.create_tables([VocabularyCard])
+# def init_db():
+#     from main.models import VocabularyCard
+#     db.create_tables([VocabularyCard])
 
 
 def clean_db():
     from main.models import VocabularyCard
     VocabularyCard.delete()
-
 
 if __name__ == "__main__":
     clean_db()

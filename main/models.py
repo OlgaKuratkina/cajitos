@@ -1,7 +1,7 @@
 import peewee as pw
 import datetime as dt
 
-from main.database import db
+from main.main_app import db
 
 
 class BaseModel(pw.Model):
