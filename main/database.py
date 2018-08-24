@@ -17,5 +17,6 @@ def clean_db():
     from main.models import VocabularyCard
     VocabularyCard.delete()
 
+
 if __name__ == "__main__":
     clean_db()

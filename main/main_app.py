@@ -1,15 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 
-import peewee as pw
+from main.database import db
 from main.models import VocabularyCard
-from main.settings import DB_NAME, DB_USER, DB_HOST, DB_PORT, DB_PASS
 
 application = Flask(__name__)
 
-db = pw.PostgresqlDatabase(
-    DB_NAME,
-    user=DB_USER,
-    host=DB_HOST, port=DB_PORT, password=DB_PASS)
 db.create_tables([VocabularyCard])
 
 
