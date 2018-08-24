@@ -1,7 +1,12 @@
 import peewee as pw
 import datetime as dt
 
-from main.database import db
+from main.settings import DB_NAME, DB_USER, DB_HOST, DB_PORT, DB_PASS
+
+db = pw.PostgresqlDatabase(
+    DB_NAME,
+    user=DB_USER,
+    host=DB_HOST, port=DB_PORT, password=DB_PASS)
 
 
 class BaseModel(pw.Model):
@@ -27,3 +32,6 @@ class VocabularyCard(TimestampModel):
 
     def __str__(self):
         return f"'{self.origin_word}' - {self.origin_language} -->  '{self.translation_word}'"
+
+
+db.create_tables([VocabularyCard])

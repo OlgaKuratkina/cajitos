@@ -1,11 +1,8 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 
-from main.database import db
 from main.models import VocabularyCard
 
 application = Flask(__name__)
-
-db.create_tables([VocabularyCard])
 
 
 @application.route("/")
