@@ -22,3 +22,29 @@ body {
 .list-group {
   padding: 0;
 }
+
+#runaimg{
+	width:180px;
+	height:210px;
+	display:block;
+	margin:1rem auto;
+	border: 1rem;
+	padding-top:0;
+
+}
+
+.header {
+	font-size:20px;
+	position:relative;
+	top:5px;
+	display:block;
+	letter-spacing:0;
+	text-align:center;
+}
+
+.text{
+	margin:20px auto;
+	display:block;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:13px;
+}

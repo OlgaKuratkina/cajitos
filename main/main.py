@@ -24,6 +24,11 @@ def cards():
     return render_template('vocabulary.html', cards=list_cards)
 
 
+@application.route("/runa")
+def runa():
+    return render_template('runa_code.html')
+
+
 def get_cards():
     list_cards = list(VocabularyCard.select().order_by(VocabularyCard.id.desc()).limit(20))
     return list_cards
