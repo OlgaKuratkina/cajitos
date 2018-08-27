@@ -1,6 +1,7 @@
 body {
   background-color: #FFEFD5;
-    padding: 1rem 1rem 1rem 1rem;
+    padding: 2rem 2rem 2rem 2rem;
+  margin:1rem;
   }
 
 .success, .warning, .error {
