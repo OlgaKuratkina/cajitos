@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+
+{% block keywords %}
+{java script, ява скрипт, гадание на рунах онлайн, гадание на рунах одина, гадание старший футарк онлайн
+{% endblock %}
+
+{% block content %}
+<!--<script>-->
+    <!--var runs = [-->
+        <!--{% for i in range(0,10) %}-->
+    <!--];-->
+<!--</script>-->
+<div class="header">Подумайте о своей проблеме или текущей ситуации</div>
+<div class="col"><img name="runaimg" id="runaimg" src="{{ url_for('static', filename='images/runa1.jpg') }}"></div>
+
+<textarea class="text" id="text_runa" name="answer" rows=13 cols=110 value="Тут будет Ваше предсказание" readonly>
+    Тут будет Ваше предсказание
+</textarea>
+
+<div class="row">
+    <div class="col-3">
+    </div>
+    <div class = "col-3">
+    <button type="submit" class="btn btn-outline-secondary" onClick="runa();">Получить ответ!</button>
+    </div>
+    <div class="col-3">
+<button type="submit" class="btn btn-outline-secondary" onClick="Begin();">Начать с начала</button>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='runas.js') }}"></script>
+<script src="{{ url_for('static', filename='runa.js') }}"></script>
+{% endblock %}

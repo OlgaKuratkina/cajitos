@@ -26,7 +26,7 @@ def cards():
 
 @application.route("/runa")
 def runa():
-    return render_template('runa_code.html')
+    return render_template('runa.html')
 
 
 def get_cards():
