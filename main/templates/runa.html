@@ -5,13 +5,35 @@
 {% endblock %}
 
 {% block content %}
-<!--<script>-->
-    <!--var runs = [-->
-        <!--{% for i in range(0,10) %}-->
-    <!--];-->
-<!--</script>-->
+<script>
+    var runs = ["{{ url_for('static', filename='images/runa1.jpg') }}",
+                "{{ url_for('static', filename='images/runa2.jpg') }}",
+                "{{ url_for('static', filename='images/runa3.jpg') }}",
+                "{{ url_for('static', filename='images/runa4.jpg') }}",
+                "{{ url_for('static', filename='images/runa5.jpg') }}",
+                "{{ url_for('static', filename='images/runa6.jpg') }}",
+                "{{ url_for('static', filename='images/runa7.jpg') }}",
+                "{{ url_for('static', filename='images/runa8.jpg') }}",
+                "{{ url_for('static', filename='images/runa9.jpg') }}",
+                "{{ url_for('static', filename='images/runa10.jpg') }}",
+                "{{ url_for('static', filename='images/runa11.jpg') }}",
+                "{{ url_for('static', filename='images/runa12.jpg') }}",
+                "{{ url_for('static', filename='images/runa13.jpg') }}",
+                "{{ url_for('static', filename='images/runa14.jpg') }}",
+                "{{ url_for('static', filename='images/runa15.jpg') }}",
+                "{{ url_for('static', filename='images/runa16.jpg') }}",
+                "{{ url_for('static', filename='images/runa17.jpg') }}",
+                "{{ url_for('static', filename='images/runa18.jpg') }}",
+                "{{ url_for('static', filename='images/runa19.jpg') }}",
+                "{{ url_for('static', filename='images/runa20.jpg') }}",
+                "{{ url_for('static', filename='images/runa21.jpg') }}",
+                "{{ url_for('static', filename='images/runa22.jpg') }}",
+                "{{ url_for('static', filename='images/runa23.jpg') }}",
+                "{{ url_for('static', filename='images/runa24.jpg') }}",
+                "{{ url_for('static', filename='images/runa25.jpg') }}"];
+</script>
 <div class="header">Подумайте о своей проблеме или текущей ситуации</div>
-<div class="col"><img name="runaimg" id="runaimg" src="{{ url_for('static', filename='images/runa1.jpg') }}"></div>
+<div class="col"><img name="runaimg" id="runaimg" src="{{ url_for('static', filename='images/runa25.jpg') }}"></div>
 
 <textarea class="text" id="text_runa" name="answer" rows=13 cols=110 value="Тут будет Ваше предсказание" readonly>
     Тут будет Ваше предсказание
@@ -24,7 +46,7 @@
     <button type="submit" class="btn btn-outline-secondary" onClick="runa();">Получить ответ!</button>
     </div>
     <div class="col-3">
-<button type="submit" class="btn btn-outline-secondary" onClick="Begin();">Начать с начала</button>
+<button type="submit" class="btn btn-outline-secondary" onClick="begin();">Начать с начала</button>
     </div>
 </div>
 <script src="{{ url_for('static', filename='runas.js') }}"></script>

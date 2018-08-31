@@ -24,12 +24,12 @@ body {
 }
 
 #runaimg{
-	width:180px;
-	height:210px;
+	width:10rem;
+	height:13rem;
 	display:block;
 	margin:1rem auto;
-	border: 1rem;
-	padding-top:0;
+	border: 2px;
+	padding:1rem;
 
 }
 
@@ -43,7 +43,7 @@ body {
 }
 
 .text{
-	margin:20px auto;
+	margin:1.5rem auto;
 	display:block;
 	font-family:Verdana, Geneva, sans-serif;
 	font-size:13px;
