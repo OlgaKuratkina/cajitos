@@ -15,6 +15,6 @@ function runa() {
     document.getElementById("text_runa").value=prediction;
 }
 function begin(){
-document.getElementById("runaimg").src="images/runa25.jpg";
+document.getElementById("runaimg").src="images/runa25.png";
 document.getElementById("text_runa").value="Тут будет Ваше предсказание";
 }
