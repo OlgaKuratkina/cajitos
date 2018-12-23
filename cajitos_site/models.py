@@ -28,4 +28,27 @@ class VocabularyCard(TimestampModel):
         return f"'{self.origin_word}' - {self.origin_language} -->  '{self.translation_word}'"
 
 
-db.create_tables([VocabularyCard])
+class User(TimestampModel):
+    username = pw.CharField(max_length=50)
+    status = pw.CharField(max_length=20)
+    email = pw.CharField(max_length=50)
+    password = pw.CharField(max_length=50)
+    first_name = pw.CharField(max_length=50, null=True)
+    last_name = pw.CharField(max_length=50, null=True)
+
+    def __repr__(self):
+        return f"User(username={self.username}, email={self.email})"
+
+
+class Post(TimestampModel):
+    title = pw.TextField()
+    content = pw.TextField()
+    tags = pw.CharField(max_length=50)
+    category = pw.CharField(max_length=50)
+    author = pw.ForeignKeyField(User, related_name='posts')
+
+    def __repr__(self):
+        return f"User(username={self.username}, email={self.email})"
+
+
+db.create_tables([VocabularyCard, User, Post])
