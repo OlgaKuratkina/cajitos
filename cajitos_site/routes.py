@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash
 
 from cajitos_site.forms import RegistrationForm, LoginForm
-from cajitos_site.models import VocabularyCard
+from cajitos_site.models import VocabularyCard, ExpressionCard
 from cajitos_site import application
 
 posts = [
@@ -47,13 +47,13 @@ def cards():
 @application.route("/expressions", methods=['POST', 'GET'])
 def cards():
     if request.method == 'POST':
-        origin_word = request.form.get('origin_expression')
-        translation = request.form.get('translation_expression')
+        origin_expression = request.form.get('origin_expression')
+        translation_expression = request.form.get('translation_expression')
         category = request.form.get('category')
         language = request.form.get('language')
-        if origin_word and translation and language:
-            VocabularyCard.create(origin_word=origin_word, translation_word=translation, origin_language=language,
-                                  category=category)
+        if origin_expression and translation_expression and language:
+            ExpressionCard.create(origin_expression=origin_expression, translation_expression=translation_expression,
+                                  origin_language=language, category=category)
     list_cards = get_cards()
     return render_template('vocabulary.html', cards=list_cards)
 
