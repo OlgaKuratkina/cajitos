@@ -18,21 +18,11 @@ class TimestampModel(BaseModel):
         return super(TimestampModel, self).save(**kwargs)
 
 
-class VocabularyCard(TimestampModel):
-    origin_word = pw.TextField()
-    translation_word = pw.TextField()
-    origin_language = pw.CharField(choices=('es', 'ru', 'en'), default='en')
-    part_of_speech = pw.CharField(max_length=50, null=True)
-
-    def __str__(self):
-        return f"'{self.origin_word}' - {self.origin_language} -->  '{self.translation_word}'"
-
-
 class User(TimestampModel):
     username = pw.CharField(max_length=50)
     status = pw.CharField(max_length=20)
     email = pw.CharField(max_length=50)
-    password = pw.CharField(max_length=50)
+    password = pw.CharField(max_length=250)
     first_name = pw.CharField(max_length=50, null=True)
     last_name = pw.CharField(max_length=50, null=True)
 
@@ -51,4 +41,24 @@ class Post(TimestampModel):
         return f"User(username={self.username}, email={self.email})"
 
 
+class ExpressionCard(TimestampModel):
+    origin_expression = pw.TextField()
+    translation_expression = pw.TextField()
+    origin_language = pw.CharField(choices=('es', 'ru', 'en'), default='en')
+    author = pw.ForeignKeyField(User, related_name='expressions')
+    category = pw.CharField(max_length=50, null=True)
+
+
+class VocabularyCard(TimestampModel):
+    origin_word = pw.TextField()
+    translation_word = pw.TextField()
+    origin_language = pw.CharField(choices=('es', 'ru', 'en'), default='en')
+    part_of_speech = pw.CharField(max_length=50, null=True)
+    author = pw.ForeignKeyField(User, related_name='words')
+
+    def __str__(self):
+        return f"'{self.origin_word}' - {self.origin_language} -->  '{self.translation_word}'"
+
+
+# db.create_tables([User, Post])
 db.create_tables([VocabularyCard, User, Post])

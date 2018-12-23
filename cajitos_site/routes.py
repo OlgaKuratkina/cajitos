@@ -44,6 +44,20 @@ def cards():
     return render_template('vocabulary.html', cards=list_cards)
 
 
+@application.route("/expressions", methods=['POST', 'GET'])
+def cards():
+    if request.method == 'POST':
+        origin_word = request.form.get('origin_expression')
+        translation = request.form.get('translation_expression')
+        category = request.form.get('category')
+        language = request.form.get('language')
+        if origin_word and translation and language:
+            VocabularyCard.create(origin_word=origin_word, translation_word=translation, origin_language=language,
+                                  category=category)
+    list_cards = get_cards()
+    return render_template('vocabulary.html', cards=list_cards)
+
+
 @application.route("/runa")
 def runa():
     return render_template('runa.html')
