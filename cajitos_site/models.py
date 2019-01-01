@@ -54,11 +54,11 @@ class VocabularyCard(TimestampModel):
     translation_word = pw.TextField()
     origin_language = pw.CharField(choices=('es', 'ru', 'en'), default='en')
     part_of_speech = pw.CharField(max_length=50, null=True)
-    author = pw.ForeignKeyField(User, related_name='words')
+    author = pw.ForeignKeyField(User, related_name='words', null=True)
 
     def __str__(self):
         return f"'{self.origin_word}' - {self.origin_language} -->  '{self.translation_word}'"
 
 
-# db.create_tables([User, Post])
+# db.drop_tables([VocabularyCard, User, Post])
 db.create_tables([VocabularyCard, User, Post])

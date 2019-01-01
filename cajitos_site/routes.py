@@ -32,7 +32,9 @@ def blog_posts():
 
 @application.route("/cards", methods=['POST', 'GET'])
 def cards():
+    search = None
     if request.method == 'POST':
+        search = request.form.get('search_word')
         origin_word = request.form.get('origin_word')
         translation = request.form.get('translation')
         part_speech = request.form.get('part_speech')
@@ -40,12 +42,12 @@ def cards():
         if origin_word and translation and language:
             VocabularyCard.create(origin_word=origin_word, translation_word=translation, origin_language=language,
                                   part_of_speech=part_speech)
-    list_cards = get_cards()
+    list_cards = get_cards(search)
     return render_template('vocabulary.html', cards=list_cards)
 
 
 @application.route("/expressions", methods=['POST', 'GET'])
-def cards():
+def expressions():
     if request.method == 'POST':
         origin_expression = request.form.get('origin_expression')
         translation_expression = request.form.get('translation_expression')
@@ -84,6 +86,10 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
-def get_cards():
-    list_cards = list(VocabularyCard.select().order_by(VocabularyCard.id.desc()).limit(20))
-    return list_cards
+def get_cards(search=None):
+    search = f"%{search}%" if search else None
+    query = VocabularyCard.select()
+    if search:
+        query = query.where(VocabularyCard.origin_word ** search)
+        print(query)
+    return list(query.order_by(VocabularyCard.id.desc()).limit(20))
