@@ -1,11 +1,10 @@
-import logging
 from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, current_user, logout_user, login_required
 
 from cajitos_site.forms import RegistrationForm, LoginForm
 from cajitos_site.models import VocabularyCard, ExpressionCard, User
 from cajitos_site import application, bcrypt, db
-
+from cajitos_site.utils import get_redirect_target
 
 posts = [
     {
@@ -89,8 +88,8 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             flash('You have been logged in!', 'success')
             login_user(user, remember=form.remember.data)
-            application.logger.warning('current user %s, session, %s', current_user, session)
-            next_page = request.args.get('next')
+            application.logger.info('current user %s, session, %s', current_user, session)
+            next_page = get_redirect_target()
             return redirect(next_page) if next_page else redirect(url_for('blog_posts'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
