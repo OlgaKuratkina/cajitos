@@ -36,14 +36,14 @@ body {
 .header {
 	font-size:20px;
 	position:relative;
-	top:5px;
+	top:4px;
 	display:block;
 	letter-spacing:0;
 	text-align:center;
 }
 
 .text{
-	margin:1.5rem auto;
+	margin:1rem auto;
 	display:block;
 	font-family:Verdana, Geneva, sans-serif;
 	font-size:13px;

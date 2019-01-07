@@ -65,7 +65,7 @@ def expressions():
 
 @application.route("/runa")
 def runa():
-    return render_template('runa.html')
+    return render_template('runa.html', title="Runa")
 
 
 @application.route("/register", methods=['GET', 'POST'])

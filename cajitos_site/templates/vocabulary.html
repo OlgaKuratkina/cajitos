@@ -1,51 +1,55 @@
-{% extends "index.html" %}
+{% extends "layout_blog.html" %}
 
 {% block content %}
-
-    <form action="{{ url_for('cards') }}" method="post">
-        <div class="row">
-            <div class="col">
-                <input type="text" class="form-control" name="search_word" placeholder="Search" required>
+    <div class="content-section">
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Vocabulary</legend>
+        <form action="{{ url_for('cards') }}" method="post">
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control" name="search_word" placeholder="Search" required>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-outline-secondary">Search</button>
+                </div>
             </div>
-            <div class="col">
-                <button type="submit" class="btn btn-outline-secondary">Search</button>
+        </form>
+    </fieldset>
+    <fieldset class="form-group">
+        <form action="{{ url_for('cards') }}" method="post">
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control" name="origin_word" placeholder="Word" required>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name="translation" placeholder="Translation" required>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name="part_speech" placeholder="Part of speech">
+                </div>
+                <div class="col">
+                    <select class="form-control" id="exampleFormControlSelect1" name="language" required>
+                        <option>es</option>
+                        <option>en</option>
+                        <option>ru</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-outline-secondary">Add translation</button>
+                </div>
             </div>
-        </div>
-    </form>
-
-<form action="{{ url_for('cards') }}" method="post">
-    <div class="row">
-        <div class="col">
-            <input type="text" class="form-control" name="origin_word" placeholder="Word" required>
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" name="translation" placeholder="Translation" required>
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" name="part_speech" placeholder="Part of speech">
-        </div>
-        <div class="col">
-            <select class="form-control" id="exampleFormControlSelect1" name="language" required>
-                <option>es</option>
-                <option>en</option>
-                <option>ru</option>
-            </select>
-        </div>
-        <div class="col">
-        <button type="submit" class="btn btn-outline-secondary">Add translation</button>
+        </form>
+    </fieldset>
+        <div class="container">
+            <br>
+            <h3>Available translations</h3>
+            <div class="card" style="width: 18rem;">
+                <ul class="list-group list-group-flush">
+                    {% for card in cards %}
+                        <li class="list-group-item">{{ card }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
-</form>
-
-<div class="container">
-    <br>
-    <h2>Recently added translations</h2>
-    <div class="card" style="width: 18rem;">
-        <ul class="list-group list-group-flush">
-            {% for card in cards %}
-            <li class="list-group-item">{{ card }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
 {% endblock %}
