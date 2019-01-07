@@ -1,8 +1,11 @@
-from flask import render_template, request, redirect, url_for, flash
+import logging
+from flask import render_template, request, redirect, url_for, flash, session
+from flask_login import login_user, current_user, logout_user, login_required
 
 from cajitos_site.forms import RegistrationForm, LoginForm
-from cajitos_site.models import VocabularyCard, ExpressionCard
-from cajitos_site import application
+from cajitos_site.models import VocabularyCard, ExpressionCard, User
+from cajitos_site import application, bcrypt, db
+
 
 posts = [
     {
@@ -27,7 +30,7 @@ def start():
 
 @application.route("/blog_posts")
 def blog_posts():
-    return render_template('posts.html', posts=posts)
+    return render_template('posts.html', title='BlackCat', posts=posts)
 
 
 @application.route("/cards", methods=['POST', 'GET'])
@@ -67,10 +70,14 @@ def runa():
 
 @application.route("/register", methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('start'))
     form = RegistrationForm()
     if form.validate_on_submit():
+        hashed_pass = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        User.create(username=form.username.data, email=form.email.data, password=hashed_pass, status='New')
         flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('start'))
+        return redirect(url_for('blog_posts'))
     return render_template('register.html', title='Register', form=form)
 
 
@@ -78,12 +85,28 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
+        user = User.select().where(User.email == form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
             flash('You have been logged in!', 'success')
-            return redirect(url_for('start'))
+            login_user(user, remember=form.remember.data)
+            application.logger.warning('current user %s, session, %s', current_user, session)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('blog_posts'))
         else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
+            flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
+
+
+@application.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('start'))
+
+
+@application.route("/account")
+@login_required
+def account():
+    return render_template('account.html', title='Account')
 
 
 def get_cards(search=None):
@@ -91,5 +114,4 @@ def get_cards(search=None):
     query = VocabularyCard.select()
     if search:
         query = query.where(VocabularyCard.origin_word ** search)
-        print(query)
     return list(query.order_by(VocabularyCard.id.desc()).limit(20))

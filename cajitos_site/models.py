@@ -1,6 +1,7 @@
 import peewee as pw
 import datetime as dt
-from cajitos_site import db
+from cajitos_site import db, login_manager, application
+from flask_login import UserMixin
 
 
 class BaseModel(pw.Model):
@@ -18,7 +19,12 @@ class TimestampModel(BaseModel):
         return super(TimestampModel, self).save(**kwargs)
 
 
-class User(TimestampModel):
+@login_manager.user_loader
+def load_user(user_id):
+    return User.select().where(User.id == int(user_id)).first()
+
+
+class User(TimestampModel, UserMixin):
     username = pw.CharField(max_length=50)
     status = pw.CharField(max_length=20)
     email = pw.CharField(max_length=50)
@@ -28,6 +34,10 @@ class User(TimestampModel):
 
     def __repr__(self):
         return f"User(username={self.username}, email={self.email})"
+
+    @property
+    def is_active(self):
+        return True
 
 
 class Post(TimestampModel):
