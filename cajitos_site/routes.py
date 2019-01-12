@@ -6,34 +6,17 @@ from flask_login import login_user, current_user, logout_user, login_required
 from PIL import Image
 
 from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm
-from cajitos_site.models import VocabularyCard, ExpressionCard, User
+from cajitos_site.models import VocabularyCard, ExpressionCard, User, Post
 from cajitos_site import application, bcrypt, db
 from cajitos_site.utils import get_redirect_target
 
-posts = [
-    {
-        'author': 'Corey Schafer',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 20, 2018'
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018'
-    }
-]
-
 
 @application.route("/")
-def start():
-    return render_template('index.html')
-
-
 @application.route("/blog_posts")
 def blog_posts():
-    return render_template('posts.html', title='BlackCat', posts=posts)
+    page = request.args.get('page', 1, type=int)
+    posts = Post.select().order_by(Post.created_at.desc()).paginate(page=page, paginate_by=5)
+    return render_template('posts.html', title='Blog Posts', posts=posts)
 
 
 @application.route("/cards", methods=['POST', 'GET'])
