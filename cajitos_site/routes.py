@@ -5,7 +5,7 @@ from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, current_user, logout_user, login_required
 from PIL import Image
 
-from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from cajitos_site.models import VocabularyCard, ExpressionCard, User, Post
 from cajitos_site import application, bcrypt, db
 from cajitos_site.utils import get_redirect_target
@@ -15,8 +15,26 @@ from cajitos_site.utils import get_redirect_target
 @application.route("/blog_posts")
 def blog_posts():
     page = request.args.get('page', 1, type=int)
+    total_pages = Post.select().count()
+    author = request.args.get('author')
     posts = Post.select().order_by(Post.created_at.desc()).paginate(page=page, paginate_by=5)
-    return render_template('posts.html', title='Blog Posts', posts=posts)
+    if author:
+        posts = posts.where(Post.author == author)
+    application.logger.warning(posts)
+    return render_template('posts.html', title='Blog Posts', posts=posts, page=1, total_pages=total_pages)
+
+
+@application.route("/post/new", methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        Post.create(title=form.title.data, content=form.content.data, author=current_user.id, tags='test',
+                    category='test')
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('blog_posts'))
+    return render_template('create_post.html', title='New Post',
+                           form=form, legend='New Post')
 
 
 @application.route("/cards", methods=['POST', 'GET'])
@@ -115,7 +133,7 @@ def get_cards(search=None):
     query = VocabularyCard.select()
     if search:
         query = query.where(VocabularyCard.origin_word ** search)
-    return list(query.order_by(VocabularyCard.id.desc()).limit(20))
+    return query.order_by(VocabularyCard.id.desc()).limit(20)
 
 
 def save_picture(form_picture):

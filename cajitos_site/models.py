@@ -49,7 +49,7 @@ class Post(TimestampModel):
     author = pw.ForeignKeyField(User, related_name='posts')
 
     def __repr__(self):
-        return f"User(username={self.username}, email={self.email})"
+        return f"Post(title={self.title}, author={self.author})"
 
 
 class ExpressionCard(TimestampModel):
