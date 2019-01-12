@@ -1,7 +1,11 @@
+import os
+
+import secrets
 from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, current_user, logout_user, login_required
+from PIL import Image
 
-from cajitos_site.forms import RegistrationForm, LoginForm
+from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from cajitos_site.models import VocabularyCard, ExpressionCard, User
 from cajitos_site import application, bcrypt, db
 from cajitos_site.utils import get_redirect_target
@@ -102,10 +106,25 @@ def logout():
     return redirect(url_for('start'))
 
 
-@application.route("/account")
+@application.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html', title='Account')
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.profile_picture = picture_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.save()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    image_file = url_for('static', filename='images/user_pics/' + current_user.profile_picture)
+    return render_template('account.html', title='Account',
+                           image_file=image_file, form=form)
 
 
 def get_cards(search=None):
@@ -114,3 +133,17 @@ def get_cards(search=None):
     if search:
         query = query.where(VocabularyCard.origin_word ** search)
     return list(query.order_by(VocabularyCard.id.desc()).limit(20))
+
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(application.root_path, 'static/images/user_pics', picture_fn)
+
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
