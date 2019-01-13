@@ -2,7 +2,7 @@ test:
 	source venv/bin/activate && py.test tests
 
 start:
-	source venv/bin/activate && FLASK_APP=cajitos_site/routes.py flask run
+	source venv/bin/activate && FLASK_APP=cajitos_site flask run
 
 start_debug:
 	source venv/bin/activate && python run.py
