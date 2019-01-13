@@ -3,10 +3,11 @@ import math
 from flask import render_template, request, redirect, url_for, flash, session, abort
 from flask_login import login_user, current_user, logout_user, login_required
 
-from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, UpdatePostForm
+from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, UpdatePostForm, \
+    RequestResetForm, ResetPasswordForm
 from cajitos_site.models import VocabularyCard, ExpressionCard, User, Post
 from cajitos_site import application, bcrypt
-from cajitos_site.utils import get_redirect_target, get_cards, save_picture, get_post_by_id_and_author
+from cajitos_site.utils import get_redirect_target, get_cards, save_picture, get_post_by_id_and_author, send_reset_email
 
 PER_PAGE = 3
 
@@ -161,3 +162,34 @@ def account():
     image_file = url_for('static', filename='images/user_pics/' + current_user.profile_picture)
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
+
+
+@application.route("/reset_password", methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.select().where(User.email == form.email.data).first()
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password.', 'info')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+
+@application.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        user.update()
+        flash('Your password has been updated! You are now able to log in', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_token.html', title='Reset Password', form=form)
