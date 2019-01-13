@@ -8,7 +8,7 @@ from cajitos_site.models import VocabularyCard, ExpressionCard, User, Post
 from cajitos_site import application, bcrypt
 from cajitos_site.utils import get_redirect_target, get_cards, save_picture, get_post_by_id_and_author
 
-PER_PAGE = 5
+PER_PAGE = 3
 
 
 @application.route("/")
@@ -21,7 +21,9 @@ def blog_posts():
     if author:
         posts = posts.where(Post.author == author)
     application.logger.warning(posts)
-    return render_template('posts.html', title='Blog Posts', posts=posts, page=page, total_pages=total_pages)
+    return render_template(
+        'posts.html', title='Blog Posts', posts=posts, author=author, page=page, total_pages=total_pages
+    )
 
 
 @application.route("/post/new", methods=['GET', 'POST'])
