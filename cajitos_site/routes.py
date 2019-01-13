@@ -9,19 +9,20 @@ from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm, P
 from cajitos_site.models import VocabularyCard, ExpressionCard, User, Post
 from cajitos_site import application, bcrypt, db
 from cajitos_site.utils import get_redirect_target
+PER_PAGE = 5
 
 
 @application.route("/")
 @application.route("/blog_posts")
 def blog_posts():
     page = request.args.get('page', 1, type=int)
-    total_pages = Post.select().count()
+    total_pages = Post.select().count() / PER_PAGE
     author = request.args.get('author')
-    posts = Post.select().order_by(Post.created_at.desc()).paginate(page=page, paginate_by=5)
+    posts = Post.select().order_by(Post.created_at.desc()).paginate(page=page, paginate_by=PER_PAGE)
     if author:
         posts = posts.where(Post.author == author)
     application.logger.warning(posts)
-    return render_template('posts.html', title='Blog Posts', posts=posts, page=1, total_pages=total_pages)
+    return render_template('posts.html', title='Blog Posts', posts=posts, page=page, total_pages=total_pages)
 
 
 @application.route("/post/new", methods=['GET', 'POST'])
