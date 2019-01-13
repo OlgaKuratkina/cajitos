@@ -1,6 +1,8 @@
 # PUT RDS connections here
 import os
 
+PER_PAGE = 3
+
 DB_PORT = 5432
 DB_HOST = os.environ.get('db_host')
 DB_USER = os.environ.get('db_user')

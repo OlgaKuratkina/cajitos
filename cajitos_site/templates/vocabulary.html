@@ -4,7 +4,7 @@
     <div class="content-section">
     <fieldset class="form-group">
         <legend class="border-bottom mb-4">Vocabulary</legend>
-        <form action="{{ url_for('cards') }}" method="post">
+        <form action="{{ url_for('misc.cards') }}" method="post">
             <div class="row">
                 <div class="col">
                     <input type="text" class="form-control" name="search_word" placeholder="Search" required>
@@ -16,7 +16,7 @@
         </form>
     </fieldset>
     <fieldset class="form-group">
-        <form action="{{ url_for('cards') }}" method="post">
+        <form action="{{ url_for('misc.cards') }}" method="post">
             <div class="row">
                 <div class="col">
                     <input type="text" class="form-control" name="origin_word" placeholder="Word" required>

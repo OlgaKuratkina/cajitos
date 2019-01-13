@@ -22,9 +22,16 @@ db = pw.PostgresqlDatabase(
 bcrypt = Bcrypt(application)
 login_manager = LoginManager()
 login_manager.init_app(application)
-login_manager.login_view = 'login'
+login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 mail = Mail(application)
 
-from cajitos_site import routes
+from cajitos_site.users.routes import users
+from cajitos_site.posts.routes import posts
+from cajitos_site.main.routes import main
+from cajitos_site.mics.routes import misc
 
+application.register_blueprint(users)
+application.register_blueprint(posts)
+application.register_blueprint(main)
+application.register_blueprint(misc)
