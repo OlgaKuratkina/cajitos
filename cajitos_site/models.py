@@ -37,7 +37,7 @@ class User(TimestampModel, UserMixin):
     def __repr__(self):
         return f"User(username={self.username}, email={self.email})"
 
-    def get_validation_token(self, expires_sec=1800):
+    def get_validation_token(self, expires_sec=3600):
         s = Serializer(application.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 
