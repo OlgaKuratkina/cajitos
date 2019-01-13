@@ -1,14 +1,11 @@
-import os
-
-import secrets
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash, session, abort
 from flask_login import login_user, current_user, logout_user, login_required
-from PIL import Image
 
 from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from cajitos_site.models import VocabularyCard, ExpressionCard, User, Post
-from cajitos_site import application, bcrypt, db
-from cajitos_site.utils import get_redirect_target
+from cajitos_site import application, bcrypt
+from cajitos_site.utils import get_redirect_target, get_cards, save_picture, get_post_by_id_and_author
+
 PER_PAGE = 5
 
 
@@ -36,6 +33,41 @@ def new_post():
         return redirect(url_for('blog_posts'))
     return render_template('create_post.html', title='New Post',
                            form=form, legend='New Post')
+
+
+@application.route("/post/<int:post_id>")
+def post(post_id):
+    post = Post.get_or_none(Post.id == post_id)
+    if not post:
+        abort(404)
+    return render_template('post.html', title=post.title, post=post)
+
+
+@application.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_post(post_id):
+    post = get_post_by_id_and_author(post_id)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        post.update()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('post', post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('create_post.html', title='Update Post',
+                           form=form, legend='Update Post')
+
+
+@application.route("/post/<int:post_id>/delete", methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = get_post_by_id_and_author(post_id)
+    post.delete_instance()
+    flash('Your post has been deleted!', 'success')
+    return redirect(url_for('blog_posts'))
 
 
 @application.route("/cards", methods=['POST', 'GET'])
@@ -127,25 +159,3 @@ def account():
     image_file = url_for('static', filename='images/user_pics/' + current_user.profile_picture)
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
-
-
-def get_cards(search=None):
-    search = f"%{search}%" if search else None
-    query = VocabularyCard.select()
-    if search:
-        query = query.where(VocabularyCard.origin_word ** search)
-    return query.order_by(VocabularyCard.id.desc()).limit(20)
-
-
-def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(application.root_path, 'static/images/user_pics', picture_fn)
-
-    output_size = (125, 125)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
-    i.save(picture_path)
-
-    return picture_fn
