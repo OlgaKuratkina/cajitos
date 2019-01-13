@@ -132,7 +132,9 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.select().where(User.email == form.email.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
+        if user and user.status != 'Confirmed':
+            flash('You need to confirm your account to proceed!', 'info')
+        elif user and bcrypt.check_password_hash(user.password, form.password.data):
             flash('You have been logged in!', 'success')
             login_user(user, remember=form.remember.data)
             application.logger.info('current user %s, session, %s', current_user, session)
