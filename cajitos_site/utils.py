@@ -22,6 +22,7 @@ def get_redirect_target():
             continue
         if is_safe_url(target):
             return target
+    return None
 
 
 def get_cards(search=None):
@@ -57,13 +58,12 @@ def get_post_by_id_and_author(post_id):
     return post
 
 
-def send_reset_email(user):
-    token = user.get_reset_token()
+def send_reset_email(user, url_link):
     msg = Message('Password Reset Request',
                   sender=application.config['MAIL_USERNAME'],
                   recipients=[user.email])
     msg.body = f'''To reset your password, visit the following link:
-{url_for('reset_token', token=token, _external=True)}
-If you did not make this request then simply ignore this email and no changes will be made.
+    {url_link}
+    If you did not make this request then simply ignore this email and no changes will be made.
 '''
     mail.send(msg)

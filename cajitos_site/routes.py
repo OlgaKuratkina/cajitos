@@ -171,7 +171,9 @@ def reset_request():
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.select().where(User.email == form.email.data).first()
-        send_reset_email(user)
+        token = user.get_reset_token()
+        reset_link = f"{url_for('reset_token', token=token, _external=True)}"
+        send_reset_email(user, reset_link)
         flash('An email has been sent with instructions to reset your password.', 'info')
         return redirect(url_for('login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
