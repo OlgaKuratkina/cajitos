@@ -1,3 +1,5 @@
+import math
+
 from flask import render_template, request, redirect, url_for, flash, session, abort
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -13,7 +15,7 @@ PER_PAGE = 5
 @application.route("/blog_posts")
 def blog_posts():
     page = request.args.get('page', 1, type=int)
-    total_pages = Post.select().count() / PER_PAGE
+    total_pages = int(math.ceil(Post.select().count() / PER_PAGE))
     author = request.args.get('author')
     posts = Post.select().order_by(Post.created_at.desc()).paginate(page=page, paginate_by=PER_PAGE)
     if author:

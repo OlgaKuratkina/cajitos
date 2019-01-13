@@ -13,10 +13,12 @@
           </div>
         </article>
     {% endfor %}
-    {% if page > 1 %}
-        <a class="previous" href="./?page={{ page - 1 }}">Previous</a>
-    {% endif %}
-    {% if total_pages > page %}
-        <a class="next" href="./?page={{ page + 1 }}">Next</a>
-    {% endif %}
+    <!-- Pagination -->
+    {% for page_num in range(1, page) %}
+        <a class="btn btn-info mb-4" href="./?page={{ page - 1 }}"> << </a>
+    {% endfor %}
+
+    {% for page_num in range(page, total_pages) %}
+        <a class="btn btn-info mb-4" href="./?page={{ page + 1 }}"> >> </a>
+    {% endfor %}
 {% endblock content %}
