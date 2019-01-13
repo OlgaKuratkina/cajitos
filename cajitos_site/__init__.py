@@ -1,12 +1,18 @@
-from flask import Flask
 import peewee as pw
+from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_mail import Mail
 
-from cajitos_site.settings import DB_NAME, DB_USER, DB_HOST, DB_PORT, DB_PASS
+from cajitos_site.settings import *
 
 application = Flask(__name__)
-application.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+application.config['SECRET_KEY'] = SECRET_KEY
+application.config['MAIL_SERVER'] = MAIL_SERVER
+application.config['MAIL_PORT'] = MAIL_PORT
+application.config['MAIL_USE_TLS'] = MAIL_USE_TLS
+application.config['MAIL_USERNAME'] = MAIL_USERNAME
+application.config['MAIL_PASSWORD'] = MAIL_PASSWORD
 
 db = pw.PostgresqlDatabase(
     DB_NAME,
@@ -18,5 +24,7 @@ login_manager = LoginManager()
 login_manager.init_app(application)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
+mail = Mail(application)
 
 from cajitos_site import routes
+
