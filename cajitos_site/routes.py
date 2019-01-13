@@ -167,7 +167,7 @@ def account():
 @application.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('blog_posts'))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.select().where(User.email == form.email.data).first()
@@ -180,7 +180,7 @@ def reset_request():
 @application.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('blog_posts'))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
