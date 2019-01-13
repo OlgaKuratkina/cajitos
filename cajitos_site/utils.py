@@ -3,9 +3,10 @@ import secrets
 from PIL import Image
 from flask import request, abort
 from flask_login import current_user
+from flask_mail import Message
 from urllib.parse import urlparse, urljoin
 
-from cajitos_site import application
+from cajitos_site import application, mail
 from cajitos_site.models import VocabularyCard, Post
 
 
@@ -59,7 +60,7 @@ def get_post_by_id_and_author(post_id):
 def send_reset_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset Request',
-                  sender='noreply@demo.com',
+                  sender=application.config['MAIL_USERNAME'],
                   recipients=[user.email])
     msg.body = f'''To reset your password, visit the following link:
 {url_for('reset_token', token=token, _external=True)}

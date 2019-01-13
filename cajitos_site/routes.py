@@ -16,12 +16,12 @@ PER_PAGE = 3
 @application.route("/blog_posts")
 def blog_posts():
     page = request.args.get('page', 1, type=int)
-    total_pages = int(math.ceil(Post.select().count() / PER_PAGE))
     author = request.args.get('author')
-    posts = Post.select().order_by(Post.created_at.desc()).paginate(page=page, paginate_by=PER_PAGE)
+    query = Post.select()
     if author:
-        posts = posts.where(Post.author == author)
-    application.logger.warning(posts)
+        query = query.where(Post.author == author)
+    total_pages = int(math.ceil(query.count() / PER_PAGE))
+    posts = query.order_by(Post.created_at.desc()).paginate(page=page, paginate_by=PER_PAGE)
     return render_template(
         'posts.html', title='Blog Posts', posts=posts, author=author, page=page, total_pages=total_pages
     )
@@ -140,7 +140,7 @@ def login():
 @application.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('start'))
+    return redirect(url_for('blog_posts'))
 
 
 @application.route("/account", methods=['GET', 'POST'])
@@ -189,7 +189,7 @@ def reset_token(token):
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user.password = hashed_password
-        user.update()
+        user.save()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
