@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 
 settings/local.py
+cajitos_site/settings/local.py
 
 # C extensions
 *.so
