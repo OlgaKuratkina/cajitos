@@ -8,6 +8,7 @@ from cajitos_site.models import User
 
 
 class RegistrationForm(FlaskForm):
+    legend = 'Create an Account'
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
@@ -29,6 +30,7 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
+    legend = 'Login'
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -37,6 +39,7 @@ class LoginForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
+    legend = 'Account Details'
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
@@ -58,9 +61,14 @@ class UpdateAccountForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
+    legend = 'Create Post'
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
+
+
+class UpdatePostForm(PostForm):
+    legend = 'Update Post'
 
 
 class RequestResetForm(FlaskForm):

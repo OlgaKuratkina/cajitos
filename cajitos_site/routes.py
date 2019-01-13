@@ -3,7 +3,7 @@ import math
 from flask import render_template, request, redirect, url_for, flash, session, abort
 from flask_login import login_user, current_user, logout_user, login_required
 
-from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
+from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, UpdatePostForm
 from cajitos_site.models import VocabularyCard, ExpressionCard, User, Post
 from cajitos_site import application, bcrypt
 from cajitos_site.utils import get_redirect_target, get_cards, save_picture, get_post_by_id_and_author
@@ -35,8 +35,7 @@ def new_post():
                     category='test')
         flash('Your post has been created!', 'success')
         return redirect(url_for('blog_posts'))
-    return render_template('create_post.html', title='New Post',
-                           form=form, legend='New Post')
+    return render_template('create_post.html', title='New Post', form=form)
 
 
 @application.route("/post/<int:post_id>")
@@ -51,7 +50,7 @@ def post(post_id):
 @login_required
 def update_post(post_id):
     post = get_post_by_id_and_author(post_id)
-    form = PostForm()
+    form = UpdatePostForm()
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
@@ -61,8 +60,7 @@ def update_post(post_id):
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('create_post.html', title='Update Post',
-                           form=form, legend='Update Post')
+    return render_template('create_post.html', title='Update Post', form=form)
 
 
 @application.route("/post/<int:post_id>/delete", methods=['POST'])
