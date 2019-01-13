@@ -7,7 +7,8 @@ from cajitos_site.forms import RegistrationForm, LoginForm, UpdateAccountForm, P
     RequestResetForm, ResetPasswordForm
 from cajitos_site.models import VocabularyCard, ExpressionCard, User, Post
 from cajitos_site import application, bcrypt
-from cajitos_site.utils import get_redirect_target, get_cards, save_picture, get_post_by_id_and_author, send_reset_email
+from cajitos_site.utils import get_redirect_target, get_cards, save_picture, get_post_by_id_and_author, \
+    send_service_email, generate_random_pass
 
 PER_PAGE = 3
 
@@ -114,9 +115,14 @@ def register():
         return redirect(url_for('start'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_pass = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        User.create(username=form.username.data, email=form.email.data, password=hashed_pass, status='New')
+        password = generate_random_pass()
+        hashed_pass = bcrypt.generate_password_hash(password).decode('utf-8')
+        user = User.create(username=form.username.data, email=form.email.data, password=hashed_pass)
         flash(f'Account created for {form.username.data}!', 'success')
+        flash(f'Check your email to confirm your new account', 'success')
+        token = user.get_validation_token()
+        reset_link = f"{url_for('validate_token', token=token, _external=True)}"
+        send_service_email(user, reset_link)
         return redirect(url_for('blog_posts'))
     return render_template('register.html', title='Register', form=form)
 
@@ -171,19 +177,19 @@ def reset_request():
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.select().where(User.email == form.email.data).first()
-        token = user.get_reset_token()
-        reset_link = f"{url_for('reset_token', token=token, _external=True)}"
-        send_reset_email(user, reset_link)
+        token = user.get_validation_token()
+        reset_link = f"{url_for('validate_token', token=token, _external=True)}"
+        send_service_email(user, reset_link, confirm_account=False)
         flash('An email has been sent with instructions to reset your password.', 'info')
         return redirect(url_for('login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
 
 
 @application.route("/reset_password/<token>", methods=['GET', 'POST'])
-def reset_token(token):
+def validate_token(token):
     if current_user.is_authenticated:
         return redirect(url_for('blog_posts'))
-    user = User.verify_reset_token(token)
+    user = User.verify_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('reset_request'))
@@ -191,7 +197,8 @@ def reset_token(token):
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user.password = hashed_password
+        user.status = 'Confirmed'
         user.save()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('login'))
-    return render_template('reset_token.html', title='Reset Password', form=form)
+    return render_template('validate_token.html', title='Reset Password', form=form)

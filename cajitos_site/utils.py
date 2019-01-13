@@ -1,5 +1,7 @@
 import os
+import random
 import secrets
+import string
 from PIL import Image
 from flask import request, abort
 from flask_login import current_user
@@ -8,6 +10,11 @@ from urllib.parse import urlparse, urljoin
 
 from cajitos_site import application, mail
 from cajitos_site.models import VocabularyCard, Post
+
+CONFIRM_ACCOUNT_MESSAGE = """You are registering on Cajitos website
+To confirm your email address please visit the following link:"""
+RESET_PASSWORD_MESSAGE = """You requested password reset for you account on Cajitos website
+To reset your password, visit the following link:"""
 
 
 def is_safe_url(target):
@@ -58,12 +65,21 @@ def get_post_by_id_and_author(post_id):
     return post
 
 
-def send_reset_email(user, url_link):
+def send_service_email(user, url_link, confirm_account=True):
     msg = Message('Password Reset Request',
                   sender=application.config['MAIL_USERNAME'],
                   recipients=[user.email])
-    msg.body = f'''To reset your password, visit the following link:
+    if confirm_account:
+        message_body = CONFIRM_ACCOUNT_MESSAGE
+    else:
+        message_body = RESET_PASSWORD_MESSAGE
+    msg.body = f'''Dear {user.username},
+    {message_body}
     {url_link}
-    If you did not make this request then simply ignore this email and no changes will be made.
+    If you did not make this request then simply ignore this email.
 '''
     mail.send(msg)
+
+
+def generate_random_pass(length=8):
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))

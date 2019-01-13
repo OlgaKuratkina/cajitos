@@ -27,7 +27,7 @@ def load_user(user_id):
 
 class User(TimestampModel, UserMixin):
     username = pw.CharField(max_length=50)
-    status = pw.CharField(max_length=20)
+    status = pw.CharField(max_length=20, default='New')
     email = pw.CharField(max_length=50)
     password = pw.CharField(max_length=250)
     first_name = pw.CharField(max_length=50, null=True)
@@ -37,12 +37,12 @@ class User(TimestampModel, UserMixin):
     def __repr__(self):
         return f"User(username={self.username}, email={self.email})"
 
-    def get_reset_token(self, expires_sec=1800):
+    def get_validation_token(self, expires_sec=1800):
         s = Serializer(application.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 
     @staticmethod
-    def verify_reset_token(token):
+    def verify_token(token):
         s = Serializer(application.config['SECRET_KEY'])
         try:
             user_id = s.loads(token)['user_id']
@@ -51,8 +51,10 @@ class User(TimestampModel, UserMixin):
         return User.get_by_id(user_id)
 
     @property
-    def is_active(self):
-        return True
+    def is_authenticated(self):
+        if super().is_authenticated and self.status == 'Confirmed':
+            return True
+        return False
 
 
 class Post(TimestampModel):
