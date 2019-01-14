@@ -82,7 +82,7 @@ def reset_request():
         token = user.get_validation_token()
         reset_link = f"{url_for('users.validate_token', token=token, _external=True)}"
         send_service_email(user, reset_link, confirm_account=False)
-        flash('An email has been sent with instructions to reset your password.', 'info')
+        flash('An email has been sent with instructions to complete operation.', 'info')
         return redirect(url_for('users.login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
 
@@ -99,6 +99,7 @@ def validate_token(token):
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user.password = hashed_password
+        # Instead of default implementation with user.is_active
         user.status = 'Confirmed'
         user.save()
         flash('Your password has been updated! You are now able to log in', 'success')
