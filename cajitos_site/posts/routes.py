@@ -1,9 +1,8 @@
 import math
 
-from flask import Blueprint, request, render_template, flash, redirect, url_for, abort
+from flask import Blueprint, request, render_template, flash, redirect, url_for, abort, current_app
 from flask_login import login_required, current_user
 
-from cajitos_site import PER_PAGE
 from cajitos_site.posts.forms import PostForm, UpdatePostForm
 from cajitos_site.models import Post
 from cajitos_site.utils import get_post_by_id_and_author
@@ -19,8 +18,8 @@ def blog_posts():
     query = Post.select()
     if author:
         query = query.where(Post.author == author)
-    total_pages = int(math.ceil(query.count() / PER_PAGE))
-    posts = query.order_by(Post.created_at.desc()).paginate(page=page, paginate_by=PER_PAGE)
+    total_pages = int(math.ceil(query.count() / current_app.config['PER_PAGE']))
+    posts = query.order_by(Post.created_at.desc()).paginate(page=page, paginate_by=current_app.config['PER_PAGE'])
     return render_template(
         'posts.html', title='Blog Posts', posts=posts, author=author, page=page, total_pages=total_pages
     )

@@ -1,7 +1,8 @@
 import peewee as pw
 import datetime as dt
+from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from cajitos_site import db, login_manager, application
+from cajitos_site import db, login_manager
 from flask_login import UserMixin
 
 
@@ -38,12 +39,12 @@ class User(TimestampModel, UserMixin):
         return f"User(username={self.username}, email={self.email})"
 
     def get_validation_token(self, expires_sec=3600):
-        s = Serializer(application.config['SECRET_KEY'], expires_sec)
+        s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 
     @staticmethod
     def verify_token(token):
-        s = Serializer(application.config['SECRET_KEY'])
+        s = Serializer(current_app.config['SECRET_KEY'])
         try:
             user_id = s.loads(token)['user_id']
         except:

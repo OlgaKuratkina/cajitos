@@ -3,12 +3,12 @@ import random
 import secrets
 import string
 from PIL import Image
-from flask import request, abort
+from flask import request, abort, current_app
 from flask_login import current_user
 from flask_mail import Message
 from urllib.parse import urlparse, urljoin
 
-from cajitos_site import application, mail
+from cajitos_site import mail
 from cajitos_site.models import VocabularyCard, Post
 
 CONFIRM_ACCOUNT_MESSAGE = """You are registering on Cajitos website
@@ -44,7 +44,7 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(application.root_path, 'static/images/user_pics', picture_fn)
+    picture_path = os.path.join(current_app.root_path, 'static/images/user_pics', picture_fn)
 
     output_size = (125, 125)
     i = Image.open(form_picture)
@@ -59,7 +59,7 @@ def get_post_by_id_and_author(post_id):
     if not post:
         abort(404)
     if post.author.id != current_user.id:
-        application.logger.warning('author is not current user, author %s, current user %s', post.author.username,
+        current_app.logger.warning('author is not current user, author %s, current user %s', post.author.username,
                                    current_user.username)
         abort(403)
     return post
@@ -67,7 +67,7 @@ def get_post_by_id_and_author(post_id):
 
 def send_service_email(user, url_link, confirm_account=True):
     msg = Message('Password Reset Request',
-                  sender=application.config['MAIL_USERNAME'],
+                  sender=current_app.config['MAIL_USERNAME'],
                   recipients=[user.email])
     if confirm_account:
         message_body = CONFIRM_ACCOUNT_MESSAGE

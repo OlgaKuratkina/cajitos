@@ -1,7 +1,7 @@
-from flask import Blueprint, redirect, url_for, flash, render_template, session, request
+from flask import Blueprint, redirect, url_for, flash, render_template, session, request, current_app
 from flask_login import current_user, login_user, logout_user, login_required
 
-from cajitos_site import application, bcrypt
+from cajitos_site import bcrypt
 from cajitos_site.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from cajitos_site.models import User
 from cajitos_site.utils import generate_random_pass, send_service_email, get_redirect_target, save_picture
@@ -37,7 +37,7 @@ def login():
         elif user and bcrypt.check_password_hash(user.password, form.password.data):
             flash('You have been logged in!', 'success')
             login_user(user, remember=form.remember.data)
-            application.logger.info('current user %s, session, %s', current_user, session)
+            current_app.logger.info('current user %s, session, %s', current_user, session)
             next_page = get_redirect_target()
             return redirect(next_page) if next_page else redirect(url_for('posts.blog_posts'))
         else:
