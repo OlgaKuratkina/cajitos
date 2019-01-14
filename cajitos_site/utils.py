@@ -82,4 +82,4 @@ def send_service_email(user, url_link, confirm_account=True):
 
 
 def generate_random_pass(length=8):
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
+    return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(length))
