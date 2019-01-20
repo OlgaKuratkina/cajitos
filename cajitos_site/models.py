@@ -90,5 +90,7 @@ class VocabularyCard(TimestampModel):
         return f"'{self.origin_word}' - {self.origin_language} -->  '{self.translation_word}'"
 
 
-# db.drop_tables([VocabularyCard, User, Post])
-db.create_tables([VocabularyCard, User, Post])
+def _init_db():
+    db.drop_tables([VocabularyCard, User, Post])
+    db.create_tables([VocabularyCard, User, Post])
+    User.create(username="BlackCat", email="olga.kuratkina@gmail.com", about_me="Developer")
