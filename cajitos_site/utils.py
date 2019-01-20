@@ -1,5 +1,4 @@
 import os
-import random
 import secrets
 import string
 from PIL import Image
