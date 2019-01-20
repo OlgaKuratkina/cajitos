@@ -63,7 +63,7 @@ class Post(TimestampModel):
     content = pw.TextField()
     tags = pw.CharField(max_length=50)
     category = pw.CharField(max_length=50)
-    author = pw.ForeignKeyField(User, related_name='posts')
+    author = pw.ForeignKeyField(User, backref='posts')
 
     def __repr__(self):
         return f"Post(title={self.title}, author={self.author})"
