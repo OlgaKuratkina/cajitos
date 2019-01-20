@@ -39,6 +39,7 @@ class UpdateAccountForm(FlaskForm):
     legend = 'Account Details'
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
+    about_me = StringField('About Me')
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
