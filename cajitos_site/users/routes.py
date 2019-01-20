@@ -16,6 +16,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         password = generate_random_pass()
+        # TODO extract to method of the User class
         hashed_pass = bcrypt.generate_password_hash(password).decode('utf-8')
         user = User.create(username=form.username.data, email=form.email.data, password=hashed_pass)
         flash(f'Account created for {form.username.data}!', 'success')
