@@ -34,6 +34,8 @@ class User(TimestampModel, UserMixin):
     first_name = pw.CharField(max_length=50, null=True)
     last_name = pw.CharField(max_length=50, null=True)
     profile_picture = pw.CharField(max_length=50, default='anon.jpg')
+    about_me = pw.CharField(max_length=250, null=True)
+    last_seen = pw.DateTimeField(default=dt.datetime.utcnow)
 
     def __repr__(self):
         return f"User(username={self.username}, email={self.email})"
