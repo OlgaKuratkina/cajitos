@@ -32,7 +32,6 @@ def create_app():
     bcrypt.init_app(application)
     login_manager.init_app(application)
     mail.init_app(application)
-    # db.init(application)
 
     from cajitos_site.users.routes import users
     from cajitos_site.posts.routes import posts
