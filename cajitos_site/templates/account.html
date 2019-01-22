@@ -7,7 +7,7 @@
                 <h2 class="account-heading">{{ current_user.username }}</h2>
                 <p class="text-secondary">{{ current_user.email }}</p>
                 {% if current_user.last_seen %}
-                    <p class="text-secondary">{{ current_user.last_seen.strftime('%Y-%m-%d') }}</p>
+                    <p class="text-secondary">Last seen {{ current_user.last_seen.strftime('%Y-%m-%d') }}</p>
                 {% endif %}
                 {% if current_user.about_me %}
                     <p class="text-secondary">{{ current_user.about_me }}</p>
@@ -29,7 +29,7 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.username(class="form-control form-control-lg") }}
+                        {{ form.about_me(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
                 <div class="form-group">

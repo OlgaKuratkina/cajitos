@@ -10,8 +10,8 @@ from cajitos_site.utils import generate_random_pass, send_service_email, get_red
 users = Blueprint('users', __name__)
 
 
-@users.before_request
-def before_request():
+@users.before_app_request
+def before_app_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         current_user.save()
