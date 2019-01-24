@@ -28,10 +28,11 @@ def create_app():
     application.config['SECRET_KEY'] = settings.SECRET_KEY
     application.config['MAIL_SERVER'] = settings.MAIL_SERVER
     application.config['MAIL_PORT'] = settings.MAIL_PORT
-    application.config['MAIL_USE_TLS'] = settings.MAIL_USE_TLS
+    # application.config['MAIL_USE_TLS'] = settings.MAIL_USE_TLS
     application.config['MAIL_USERNAME'] = settings.MAIL_USERNAME
     application.config['MAIL_PASSWORD'] = settings.MAIL_PASSWORD
     application.config['PER_PAGE'] = settings.PER_PAGE
+    application.config['OWNERS'] = settings.OWNERS
 
     bcrypt.init_app(application)
     login_manager.init_app(application)
@@ -56,15 +57,16 @@ if not application.debug:
         if application.config['MAIL_USERNAME'] or application.config['MAIL_PASSWORD']:
             auth = (application.config['MAIL_USERNAME'], application.config['MAIL_PASSWORD'])
         secure = None
-        if application.config['MAIL_USE_TLS']:
-            secure = ()
+        # if application.config['MAIL_USE_TLS']:
+        #     secure = ()
         mail_handler = SMTPHandler(
             mailhost=(application.config['MAIL_SERVER'], application.config['MAIL_PORT']),
             fromaddr='no-reply@' + application.config['MAIL_SERVER'],
-            toaddrs=application.config['ADMINS'], subject='Microblog Failure',
+            toaddrs=application.config['OWNERS'], subject='Cajitos Failure',
             credentials=auth, secure=secure)
         mail_handler.setLevel(logging.ERROR)
         application.logger.addHandler(mail_handler)
+
         if not os.path.exists('logs'):
             os.mkdir('logs')
         file_handler = RotatingFileHandler('logs/cajitos.log', maxBytes=10240,
