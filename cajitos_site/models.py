@@ -23,7 +23,7 @@ class TimestampModel(BaseModel):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.select().where(User.id == int(user_id)).first()
+    return User.select().where(User.id == int(user_id)).get()
 
 
 class User(TimestampModel, UserMixin):

@@ -7,12 +7,13 @@ from cajitos_site.users.forms import RegistrationForm, LoginForm, UpdateAccountF
 from cajitos_site.models import User
 from cajitos_site.utils import generate_random_pass, send_service_email, get_redirect_target, save_picture
 
-users = Blueprint('users', __name__)
+users = Blueprint('users', __name__, url_prefix='/users')
 
 
 @users.before_app_request
 def before_app_request():
     if current_user.is_authenticated:
+        current_app.logger.warn('User last_seen has been updated!')
         current_user.last_seen = datetime.utcnow()
         current_user.save()
 
