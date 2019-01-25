@@ -59,6 +59,12 @@ class User(TimestampModel, UserMixin):
             return True
         return False
 
+    def is_following(self, user):
+        return Followers.select().where(
+            Followers.followed_user == user
+            & Followers.following_user == self
+        ).all() > 0
+
 
 class Followers(TimestampModel):
     followed_user = pw.ForeignKeyField(model=User, db_column='id')
