@@ -73,6 +73,12 @@ class User(TimestampModel, UserMixin):
         if self.is_following(user):
             Followers(Followers.followed_user == user, Followers.following_user == self).delete_instance()
 
+    def followed_posts(self):
+        return Post.select().join(Followers, on=(
+            (Post.author == Followers.followed_user)
+            & (Followers.following_user == self)
+        )).order_by(Post.created_at.desc())
+
 
 class Followers(TimestampModel):
     followed_user = pw.ForeignKeyField(model=User, db_column='id')
@@ -111,5 +117,5 @@ class VocabularyCard(TimestampModel):
 
 def _init_db():
     db.drop_tables([VocabularyCard, User, Post])
-    db.create_tables([VocabularyCard, User, Post])
+    db.create_tables([VocabularyCard, User, Post, Followers])
     User.create(username="BlackCat", email="olga.kuratkina@gmail.com", about_me="Developer")
