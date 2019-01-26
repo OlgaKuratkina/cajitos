@@ -5,12 +5,13 @@ from cajitos_site import models as mod, db
 
 
 def _init_db():
-    # tables = get_models_from_module(mod)
-    tables = [mod.VocabularyCard, mod.User, mod.Post, mod.Followers]
-    if set(db.get_tables()) == set([table.__name__ for table in tables]):
+    tables = get_models_from_module(mod)
+    print(tables)
+    if set(db.get_tables()) == set([table.__name__.lower() for table in tables]):
+        print('All tables are present', tables)
         return
-    db.drop_tables([tables])
-    db.create_tables([tables])
+    db.drop_tables(tables)
+    db.create_tables(tables)
     user1 = mixer.blend(mod.User)
     user2 = mixer.blend(mod.User)
     mixer.cycle(5).blend(mod.Post, author=user1)

@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 
 from cajitos_site.posts.forms import PostForm, UpdatePostForm
 from cajitos_site.models import Post
-from cajitos_site.utils import get_post_by_id_and_author
+from cajitos_site.db_utils import get_post_by_id_and_author
 
 posts = Blueprint('posts', __name__)
 

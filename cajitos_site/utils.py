@@ -73,4 +73,6 @@ def filter_module(mod, criteria=lambda obj: True):
 
 
 def get_models_from_module(module):
-    return list(filter_module(module, lambda o: isinstance(o, type) and issubclass(o, pw.Model)))
+    return list(filter_module(
+        module, lambda o: isinstance(o, type) and issubclass(o, pw.Model) and 'Model' not in o.__name__)
+    )
