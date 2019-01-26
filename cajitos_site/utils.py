@@ -1,14 +1,13 @@
 import os
 import secrets
 import string
+import peewee as pw
 from PIL import Image
-from flask import request, abort, current_app
-from flask_login import current_user
+from flask import request, current_app
 from flask_mail import Message
 from urllib.parse import urlparse, urljoin
 
 from cajitos_site import mail
-from cajitos_site.models import VocabularyCard, Post
 
 CONFIRM_ACCOUNT_MESSAGE = """You are registering on Cajitos website
 To confirm your email address please visit the following link:"""
@@ -31,14 +30,6 @@ def get_redirect_target():
     return None
 
 
-def get_cards(search=None):
-    search = f"%{search}%" if search else None
-    query = VocabularyCard.select()
-    if search:
-        query = query.where(VocabularyCard.origin_word ** search)
-    return query.order_by(VocabularyCard.id.desc()).limit(20)
-
-
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
@@ -51,17 +42,6 @@ def save_picture(form_picture):
     i.save(picture_path)
 
     return picture_fn
-
-
-def get_post_by_id_and_author(post_id):
-    post = Post.get_or_none(Post.id == post_id)
-    if not post:
-        abort(404)
-    if post.author.id != current_user.id:
-        current_app.logger.warning('author is not current user, author %s, current user %s', post.author.username,
-                                   current_user.username)
-        abort(403)
-    return post
 
 
 def send_service_email(user, url_link, confirm_account=True):
@@ -82,3 +62,15 @@ def send_service_email(user, url_link, confirm_account=True):
 
 def generate_random_pass(length=8):
     return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(length))
+
+
+def filter_module(mod, criteria=lambda obj: True):
+    """Filter module contents by given criteria."""
+    for name in dir(mod):
+        item = getattr(mod, name)
+        if criteria(item):
+            yield item
+
+
+def get_models_from_module(module):
+    return list(filter_module(module, lambda o: isinstance(o, type) and issubclass(o, pw.Model)))

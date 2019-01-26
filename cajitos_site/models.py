@@ -2,6 +2,8 @@ import peewee as pw
 import datetime as dt
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from mixer.backend.peewee import mixer
+
 from cajitos_site import db, login_manager
 from flask_login import UserMixin
 
@@ -81,12 +83,12 @@ class User(TimestampModel, UserMixin):
 
 
 class Followers(TimestampModel):
-    followed_user = pw.ForeignKeyField(model=User, db_column='id')
-    following_user = pw.ForeignKeyField(model=User, db_column='id')
+    followed_user = pw.ForeignKeyField(model=User)
+    following_user = pw.ForeignKeyField(model=User)
 
 
 class Post(TimestampModel):
-    title = pw.TextField()
+    title = pw.CharField(max_length=100)
     content = pw.TextField()
     tags = pw.CharField(max_length=50)
     category = pw.CharField(max_length=50)
@@ -113,9 +115,3 @@ class VocabularyCard(TimestampModel):
 
     def __str__(self):
         return f"'{self.origin_word}' - {self.origin_language} -->  '{self.translation_word}'"
-
-
-def _init_db():
-    db.drop_tables([VocabularyCard, User, Post])
-    db.create_tables([VocabularyCard, User, Post, Followers])
-    User.create(username="BlackCat", email="olga.kuratkina@gmail.com", about_me="Developer")

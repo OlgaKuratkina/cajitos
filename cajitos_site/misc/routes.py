@@ -1,7 +1,7 @@
 from flask import request, render_template, Blueprint
 
 from cajitos_site.models import VocabularyCard, ExpressionCard
-from cajitos_site.utils import get_cards
+from cajitos_site.db_utils import get_cards
 
 misc = Blueprint('misc', __name__)
 
