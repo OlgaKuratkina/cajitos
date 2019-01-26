@@ -65,6 +65,14 @@ class User(TimestampModel, UserMixin):
             & Followers.following_user == self
         ).all() > 0
 
+    def follow(self, user):
+        if not self.is_following(user):
+            Followers(Followers.followed_user == user, Followers.following_user == self).save()
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            Followers(Followers.followed_user == user, Followers.following_user == self).delete_instance()
+
 
 class Followers(TimestampModel):
     followed_user = pw.ForeignKeyField(model=User, db_column='id')
