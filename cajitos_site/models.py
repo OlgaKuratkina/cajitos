@@ -2,7 +2,6 @@ import peewee as pw
 import datetime as dt
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from mixer.backend.peewee import mixer
 
 from cajitos_site import db, login_manager
 from flask_login import UserMixin
@@ -25,7 +24,7 @@ class TimestampModel(BaseModel):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.select().where(User.id == int(user_id)).get()
+    return User.select().get(User.id == int(user_id))
 
 
 class User(TimestampModel, UserMixin):
@@ -38,6 +37,7 @@ class User(TimestampModel, UserMixin):
     profile_picture = pw.CharField(max_length=50, default='anon.jpg')
     about_me = pw.CharField(max_length=250, null=True)
     last_seen = pw.DateTimeField(default=dt.datetime.utcnow)
+    # followers = pw.ManyToManyField(model=self, backref='courses')
 
     def __repr__(self):
         return f"User(username={self.username}, email={self.email})"
@@ -83,8 +83,8 @@ class User(TimestampModel, UserMixin):
 
 
 class Followers(TimestampModel):
-    followed_user = pw.ForeignKeyField(model=User)
-    following_user = pw.ForeignKeyField(model=User)
+    followed_user = pw.ForeignKeyField(model=User, backref='following')
+    following_user = pw.ForeignKeyField(model=User, backref='followed')
 
 
 class Post(TimestampModel):

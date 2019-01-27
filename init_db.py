@@ -6,11 +6,11 @@ from cajitos_site import models as mod, db
 
 def _init_db():
     tables = get_models_from_module(mod)
-    print(tables)
-    if set(db.get_tables()) == set([table.__name__.lower() for table in tables]):
-        print('All tables are present', tables)
+    # db.drop_tables(tables)
+    tables = [table for table in tables if table.__name__.lower() not in db.get_tables()]
+    if not tables:
+        print('All tables are present', db.get_tables())
         return
-    db.drop_tables(tables)
     db.create_tables(tables)
     user1 = mixer.blend(mod.User)
     user2 = mixer.blend(mod.User)
