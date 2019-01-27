@@ -24,7 +24,7 @@ class TimestampModel(BaseModel):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.select().get(User.id == int(user_id))
+    return User.select().where(User.id == int(user_id)).get()
 
 
 class User(TimestampModel, UserMixin):
@@ -103,7 +103,7 @@ class ExpressionCard(TimestampModel):
     origin_expression = pw.TextField()
     translation_expression = pw.TextField()
     origin_language = pw.CharField(choices=('es', 'ru', 'en'), default='en')
-    author = pw.ForeignKeyField(User, related_name='expressions')
+    author = pw.ForeignKeyField(User, backref='expressions')
     category = pw.CharField(max_length=50, null=True)
 
 
@@ -112,7 +112,7 @@ class VocabularyCard(TimestampModel):
     translation_word = pw.TextField()
     origin_language = pw.CharField(choices=('es', 'ru', 'en'), default='en')
     part_of_speech = pw.CharField(max_length=50, null=True)
-    author = pw.ForeignKeyField(User, related_name='words', null=True)
+    author = pw.ForeignKeyField(User, backref='words', null=True)
 
     def __str__(self):
         return f"'{self.origin_word}' - {self.origin_language} -->  '{self.translation_word}'"

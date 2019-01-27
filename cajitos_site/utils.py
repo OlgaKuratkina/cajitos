@@ -1,13 +1,18 @@
+import importlib
+import logging
 import os
+import pkgutil
 import secrets
 import string
 import peewee as pw
 from PIL import Image
-from flask import request, current_app
+from flask import request, current_app, Blueprint
 from flask_mail import Message
 from urllib.parse import urlparse, urljoin
 
 from cajitos_site import mail
+
+logger = logging.getLogger(__name__)
 
 CONFIRM_ACCOUNT_MESSAGE = """You are registering on Cajitos website
 To confirm your email address please visit the following link:"""
@@ -64,6 +69,32 @@ def generate_random_pass(length=8):
     return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(length))
 
 
+def import_submodules(package_name, *submodules):
+    """Import all submodules by package name."""
+    results = []
+    try:
+        package = importlib.import_module(package_name)
+    except ImportError as exc:
+        logger.warn('Invalid package: %s (%s)', package_name, exc)
+        return results
+
+    path = getattr(package, '__path__', None)
+    if not path:
+        return results
+
+    for _, name, _ in pkgutil.walk_packages(package.__path__):
+        if submodules and name not in submodules:
+            continue
+        try:
+            mod_name = "%s.%s" % (package_name, name)
+            results.append(importlib.import_module(mod_name))
+        except ImportError as exc:
+            logger.warn('Invalid module: %s (%s)', mod_name, exc)
+            continue
+
+    return results
+
+
 def filter_module(mod, criteria=lambda obj: True):
     """Filter module contents by given criteria."""
     for name in dir(mod):
@@ -76,3 +107,15 @@ def get_models_from_module(module):
     return list(filter_module(
         module, lambda o: isinstance(o, type) and issubclass(o, pw.Model) and 'Model' not in o.__name__)
     )
+
+
+def register_blueprints():
+    """Register all Blueprint instances on the specified Flask application found
+    in all modules for the specified package.
+
+    :param app: the Flask application
+    """
+    for app_module in current_app.config['APPS']:
+        for mod in import_submodules(app_module):
+            for bp in filter_module(mod, lambda item: isinstance(item, Blueprint)):
+                current_app.register_blueprint(bp)

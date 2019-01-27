@@ -25,6 +25,7 @@ login_manager.login_message_category = 'info'
 def create_app():
     application = Flask(__name__)
 
+    application.config['APPS'] = ['cajitos_site']
     application.config['SECRET_KEY'] = settings.SECRET_KEY
     application.config['MAIL_SERVER'] = settings.MAIL_SERVER
     application.config['MAIL_PORT'] = settings.MAIL_PORT
@@ -46,6 +47,9 @@ def create_app():
     application.register_blueprint(posts)
     application.register_blueprint(misc)
     application.register_blueprint(errors)
+    # with application.app_context():
+    #     from cajitos_site.utils import register_blueprints
+    #     register_blueprints()
 
     return application
 
