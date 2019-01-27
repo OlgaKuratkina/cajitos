@@ -76,10 +76,11 @@ class User(TimestampModel, UserMixin):
             Followers(Followers.followed_user == user, Followers.following_user == self).delete_instance()
 
     def followed_posts(self):
-        return Post.select().join(Followers, on=(
+        followed = Post.select().join(Followers, on=(
             (Post.author == Followers.followed_user)
             & (Followers.following_user == self)
-        )).order_by(Post.created_at.desc())
+        ))
+        return followed.union(self.posts).order_by(Post.created_at.desc())
 
 
 class Followers(TimestampModel):
