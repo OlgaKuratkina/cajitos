@@ -1,5 +1,5 @@
 test:
-	source venv/bin/activate && py.test tests
+	CONFIG=app.settings.tests source venv/bin/activate && py.test $(CURDIR)/$(PROJECT)/tests
 
 start:
 	source venv/bin/activate && FLASK_APP=cajitos_site flask run

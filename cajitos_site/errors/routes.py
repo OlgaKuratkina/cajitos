@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template
+from flask import render_template
 
-errors = Blueprint('errors', __name__)
+from cajitos_site.errors import errors
 
 
 @errors.app_errorhandler(404)

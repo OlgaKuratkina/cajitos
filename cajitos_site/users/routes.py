@@ -1,13 +1,12 @@
 from datetime import datetime
-from flask import Blueprint, redirect, url_for, flash, render_template, session, request, current_app
+from flask import redirect, url_for, flash, render_template, session, request, current_app
 from flask_login import current_user, login_user, logout_user, login_required
 
 from cajitos_site import bcrypt
+from cajitos_site.users import users
 from cajitos_site.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from cajitos_site.models import User
 from cajitos_site.utils import generate_random_pass, send_service_email, get_redirect_target, save_picture
-
-users = Blueprint('users', __name__, url_prefix='/users')
 
 
 @users.before_app_request

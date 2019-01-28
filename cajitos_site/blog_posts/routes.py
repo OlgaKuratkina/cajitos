@@ -1,13 +1,12 @@
 import math
 
-from flask import Blueprint, request, render_template, flash, redirect, url_for, abort, current_app
+from cajitos_site.blog_posts import posts
+from flask import request, render_template, flash, redirect, url_for, abort, current_app
 from flask_login import login_required, current_user
 
-from cajitos_site.posts.forms import PostForm, UpdatePostForm
-from cajitos_site.models import Post
+from cajitos_site.blog_posts.forms import PostForm, UpdatePostForm
 from cajitos_site.db_utils import get_post_by_id_and_author
-
-posts = Blueprint('posts', __name__)
+from cajitos_site.models import Post
 
 
 @posts.route("/")

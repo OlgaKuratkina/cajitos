@@ -1,9 +1,7 @@
-from flask import request, render_template, Blueprint
-
+from flask import request, render_template
+from cajitos_site.misc import misc
 from cajitos_site.models import VocabularyCard, ExpressionCard
 from cajitos_site.db_utils import get_cards
-
-misc = Blueprint('misc', __name__)
 
 
 @misc.route("/cards", methods=['POST', 'GET'])

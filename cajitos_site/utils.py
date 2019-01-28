@@ -109,13 +109,12 @@ def get_models_from_module(module):
     )
 
 
-def register_blueprints():
+def register_blueprints(app):
     """Register all Blueprint instances on the specified Flask application found
     in all modules for the specified package.
-
-    :param app: the Flask application
     """
-    for app_module in current_app.config['APPS']:
+    for app_module in app.config['APPS']:
         for mod in import_submodules(app_module):
             for bp in filter_module(mod, lambda item: isinstance(item, Blueprint)):
-                current_app.register_blueprint(bp)
+                print(bp)
+                app.register_blueprint(bp)

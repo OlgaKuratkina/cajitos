@@ -40,16 +40,13 @@ def create_app():
     mail.init_app(application)
 
     from cajitos_site.users.routes import users
-    from cajitos_site.posts.routes import posts
+    from cajitos_site.blog_posts.routes import posts
     from cajitos_site.misc.routes import misc
     from cajitos_site.errors.routes import errors
     application.register_blueprint(users)
     application.register_blueprint(posts)
     application.register_blueprint(misc)
     application.register_blueprint(errors)
-    # with application.app_context():
-    #     from cajitos_site.utils import register_blueprints
-    #     register_blueprints()
 
     return application
 
