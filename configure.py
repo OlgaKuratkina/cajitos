@@ -6,9 +6,9 @@ from logging.handlers import RotatingFileHandler, SMTPHandler
 
 def configure_app(application):
     if not application.debug:
-        if application.config['MAIL_SERVER']:
+        if application.config.get('MAIL_SERVER'):
             auth = None
-            if application.config['MAIL_USERNAME'] or application.config['MAIL_PASSWORD']:
+            if application.config.get('MAIL_USERNAME') or application.config.get('MAIL_PASSWORD'):
                 auth = (application.config['MAIL_USERNAME'], application.config['MAIL_PASSWORD'])
             secure = None
             # if application.config['MAIL_USE_TLS']:

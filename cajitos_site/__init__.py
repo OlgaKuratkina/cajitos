@@ -1,12 +1,10 @@
-import os
-
 import logging
 import peewee as pw
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
-from logging.handlers import SMTPHandler, RotatingFileHandler
+
 import cajitos_site.settings as settings
 from configure import configure_app
 
@@ -37,6 +35,7 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     bcrypt.init_app(application)
     login_manager.init_app(application)
     mail.init_app(application)
+    application.db = db
 
     from cajitos_site.users.routes import users
     from cajitos_site.blog_posts.routes import posts
