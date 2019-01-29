@@ -11,10 +11,10 @@ from configure import configure_app
 logger = logging.getLogger(__name__)
 
 
-db = pw.PostgresqlDatabase(
-    settings.DB_NAME,
-    user=settings.DB_USER,
-    host=settings.DB_HOST, port=settings.DB_PORT, password=settings.DB_PASS)
+db = pw.PostgresqlDatabase(database=None)
+    # settings.DB_NAME,
+    # user=settings.DB_USER,
+    # host=settings.DB_HOST, port=settings.DB_PORT, password=settings.DB_PASS)
 
 bcrypt = Bcrypt()
 login_manager = LoginManager()
@@ -35,7 +35,7 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     bcrypt.init_app(application)
     login_manager.init_app(application)
     mail.init_app(application)
-    application.db = db
+    db.init(**application.config['DATABASE'])
 
     from cajitos_site.users.routes import users
     from cajitos_site.blog_posts.routes import posts
