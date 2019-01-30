@@ -36,3 +36,9 @@ def _init_db(db):
 def _shutdown_db(db):
     tables = get_models_from_module(mod)
     db.drop_tables(tables)
+
+
+@pytest.fixture
+def user():
+    return mixer.blend(mod.User, username='John', email='john@mail.com', password='jjjj')
+
