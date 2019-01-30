@@ -49,22 +49,6 @@ def save_picture(form_picture):
     return picture_fn
 
 
-def send_service_email(user, url_link, confirm_account=True):
-    msg = Message('Password Reset Request',
-                  sender=current_app.config['MAIL_USERNAME'],
-                  recipients=[user.email])
-    if confirm_account:
-        message_body = CONFIRM_ACCOUNT_MESSAGE
-    else:
-        message_body = RESET_PASSWORD_MESSAGE
-    msg.body = f'''Dear {user.username},
-    {message_body}
-    {url_link}
-    If you did not make this request then simply ignore this email.
-'''
-    mail.send(msg)
-
-
 def generate_random_pass(length=8):
     return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(length))
 
@@ -118,3 +102,26 @@ def register_blueprints(app):
             for bp in filter_module(mod, lambda item: isinstance(item, Blueprint)):
                 print(bp)
                 app.register_blueprint(bp)
+
+
+def send_email(subject, sender, recipients, text_body, html_body):
+    msg = Message(subject, sender=sender, recipients=recipients)
+    msg.body = text_body
+    msg.html = html_body
+    mail.send(msg)
+
+
+def send_service_email(user, url_link, confirm_account=True):
+    subject = 'Password Reset Request'
+    sender = current_app.config['MAIL_USERNAME']
+    recipients = [user.email]
+    if confirm_account:
+        message_body = CONFIRM_ACCOUNT_MESSAGE
+    else:
+        message_body = RESET_PASSWORD_MESSAGE
+    msg_body = f'''Dear {user.username},
+    {message_body}
+    {url_link}
+    If you did not make this request then simply ignore this email.
+'''
+    send_email(subject, sender, recipients, text_body=None, html_body=msg_body)
