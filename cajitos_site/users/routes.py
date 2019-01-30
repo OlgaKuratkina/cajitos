@@ -14,7 +14,7 @@ def before_app_request():
     if current_user.is_authenticated:
         current_app.logger.warn('User last_seen has been updated!')
         current_user.last_seen = datetime.utcnow()
-        current_user.save()
+        current_user.save()  # TODO call to save will change modified_at field
 
 
 @users.route("/register", methods=['GET', 'POST'])
