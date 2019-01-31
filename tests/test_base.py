@@ -1,4 +1,5 @@
 # from cajitos_site import application as app
+from cajitos_site import mail
 from tests.utils import captured_templates
 
 
@@ -20,3 +21,13 @@ def test_base(app):
 
     print(dir(rv))
     print(rv.stream)
+
+
+def test_service_email(user):
+    with mail.record_messages() as outbox:
+        mail.send_message(subject='testing',
+                          body='test',
+                          recipients=[user.email])
+
+        assert len(outbox) == 1
+        assert outbox[0].subject == "testing"
