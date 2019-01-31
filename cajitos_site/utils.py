@@ -111,6 +111,16 @@ def send_email(subject, sender, recipients, text_body, html_body):
     mail.send(msg)
 
 
+def send_bulk_emails(users, subject, text_body, html_body):
+    with mail.connect() as conn:
+        for user in users:
+            msg = Message(recipients=[user.email],
+                          body=text_body or html_body,
+                          subject=subject)
+
+            conn.send(msg)
+
+
 def send_service_email(user, url_link, confirm_account=True):
     subject = 'Password Reset Request'
     sender = current_app.config['MAIL_USERNAME']
