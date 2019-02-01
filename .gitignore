@@ -3,9 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Debug files, local and test files
 settings/local.py
 cajitos_site/settings/local.py
 draft_conftest.py
+cajitos.db
 logs/
 
 # C extensions
