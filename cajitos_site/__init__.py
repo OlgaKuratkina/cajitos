@@ -9,8 +9,7 @@ from configure import configure_app
 logger = logging.getLogger(__name__)
 
 
-db = pw.PostgresqlDatabase(database=None)
-
+db = pw.Proxy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 mail = Mail()
@@ -22,6 +21,7 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     application = Flask(__name__, instance_relative_config=True)
 
     application.config.from_object(default_settings)
+    print(application.config)
 
     with application.app_context():
 
@@ -30,7 +30,10 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     bcrypt.init_app(application)
     login_manager.init_app(application)
     mail.init_app(application)
-    db.init(**application.config['DATABASE'])
+    if application.config['TESTING']:
+        db.initialize(pw.SqliteDatabase(**application.config['DATABASE']))
+    else:
+        db.initialize(pw.PostgresqlDatabase(**application.config['DATABASE']))
 
     from cajitos_site.users.routes import users
     from cajitos_site.blog_posts.routes import posts
