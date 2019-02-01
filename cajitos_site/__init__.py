@@ -4,17 +4,12 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
-
-import cajitos_site.settings as settings
 from configure import configure_app
 
 logger = logging.getLogger(__name__)
 
 
 db = pw.PostgresqlDatabase(database=None)
-    # settings.DB_NAME,
-    # user=settings.DB_USER,
-    # host=settings.DB_HOST, port=settings.DB_PORT, password=settings.DB_PASS)
 
 bcrypt = Bcrypt()
 login_manager = LoginManager()
