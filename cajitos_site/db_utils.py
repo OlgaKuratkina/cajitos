@@ -15,9 +15,17 @@ def get_post_by_id_and_author(post_id):
     return post
 
 
-def get_cards(search=None):
+def get_cards_words(search=None):
     search = f"%{search}%" if search else None
     query = mod.VocabularyCard.select()
     if search:
         query = query.where(mod.VocabularyCard.origin_word ** search)
     return query.order_by(mod.VocabularyCard.id.desc()).limit(20)
+
+
+def get_cards_expressions(search=None):
+    search = f"%{search}%" if search else None
+    query = mod.ExpressionCard.select()
+    if search:
+        query = query.where(mod.ExpressionCard.origin_expression ** search)
+    return query.order_by(mod.ExpressionCard.id.desc()).limit(20)

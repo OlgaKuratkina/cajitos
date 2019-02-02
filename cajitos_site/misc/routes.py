@@ -1,7 +1,7 @@
 from flask import request, render_template
 from cajitos_site.misc import misc
 from cajitos_site.models import VocabularyCard, ExpressionCard
-from cajitos_site.db_utils import get_cards
+from cajitos_site.db_utils import get_cards_words, get_cards_expressions
 
 
 @misc.route("/cards", methods=['POST', 'GET'])
@@ -16,7 +16,7 @@ def cards():
         if origin_word and translation and language:
             VocabularyCard.create(origin_word=origin_word, translation_word=translation, origin_language=language,
                                   part_of_speech=part_speech)
-    list_cards = get_cards(search)
+    list_cards = get_cards_words(search)
     return render_template('vocabulary.html', cards=list_cards)
 
 
@@ -30,7 +30,7 @@ def expressions():
         if origin_expression and translation_expression and language:
             ExpressionCard.create(origin_expression=origin_expression, translation_expression=translation_expression,
                                   origin_language=language, category=category)
-    list_cards = get_cards()
+    list_cards = get_cards_expressions()
     return render_template('vocabulary.html', cards=list_cards)
 
 
