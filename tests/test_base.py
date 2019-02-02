@@ -23,7 +23,6 @@ def test_base(app):
 
 
 def test_service_email(user, app):
-    app.config['TESTING'] = True
     with mail.record_messages() as outbox:
         mail.send_message(subject='testing',
                           body='test',
