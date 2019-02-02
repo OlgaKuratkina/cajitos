@@ -7,6 +7,7 @@ OWNERS = ['olga.kuratkina@gmail.com']
 TESTING = True
 PER_PAGE = 5
 
-SECRET_KEY = '666'
-
 MAIL_DEFAULT_SENDER = 'cajitos.site@gmail.com'
+
+WTF_CSRF_METHODS = []
+WTF_CSRF_ENABLED = False
