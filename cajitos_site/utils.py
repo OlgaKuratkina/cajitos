@@ -6,7 +6,7 @@ import secrets
 import string
 import peewee as pw
 from PIL import Image
-from flask import request, current_app, Blueprint
+from flask import request, current_app, Blueprint, render_template
 from flask_mail import Message
 from urllib.parse import urlparse, urljoin
 
@@ -122,16 +122,13 @@ def send_bulk_emails(users, subject, text_body, html_body):
 
 
 def send_service_email(user, url_link, confirm_account=True):
-    subject = 'Password Reset Request'
     sender = current_app.config['MAIL_USERNAME']
     recipients = [user.email]
     if confirm_account:
         message_body = CONFIRM_ACCOUNT_MESSAGE
+        subject = 'Confirm your account in Cajitos'
     else:
         message_body = RESET_PASSWORD_MESSAGE
-    msg_body = f'''Dear {user.username},
-    {message_body}
-    {url_link}
-    If you did not make this request then simply ignore this email.
-'''
-    send_email(subject, sender, recipients, text_body=None, html_body=msg_body)
+        subject = 'Password Reset Request'
+    html_body = render_template('email.service_email.html', user=user, url_link=url_link, message_body=message_body)
+    send_email(subject, sender, recipients, text_body=None, html_body=html_body)
