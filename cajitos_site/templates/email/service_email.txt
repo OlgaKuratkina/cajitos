@@ -1,0 +1,6 @@
+Dear {{ user.username }},
+{{ message_body }}
+{{ url_link }}
+If you have not requested any action on Cajitos site simply ignore this message.
+Sincerely,
+Cajitos Team

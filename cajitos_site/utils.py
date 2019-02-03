@@ -131,4 +131,5 @@ def send_service_email(user, url_link, confirm_account=True):
         message_body = RESET_PASSWORD_MESSAGE
         subject = 'Password Reset Request'
     html_body = render_template('email.service_email.html', user=user, url_link=url_link, message_body=message_body)
-    send_email(subject, sender, recipients, text_body=None, html_body=html_body)
+    txt_body = render_template('email.service_email.txt', user=user, url_link=url_link, message_body=message_body)
+    send_email(subject, sender, recipients, text_body=txt_body, html_body=html_body)
