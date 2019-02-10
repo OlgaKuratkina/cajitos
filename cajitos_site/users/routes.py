@@ -6,7 +6,8 @@ from cajitos_site import bcrypt
 from cajitos_site.users import users
 from cajitos_site.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from cajitos_site.models import User
-from cajitos_site.utils import generate_random_pass, send_service_email, get_redirect_target, save_picture
+from cajitos_site.utils.email import send_service_email
+from cajitos_site.utils.utils import generate_random_pass, get_redirect_target, save_picture
 
 
 @users.before_app_request
