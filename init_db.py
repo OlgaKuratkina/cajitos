@@ -1,6 +1,6 @@
 from mixer.backend.peewee import mixer
 
-from cajitos_site.utils import get_models_from_module
+from cajitos_site.utils.utils import get_models_from_module
 from cajitos_site import models as mod, db
 
 

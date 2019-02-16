@@ -1,4 +1,6 @@
 from flask import request, render_template
+from flask_login import current_user
+
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
 from cajitos_site.models import VocabularyCard, ExpressionCard
@@ -24,16 +26,16 @@ def cards():
 @misc.route("/expressions", methods=['POST', 'GET'])
 def expressions():
     form = ExpressionForm()
-    if request.method == 'POST':
+    if request.method == 'POST' and current_user.is_authenticated:
         origin_expression = request.form.get('origin_expression')
         translation_expression = request.form.get('translation_expression')
         category = request.form.get('category')
         language = request.form.get('language')
         if origin_expression and translation_expression and language:
             ExpressionCard.create(origin_expression=origin_expression, translation_expression=translation_expression,
-                                  origin_language=language, category=category)
+                                  origin_language=language, category=category, author=current_user)
     list_cards = get_cards_expressions()
-    return render_template('ExpressionForm.html', title='Vocabulary of expressions', form=form, cards=list_cards)
+    return render_template('expressions.html', title='Vocabulary of expressions', form=form, cards=list_cards)
 
 
 @misc.route("/runa")
