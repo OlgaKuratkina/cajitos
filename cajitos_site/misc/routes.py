@@ -33,7 +33,7 @@ def expressions():
         language = request.form.get('language')
         if origin_expression and translation_expression and language:
             ExpressionCard.create(origin_expression=origin_expression, translation_expression=translation_expression,
-                                  origin_language=language, category=category, author=current_user)
+                                  origin_language=language, category=category, author=current_user.id)
     list_cards = get_cards_expressions()
     return render_template('expressions.html', title='Vocabulary of expressions', form=form, cards=list_cards)
 

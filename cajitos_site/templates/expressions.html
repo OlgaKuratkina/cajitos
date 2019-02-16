@@ -10,4 +10,16 @@
             </div>
         {% endif %}
     </div>
+
+            <div class="container">
+            <br>
+            <h3>Available translations</h3>
+            <div class="card" style="width: 18rem;">
+                <ul class="list-group list-group-flush">
+                    {% for card in cards %}
+                        <li class="list-group-item">{{ card }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
 {% endblock %}

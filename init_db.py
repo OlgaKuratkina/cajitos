@@ -6,7 +6,7 @@ from cajitos_site import models as mod, db
 
 def _init_db():
     tables = get_models_from_module(mod)
-    # db.drop_tables(tables)
+    db.drop_tables(tables)
     tables = [table for table in tables if table.__name__.lower() not in db.get_tables()]
     if not tables:
         print('All tables are present', db.get_tables())
