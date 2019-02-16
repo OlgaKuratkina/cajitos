@@ -6,6 +6,8 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from configure import configure_app
 
+from flask_bootstrap import Bootstrap
+
 logger = logging.getLogger(__name__)
 
 
@@ -30,6 +32,8 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     bcrypt.init_app(application)
     login_manager.init_app(application)
     mail.init_app(application)
+    bootstrap = Bootstrap(application)
+
     if application.config['TESTING']:
         db.initialize(pw.SqliteDatabase(**application.config['DATABASE']))
     else:
