@@ -11,15 +11,20 @@
         {% endif %}
     </div>
 
-            <div class="container">
-            <br>
-            <h3>Available translations</h3>
-            <div class="card" style="width: 18rem;">
+    <div class="container">
+        <br>
+        <h3>Available translations</h3>
+        {% for card in cards %}
+            <div class="card">
                 <ul class="list-group list-group-flush">
-                    {% for card in cards %}
-                        <li class="list-group-item">{{ card }}</li>
-                    {% endfor %}
+                    <ul class="list-group">
+                        <li class="list-group-item">Category {{ card.category }}</li>
+                        <li class="list-group-item">{{ card.origin_expression }}</li>
+                        <li class="list-group-item">{{ card.translation_expression }}</li>
+                    </ul>
                 </ul>
             </div>
-        </div>
+            <br>
+        {% endfor %}
+    </div>
 {% endblock %}

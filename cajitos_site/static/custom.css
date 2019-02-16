@@ -111,3 +111,9 @@ a.article-title:hover {
     font-family: Verdana, Geneva, sans-serif;
     font-size: 13px;
 }
+
+/*this is not working*/
+.card {
+    display:inline-block;
+    width: 18rem;
+}
