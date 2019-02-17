@@ -23,9 +23,13 @@ def get_cards_words(search=None):
     return query.order_by(mod.VocabularyCard.id.desc()).limit(20)
 
 
-def get_cards_expressions(search=None):
+def get_cards_expressions(page=0, search=None):
     search = f"%{search}%" if search else None
     query = mod.ExpressionCard.select()
     if search:
         query = query.where(mod.ExpressionCard.origin_expression ** search)
-    return query.order_by(mod.ExpressionCard.id.desc()).limit(20)
+    if page:
+        query = query.order_by(mod.ExpressionCard.id.desc()).paginate(
+            page=page, paginate_by=current_app.config['PER_PAGE']
+        )
+    return query
