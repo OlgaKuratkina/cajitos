@@ -2,17 +2,9 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
-    <h1>Expressions</h1>
     <div class="row">
-        {% if current_user.is_authenticated %}
-            <div class="col-md-4">
-                {{ wtf.quick_form(form) }}
-            </div>
-        {% endif %}
-    </div>
 
-    <div class="container">
-        <br>
+    <div class="col-6">
         <h3>Available translations</h3>
         {% for card in cards %}
             <div class="card">
@@ -24,8 +16,15 @@
                     </ul>
                 </ul>
             </div>
-            <br>
+            <br><br>
         {% endfor %}
+    </div>
+            {% if current_user.is_authenticated %}
+            <div class="col-4">
+            <h3>Add your translation</h3>
+                {{ wtf.quick_form(form) }}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 
