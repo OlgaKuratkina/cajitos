@@ -60,7 +60,5 @@ def runa():
 
 @misc.route("/debug")
 def debug():
-    data = read_csv()
-    # for row in data:
-    #     VocabularyCard.create(**row)
+    data = []
     return render_template('debug.html', data=data)

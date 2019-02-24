@@ -1,6 +1,6 @@
 from mixer.backend.peewee import mixer
 
-from cajitos_site.utils.utils import get_models_from_module
+from cajitos_site.utils.utils import get_models_from_module, read_csv
 from cajitos_site import models as mod, db
 
 
@@ -16,7 +16,14 @@ def _init_db():
     user2 = mixer.blend(mod.User)
     mixer.cycle(5).blend(mod.Post, author=user1)
     mixer.cycle(5).blend(mod.Post, author=user2)
+    fill_vocabulary(filename='static/vocab.csv')
     mod.Followers.create(following_user=user2, followed_user=user1)
+
+
+def fill_vocabulary(filename):
+    data = read_csv(filename)
+    for row in data:
+        mod.VocabularyCard.create(**row)
 
 
 if __name__ == '__main__':

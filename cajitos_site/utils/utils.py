@@ -105,7 +105,7 @@ def dict_read_csv(src):
     return csv.DictReader(strip_nulls(src))
 
 
-def read_csv(file_name='static/vocab.csv'):
+def read_csv(file_name):
     file_path = os.path.join(current_app.root_path, file_name)
     with open(file_path, mode='r') as infile:
         return list(csv.DictReader(strip_nulls(infile)))
