@@ -11,18 +11,16 @@
 {#            <img class="card-img-top" src="..." alt="Card image cap">#}
             <div class="card-body">
                 <h5 class="card-title">{{ card.part_of_speech }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ card.author }}</h6>
-                <p class="card-text">{{ card.origin_word }}</p>
+                <h6 class="card-subtitle mb-2 text-muted">by {{ card.author.username }}</h6>
+                <br>
+                <h2>{{ card.origin }}</h2>
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
             <div class="card-body">
-                <a href="#" class="badge badge-info">Info</a>
-                <a href="#" class="card-link">Another link</a>
+{#                <a href="#" class="badge badge-info" >Translate Me!</a>#}
+                <button type="submit" class="btn btn-outline-secondary" onClick="runa();">Translate Me!</button>
+                <a href="{{ url_for('misc.random_card') }}" class="badge badge-info">Get another one</a>
             </div>
         </div>
     </div>
+    <script src="{{ url_for('static', filename='card.js') }}"></script>
 {% endblock %}

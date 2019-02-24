@@ -112,8 +112,7 @@ a.article-title:hover {
     font-size: 13px;
 }
 
-/*this is not working*/
 .card {
-    display:inline-block;
-    width: 18rem;
+    /*display:inline-block;*/
+    width: 21rem;
 }
