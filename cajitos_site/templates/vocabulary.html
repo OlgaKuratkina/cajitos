@@ -7,7 +7,7 @@
         <form action="{{ url_for('misc.cards') }}" method="post">
             <div class="row">
                 <div class="col">
-                    <input type="text" class="form-control" name="search_word" placeholder="Search" required>
+                    <input type="text" class="form-control" name="search_word" placeholder="Search">
                 </div>
                 <div class="col">
                     <button type="submit" class="btn btn-outline-secondary">Search</button>
@@ -15,6 +15,7 @@
             </div>
         </form>
     </fieldset>
+    {% if current_user.is_authenticated %}
     <fieldset class="form-group">
         <form action="{{ url_for('misc.cards') }}" method="post">
             <div class="row">
@@ -40,6 +41,7 @@
             </div>
         </form>
     </fieldset>
+    {% endif %}
         <div class="container">
             <br>
             <h3>Available translations</h3>
