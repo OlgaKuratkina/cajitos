@@ -2,6 +2,7 @@ import math
 
 from flask import request, render_template, current_app
 from flask_login import current_user
+from peewee import fn
 
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
@@ -19,8 +20,8 @@ def cards():
         part_speech = request.form.get('part_speech')
         language = request.form.get('language')
         if origin_word and translation and language:
-            VocabularyCard.create(origin_word=origin_word, translation_word=translation, origin_language=language,
-                                  part_of_speech=part_speech)
+            VocabularyCard.create(origin=origin_word, translation=translation, language=language,
+                                  part_of_speech=part_speech, author=current_user.id)
     list_cards = get_cards_words(search)
     return render_template('vocabulary.html', cards=list_cards)
 
@@ -42,6 +43,12 @@ def expressions():
     total_pages = int(math.ceil(get_cards_expressions().count() / current_app.config['PER_PAGE']))
     return render_template('expressions.html', title='Vocabulary of expressions', form=form, cards=list_cards,
                            page=page, total_pages=total_pages)
+
+
+@misc.route("/random_card")
+def random_card():
+    card = VocabularyCard.select().order_by(fn.Random()).limit(1).first()
+    return render_template('learn_cards.html', card=card)
 
 
 @misc.route("/runa")
