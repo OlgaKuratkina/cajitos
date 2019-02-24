@@ -8,6 +8,7 @@ from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
 from cajitos_site.models import VocabularyCard, ExpressionCard
 from cajitos_site.db_utils import get_cards_words, get_cards_expressions
+from cajitos_site.utils.utils import read_csv
 
 
 @misc.route("/cards", methods=['POST', 'GET'])
@@ -54,3 +55,11 @@ def random_card():
 @misc.route("/runa")
 def runa():
     return render_template('runa.html', title="Runa")
+
+
+@misc.route("/debug")
+def debug():
+    data = read_csv()
+    # for row in data:
+    #     VocabularyCard.create(**row)
+    return render_template('debug.html', data=data)

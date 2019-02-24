@@ -1,3 +1,4 @@
+import csv
 import importlib
 import logging
 import os
@@ -94,3 +95,17 @@ def register_blueprints(app):
             for bp in filter_module(mod, lambda item: isinstance(item, Blueprint)):
                 print(bp)
                 app.register_blueprint(bp)
+
+
+def strip_nulls(src):
+    return (line.replace('\0', '') for line in src)
+
+
+def dict_read_csv(src):
+    return csv.DictReader(strip_nulls(src))
+
+
+def read_csv(file_name='static/vocab.csv'):
+    file_path = os.path.join(current_app.root_path, file_name)
+    with open(file_path, mode='r') as infile:
+        return list(csv.DictReader(strip_nulls(infile)))
