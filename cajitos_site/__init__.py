@@ -3,6 +3,7 @@ import peewee as pw
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_moment import Moment
 from flask_mail import Mail
 from configure import configure_app
 
@@ -15,6 +16,7 @@ db = pw.Proxy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 mail = Mail()
+moment = Moment()
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 
@@ -32,6 +34,7 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     bcrypt.init_app(application)
     login_manager.init_app(application)
     mail.init_app(application)
+    moment.init_app(application)
     bootstrap = Bootstrap(application)
 
     if application.config['TESTING']:
