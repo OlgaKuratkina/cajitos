@@ -45,3 +45,4 @@ def send_service_email(user, url_link, confirm_account=True):
     html_body = render_template('service_email.html', user=user, url_link=url_link, message_body=message_body)
     txt_body = render_template('service_email.txt', user=user, url_link=url_link, message_body=message_body)
     send_email(subject, sender, recipients, text_body=txt_body, html_body=html_body)
+    current_app.logger.info(f'Email sent to {recipients} with subject {subject}')

@@ -1,4 +1,3 @@
-import logging
 import peewee as pw
 from flask import Flask
 from flask_bcrypt import Bcrypt
@@ -8,9 +7,6 @@ from flask_mail import Mail
 from configure import configure_app
 
 from flask_bootstrap import Bootstrap
-
-logger = logging.getLogger(__name__)
-
 
 db = pw.Proxy()
 bcrypt = Bcrypt()
@@ -25,7 +21,6 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     application = Flask(__name__, instance_relative_config=True)
 
     application.config.from_object(default_settings)
-    print(application.config)
 
     with application.app_context():
 
@@ -55,7 +50,7 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     from . import models as models
     application.models = models
 
-    logger.debug('App created')
+    application.logger.info('App created')
 
     return application
 
