@@ -40,3 +40,5 @@ MAIL_MAX_EMAILS = env('MAIL_MAX_EMAILS', 10)
 OWNERS = ['cajitos.site@gmail.com']
 
 logging.warning('Env settings are loaded.')
+logging.warning(DATABASE)
+logging.warning(os.environ)
