@@ -16,7 +16,7 @@ def _init_db():
     user2 = mixer.blend(mod.User)
     mixer.cycle(5).blend(mod.Post, author=user1)
     mixer.cycle(5).blend(mod.Post, author=user2)
-    fill_vocabulary(filename='static/vocab.csv')
+    # fill_vocabulary(filename='static/vocab.csv')
     mod.Followers.create(following_user=user2, followed_user=user1)
 
 

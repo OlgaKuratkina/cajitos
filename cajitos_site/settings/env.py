@@ -3,7 +3,7 @@ import logging
 import os
 
 
-PER_PAGE = 3
+PER_PAGE = 5
 
 def env(var_name, default=None):
     return os.environ.get(var_name, default)
@@ -12,7 +12,7 @@ def env(var_name, default=None):
 PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
 
 DB_PORT = 5432
-DB_HOST = env('DB_HOST', 'localhost')
+DB_HOST = env('DB_HOST')
 DB_USER = env('DB_USER')
 DB_NAME = env('DB_NAME')
 DB_PASS = env('DB_PASS')
@@ -36,5 +36,7 @@ MAIL_USERNAME = env('EMAIL_USER')
 MAIL_PASSWORD = env('EMAIL_PASS')
 MAIL_DEFAULT_SENDER = env('MAIL_DEFAULT_SENDER')
 MAIL_MAX_EMAILS = env('MAIL_MAX_EMAILS', 10)
+
+OWNERS = ['cajitos.site@gmail.com']
 
 logging.warning('Env settings are loaded.')
