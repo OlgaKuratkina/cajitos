@@ -8,7 +8,6 @@ from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
 from cajitos_site.models import VocabularyCard, ExpressionCard
 from cajitos_site.db_utils import get_cards_words, get_cards_expressions
-from cajitos_site.utils.utils import read_csv
 
 
 @misc.route("/cards", methods=['POST', 'GET'])
