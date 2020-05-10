@@ -5,6 +5,7 @@ from contextlib import contextmanager
 @contextmanager
 def captured_templates(app):
     recorded = []
+
     def record(sender, template, context, **extra):
         recorded.append((template, context))
     template_rendered.connect(record, app)

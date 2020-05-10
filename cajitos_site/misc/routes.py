@@ -4,6 +4,7 @@ from flask import request, render_template, current_app
 from flask_login import current_user
 from peewee import fn
 
+from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
 from cajitos_site.models import VocabularyCard, ExpressionCard
@@ -61,3 +62,9 @@ def runa():
 def debug():
     data = []
     return render_template('debug.html', data=data)
+
+
+@misc.route("/random_cocktail")
+def random_cocktail():
+    cocktail = CocktailApi().get_random_cocktail()
+    return render_template('cocktails.html', drink=cocktail)

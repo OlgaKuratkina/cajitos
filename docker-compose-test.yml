@@ -11,7 +11,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=cajitos
+      - POSTGRES_DB=postgres
   rabbit:
     image: "rabbitmq:3-alpine"
     ports:

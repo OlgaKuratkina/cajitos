@@ -1,9 +1,9 @@
-# PUT RDS connections here
 import logging
 import os
 
 
 PER_PAGE = 5
+
 
 def env(var_name, default=None):
     return os.environ.get(var_name, default)
@@ -39,6 +39,7 @@ MAIL_MAX_EMAILS = env('MAIL_MAX_EMAILS', 10)
 
 OWNERS = ['cajitos.site@gmail.com']
 
+COCKTAIL_API_URL = 'https://www.thecocktaildb.com/api/json'
+COCKTAIL_API_KEY = env('COCKTAIL_API_KEY', '1')
+
 logging.warning('Env settings are loaded.')
-logging.warning(DATABASE)
-logging.warning(os.environ)

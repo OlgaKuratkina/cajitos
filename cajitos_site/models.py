@@ -2,6 +2,7 @@ import peewee as pw
 import datetime as dt
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from playhouse.postgres_ext import *
 
 from cajitos_site import db, login_manager
 from flask_login import UserMixin
@@ -17,8 +18,10 @@ class TimestampModel(BaseModel):
     modified_at = pw.DateTimeField(default=dt.datetime.utcnow)
 
     def save(self, **kwargs):
-        """Update self modified at."""
-        self.modified_at = dt.datetime.utcnow()
+        """Update self modified at.
+        Only exception - User class"""
+        if not isinstance(self, User):
+            self.modified_at = dt.datetime.utcnow()
         return super(TimestampModel, self).save(**kwargs)
 
 
@@ -116,3 +119,14 @@ class VocabularyCard(TimestampModel):
 
     def __str__(self):
         return f"'{self.origin}' - {self.language} -->  '{self.translation}'"
+
+
+class Drink(TimestampModel):
+    ext_id = pw.IntegerField(unique=True)
+    name = pw.TextField()
+    is_alcoholic = pw.BooleanField(default=True)
+    instruction = pw.TextField()
+    ingredients = JSONField()
+    category = pw.TextField(null=True)
+    image = pw.CharField(max_length=100, null=True)
+    glass = pw.CharField(max_length=100, null=True)

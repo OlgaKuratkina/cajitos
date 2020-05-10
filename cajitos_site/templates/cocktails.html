@@ -1,0 +1,21 @@
+{% extends "layout_blog.html" %}
+
+{% block content %}
+    <h2>Random Cocktail</h2>
+
+    <div class="container">
+{#        Card here#}
+        <div class="drink">
+{#            <img class="card-img-top" src="..." alt="Card image cap">#}
+            <div class="drink-body">
+                <h4 class="drink-title">{{ drink.name }}</h4>
+                <h6 class="card-subtitle mb-2 text-muted">{{'Alcoholic' if drink.is_alcoholic else 'Non Alcoholic'}}</h6>
+                <hr>
+                <h3 id="ingredients">{{ drink.ingredients }}</h3>
+            </div>
+            <div class="drink-body">
+                {{ drink.instruction }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
