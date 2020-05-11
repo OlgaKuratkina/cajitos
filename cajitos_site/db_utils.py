@@ -33,3 +33,12 @@ def get_cards_expressions(page=0, search=None):
             page=page, paginate_by=current_app.config['PER_PAGE']
         )
     return query
+
+
+def cache_data(model, data):
+    if not data:
+        return None
+    if model.get_or_none(model.ext_id == data['ext_id']):
+        return model.update(**data)
+    else:
+        return model.create(**data)

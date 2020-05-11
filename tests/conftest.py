@@ -7,7 +7,7 @@ from cajitos_site import models as mod
 from cajitos_site.utils.utils import get_models_from_module
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def app():
     from cajitos_site import create_app
     app = create_app(None, 'cajitos_site.settings.test')
@@ -35,3 +35,22 @@ def _shutdown_db(db):
 @pytest.fixture
 def user():
     return mixer.blend(mod.User, username='John', email='john@mail.com', password='jjjj')
+
+
+# @pytest.fixture(scope='session')
+# def db_session(app):
+#     from cajitos_site import db
+#     db.drop_all()
+#     db.create_all()
+#     return db
+#
+#
+# @pytest.yield_fixture(scope='function', autouse=True)
+# def db(app, db_session):
+#     try:
+#         yield db_session
+#     finally:
+#         db_session.session.rollback()
+#         table_names = ', '.join('"{0}"'.format(table) for table in db_session.get_tables_for_bind())
+#         db_session.engine.execute('TRUNCATE {0} RESTART IDENTITY'.format(table_names))
+#         db_session.session.commit()

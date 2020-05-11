@@ -6,6 +6,7 @@ import requests
 from flask import current_app as app
 from marshmallow import schema, fields, EXCLUDE, pre_load, post_load
 
+from cajitos_site.db_utils import cache_data
 from cajitos_site.models import Drink
 
 
@@ -42,6 +43,28 @@ class CocktailApi:
         app.logger.info(drink)
         return drink
 
+    def get_ingredients(self):
+        """
+        gets the list of all ingredients
+        """
+        data = self._get('list.php?i=list')
+        i_list = [el.get('strIngredient1') for el in data['drinks']]
+        return i_list
+
+    def get_drinks_by_ingredients(self, ingredients):
+        """
+        https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=Dry_Vermouth,Gin,Anis
+        """
+        list_str = ','.join(ingredients)
+        data = self._get(f'filter.php?i={list_str}')
+        data = data['drinks']
+        drinks = DrinkSchema().load(data=data, many=True)
+        result = []
+        for drink in drinks:
+            d = cache_data(Drink, drink)
+            result.append(d)
+        return result
+
 
 class DrinkSchema(schema.Schema):
     class Meta:
@@ -74,12 +97,3 @@ class DrinkSchema(schema.Schema):
             return None
         app.logger.info(data)
         return cache_data(Drink, data)
-
-
-def cache_data(model, data):
-    if not data:
-        return None
-    if model.get_or_none(model.ext_id == data['ext_id']):
-        return model.update(**data)
-    else:
-        return model.create(**data)
