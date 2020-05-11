@@ -5,10 +5,10 @@
 
     <div class="container">
 {#        Card here#}
-        <div class="drink">
+        <div class="card w-75">
             <img class="card-img-top" src="{{ drink.image }}" alt="Drink image cap">
-            <div class="drink-body">
-                <h4 class="drink-title">{{ drink.name }}</h4>
+            <div class="card-body">
+                <h4 class="card-title">{{ drink.name }}</h4>
                 <h6 class="card-subtitle mb-2 text-muted">{{'Alcoholic' if drink.is_alcoholic else 'Non Alcoholic'}}</h6>
                 <hr>
 
@@ -17,7 +17,7 @@
                 {%  endfor %}
 {#                <h3 id="ingredients">{{ drink.ingredients }}</h3>#}
             </div>
-            <div class="drink-body">
+            <div class="card-body">
                 {{ drink.instruction }}
             </div>
         </div>

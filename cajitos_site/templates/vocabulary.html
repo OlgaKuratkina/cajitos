@@ -6,10 +6,10 @@
         <legend class="border-bottom mb-4">Vocabulary</legend>
         <form action="{{ url_for('misc.cards') }}" method="post">
             <div class="row">
-                <div class="col">
+                <div class="col-sm-8">
                     <input type="text" class="form-control" name="search_word" placeholder="Search">
                 </div>
-                <div class="col">
+                <div class="col-sm-4">
                     <button type="submit" class="btn btn-outline-secondary">Search</button>
                 </div>
             </div>
@@ -45,7 +45,7 @@
         <div class="container">
             <br>
             <h3>Available translations</h3>
-            <div class="card" style="width: 18rem;">
+            <div class="card w-75">
                 <ul class="list-group list-group-flush">
                     {% for card in cards %}
                         <li class="list-group-item">{{ card }}</li>
