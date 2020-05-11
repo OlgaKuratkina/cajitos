@@ -1,6 +1,6 @@
 import math
 
-from flask import request, render_template, current_app
+from flask import request, render_template, current_app, redirect, url_for
 from flask_login import current_user
 from peewee import fn
 
@@ -40,6 +40,7 @@ def expressions():
         if origin_expression and translation_expression and language:
             ExpressionCard.create(origin_expression=origin_expression, translation_expression=translation_expression,
                                   origin_language=language, category=category, author=current_user.id)
+            return redirect(url_for('things.expressions'))
     # TODO make pretty
     list_cards = get_cards_expressions(page=page)
     total_pages = int(math.ceil(get_cards_expressions().count() / current_app.config['PER_PAGE']))
