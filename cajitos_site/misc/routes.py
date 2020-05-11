@@ -40,7 +40,7 @@ def expressions():
         if origin_expression and translation_expression and language:
             ExpressionCard.create(origin_expression=origin_expression, translation_expression=translation_expression,
                                   origin_language=language, category=category, author=current_user.id)
-            return redirect(url_for('things.expressions'))
+            return redirect(url_for('misc.expressions'))
     # TODO make pretty
     list_cards = get_cards_expressions(page=page)
     total_pages = int(math.ceil(get_cards_expressions().count() / current_app.config['PER_PAGE']))
