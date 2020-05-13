@@ -69,3 +69,18 @@ def debug():
 def random_cocktail():
     cocktail = CocktailApi().get_random_cocktail()
     return render_template('cocktails.html', drink=cocktail)
+
+
+@misc.route("/drink_ingredients")
+def drink_ingredients():
+    all_names = CocktailApi().get_ingredients()
+    all_data = [CocktailApi().search_ingredient(name) for name in all_names]
+    return render_template('drink_ingredients.html', ingredients=all_data)
+
+
+@misc.route("/search")
+def search_drink():
+    # TODO allow more parameters, allow return list
+    ingredient = request.args.get('ingr')
+    cocktail = CocktailApi().get_drinks_by_ingredients([ingredient])[0]
+    return render_template('cocktails.html', drink=cocktail)

@@ -7,7 +7,7 @@ from flask import current_app as app
 from marshmallow import schema, fields, EXCLUDE, pre_load, post_load
 
 from cajitos_site.db_utils import cache_data
-from cajitos_site.models import Drink
+from cajitos_site.models import Drink, Ingredient
 
 
 class CocktailApi:
@@ -40,7 +40,6 @@ class CocktailApi:
         data = self._get('random.php')
         cocktail = data['drinks'][0]
         drink = DrinkSchema().load(cocktail)
-        app.logger.info(drink)
         return drink
 
     def get_ingredients(self):
@@ -51,7 +50,25 @@ class CocktailApi:
         i_list = [el.get('strIngredient1') for el in data['drinks']]
         return i_list
 
-    def get_drinks_by_ingredients(self, ingredients):
+    def get_ingredient(self, idd):
+        """
+        https://www.thecocktaildb.com/api/json/v1/1/lookup.php?iid=552
+        """
+        data = self._get(f'lookup.php?iid={idd}')
+        data = data['ingredients'][0]
+        drink = IngrSchema().load(data)
+        return drink
+
+    def search_ingredient(self, name):
+        """
+        https://www.thecocktaildb.com/api/json/v1/1/search.php?i=vodka
+        """
+        data = self._get(f'search.php?i={name}')
+        data = data['ingredients'][0]
+        drink = IngrSchema().load(data)
+        return drink
+
+    def get_drinks_by_ingredients(self, ingredients: list):
         """
         https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=Dry_Vermouth,Gin,Anis
         """
@@ -66,6 +83,32 @@ class CocktailApi:
         return result
 
 
+class IngrSchema(schema.Schema):
+    class Meta:
+        unknown = EXCLUDE
+    ext_id = fields.Integer(data_key='idIngredient')
+    name = fields.String(data_key='strIngredient')
+    is_alcoholic = fields.Boolean(data_key='is_alcoholic', default=True)
+    alcohol = fields.String(data_key='strAlcohol')
+    category = fields.String(data_key='strType', default='')
+    image = fields.String(data_key='strDrinkThumb', default='')
+    description = fields.String(data_key='strDescription', default='')
+
+    @pre_load
+    def pre_load(self, row, **kwargs):
+        row['is_alcoholic'] = (row['strAlcohol'] is not None or row['strAlcohol'] != 'No')
+        row['idIngredient'] = int(row['idIngredient'])
+        row['strDrinkThumb'] = f"https://www.thecocktaildb.com/images/ingredients/{row['strIngredient'].lower()}.png"
+        return row
+
+    @post_load
+    def make_ingr(self, data, **kwargs):
+        if not data:
+            return None
+        app.logger.info(data)
+        return cache_data(Ingredient, data)
+
+
 class DrinkSchema(schema.Schema):
     class Meta:
         unknown = EXCLUDE
@@ -74,9 +117,9 @@ class DrinkSchema(schema.Schema):
     is_alcoholic = fields.Boolean(data_key='is_alcoholic', default=True)
     alcohol_category = fields.String(data_key='strAlcoholic')
     instruction = fields.String(data_key='strInstructions')
-    category = fields.String(data_key='strCategory')
-    glass = fields.String(data_key='strGlass')
-    image = fields.String(data_key='strDrinkThumb')
+    category = fields.String(data_key='strCategory', allow_none=True)
+    glass = fields.String(data_key='strGlass', allow_none=True)
+    image = fields.String(data_key='strDrinkThumb', allow_none=True)
     ingredients = fields.Dict(keys=fields.String(), values=fields.String())
 
     @pre_load
@@ -95,5 +138,4 @@ class DrinkSchema(schema.Schema):
     def make_drink(self, data, **kwargs):
         if not data:
             return None
-        app.logger.info(data)
         return cache_data(Drink, data)

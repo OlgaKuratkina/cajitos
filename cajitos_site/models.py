@@ -130,3 +130,13 @@ class Drink(TimestampModel):
     category = pw.TextField(null=True)
     image = pw.CharField(max_length=100, null=True)
     glass = pw.CharField(max_length=100, null=True)
+
+
+class Ingredient(TimestampModel):
+    ext_id = pw.IntegerField(unique=True)
+    name = pw.TextField()
+    alcohol = pw.TextField(null=True)
+    is_alcoholic = pw.BooleanField(default=True)
+    description = pw.TextField(null=True)
+    category = pw.TextField(null=True)
+    image = pw.CharField(max_length=100, null=True)
