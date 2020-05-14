@@ -8,7 +8,7 @@ from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
 from cajitos_site.models import VocabularyCard, ExpressionCard
-from cajitos_site.db_utils import get_cards_words, get_cards_expressions
+from cajitos_site.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients
 
 
 @misc.route("/cards", methods=['POST', 'GET'])
@@ -73,9 +73,10 @@ def random_cocktail():
 
 @misc.route("/drink_ingredients")
 def drink_ingredients():
-    all_names = CocktailApi().get_ingredients()
-    all_data = [CocktailApi().search_ingredient(name) for name in all_names]
-    return render_template('drink_ingredients.html', ingredients=all_data)
+    page = 0
+    all_data = get_drink_ingredients()
+    total_pages = int(math.ceil(get_drink_ingredients().count() / current_app.config['PER_PAGE']))
+    return render_template('drink_ingredients.html', ingredients=all_data, page=page, total_pages=total_pages)
 
 
 @misc.route("/search")

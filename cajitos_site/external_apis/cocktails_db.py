@@ -89,16 +89,17 @@ class IngrSchema(schema.Schema):
     ext_id = fields.Integer(data_key='idIngredient')
     name = fields.String(data_key='strIngredient')
     is_alcoholic = fields.Boolean(data_key='is_alcoholic', default=True)
-    alcohol = fields.String(data_key='strAlcohol')
-    category = fields.String(data_key='strType', default='')
-    image = fields.String(data_key='strDrinkThumb', default='')
-    description = fields.String(data_key='strDescription', default='')
+    alcohol = fields.String(data_key='strAlcohol', missing='', allow_none=True)
+    category = fields.String(data_key='strType', missing='', allow_none=True)
+    image = fields.String(data_key='strDrinkThumb', missing='', allow_none=True)
+    description = fields.String(data_key='strDescription', missing='', allow_none=True)
 
     @pre_load
     def pre_load(self, row, **kwargs):
-        row['is_alcoholic'] = (row['strAlcohol'] is not None or row['strAlcohol'] != 'No')
+        row['is_alcoholic'] = (row['strAlcohol'] is not None or row['strAlcohol'] == 'Yes')
         row['idIngredient'] = int(row['idIngredient'])
-        row['strDrinkThumb'] = f"https://www.thecocktaildb.com/images/ingredients/{row['strIngredient'].lower()}.png"
+        row['strDrinkThumb'] = f"https://www.thecocktaildb.com/images/ingredients/" \
+            f"{row['strIngredient'].lower().replace(' ', '_')}.png"
         return row
 
     @post_load
@@ -115,11 +116,11 @@ class DrinkSchema(schema.Schema):
     ext_id = fields.Integer(data_key='idDrink')
     name = fields.String(data_key='strDrink')
     is_alcoholic = fields.Boolean(data_key='is_alcoholic', default=True)
-    alcohol_category = fields.String(data_key='strAlcoholic')
+    alcohol_category = fields.String(data_key='strAlcoholic', missing='', allow_none=True)
     instruction = fields.String(data_key='strInstructions')
-    category = fields.String(data_key='strCategory', allow_none=True)
-    glass = fields.String(data_key='strGlass', allow_none=True)
-    image = fields.String(data_key='strDrinkThumb', allow_none=True)
+    category = fields.String(data_key='strCategory', missing='', allow_none=True)
+    glass = fields.String(data_key='strGlass', missing='', allow_none=True)
+    image = fields.String(data_key='strDrinkThumb', missing='', allow_none=True)
     ingredients = fields.Dict(keys=fields.String(), values=fields.String())
 
     @pre_load

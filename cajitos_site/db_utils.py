@@ -1,3 +1,4 @@
+import peewee as pw
 from flask import current_app, abort
 from flask_login import current_user
 
@@ -30,6 +31,31 @@ def get_cards_expressions(page=0, search=None):
         query = query.where(mod.ExpressionCard.origin_expression ** search)
     if page:
         query = query.order_by(mod.ExpressionCard.id.desc()).paginate(
+            page=page, paginate_by=current_app.config['PER_PAGE']
+        )
+    return query
+
+
+# TODO refactor out common query elements
+def get_drink_ingredients(page=0, search=None):
+    search = f"%{search}%" if search else None
+    query = mod.Ingredient.select()
+    if search:
+        query = query.where(mod.Ingredient.name ** search)
+    if page:
+        query = query.order_by(mod.Ingredient.id.desc()).paginate(
+            page=page, paginate_by=current_app.config['PER_PAGE']
+        )
+    return query
+
+
+def search_model_records(model: pw.Model, page=0, search=None):
+    search = f"%{search}%" if search else None
+    query = model.select()
+    if search:
+        query = query.where(model.name ** search)
+    if page:
+        query = query.order_by(model.id.desc()).paginate(
             page=page, paginate_by=current_app.config['PER_PAGE']
         )
     return query
