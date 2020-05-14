@@ -85,3 +85,8 @@ def search_drink():
     ingredient = request.args.get('ingr')
     cocktail = CocktailApi().get_drinks_by_ingredients([ingredient])[0]
     return render_template('cocktails.html', drink=cocktail)
+
+
+@misc.route("/try")
+def try_template():
+    return render_template('try.html')
