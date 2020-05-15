@@ -36,7 +36,7 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
         db.initialize(pw.SqliteDatabase(**application.config['DATABASE']))
     else:
         db.initialize(pw.PostgresqlDatabase(**application.config['DATABASE']))
-
+    #  TODO optimize registering blueprints
     from cajitos_site.users.routes import users
     from cajitos_site.blog_posts.routes import posts
     from cajitos_site.misc.routes import misc
@@ -56,11 +56,3 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
 
 
 application = create_app()
-
-import os
-from flask import send_from_directory
-
-# @app.route('/favicon.ico')
-# def favicon():
-#     return send_from_directory(os.path.join(app.root_path, 'static'),
-#                                'favicon.ico', mimetype='image/vnd.microsoft.icon')

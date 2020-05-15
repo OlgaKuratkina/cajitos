@@ -3,12 +3,14 @@ import math
 from flask import request, render_template, current_app, redirect, url_for
 from flask_login import current_user
 from peewee import fn
+import os
+from flask import send_from_directory
 
+from cajitos_site.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients
 from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
 from cajitos_site.models import VocabularyCard, ExpressionCard
-from cajitos_site.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients
 
 
 @misc.route("/cards", methods=['POST', 'GET'])
@@ -89,4 +91,10 @@ def search_drink():
 
 @misc.route("/try")
 def try_template():
-    return render_template('try.html')
+    return render_template('example_template.html')
+
+
+@misc.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(current_app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
