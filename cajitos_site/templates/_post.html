@@ -12,7 +12,9 @@
         {% if post.comments %}
             <br>
             {% for comment in post.comments %}
+                <div class="article-metadata">
                 <p class="article-content">{{ comment.content }}</p>
+                </div>
             {% endfor %}
         {% endif %}
     </div>
