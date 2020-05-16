@@ -97,9 +97,19 @@ class Post(TimestampModel):
     tags = pw.CharField(max_length=50)
     category = pw.CharField(max_length=50)
     author = pw.ForeignKeyField(User, backref='posts')
+    is_hidden = pw.BooleanField(default=False)
 
     def __repr__(self):
         return f"Post(title={self.title}, author={self.author})"
+
+
+class Comment(TimestampModel):
+    post_id = pw.ForeignKeyField(model=Post, backref='comments')
+    content = pw.TextField()
+    author = pw.ForeignKeyField(User, backref='posts')
+
+    def __repr__(self):
+        return f"Comment(post={self.post_id}, author={self.author})"
 
 
 class ExpressionCard(TimestampModel):
