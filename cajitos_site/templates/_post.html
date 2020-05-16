@@ -13,6 +13,9 @@
             <br>
             {% for comment in post.comments %}
                 <div class="article-metadata">
+                <a class="mr-2"
+               href="{{ url_for('posts.blog_posts', author=comment.author) }}">{{ comment.author.username }}</a>
+            <small class="text-muted">{{ moment(comment.created_at).format('LLL') }}</small>
                 <p class="article-content">{{ comment.content }}</p>
                 </div>
             {% endfor %}
