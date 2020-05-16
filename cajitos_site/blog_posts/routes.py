@@ -4,9 +4,9 @@ from cajitos_site.blog_posts import posts
 from flask import request, render_template, flash, redirect, url_for, abort, current_app
 from flask_login import login_required, current_user
 
-from cajitos_site.blog_posts.forms import PostForm, UpdatePostForm
+from cajitos_site.blog_posts.forms import PostForm, UpdatePostForm, CommentForm
 from cajitos_site.db_utils import get_post_by_id_and_author
-from cajitos_site.models import Post
+from cajitos_site.models import Post, Comment
 
 
 @posts.route("/")
@@ -30,10 +30,21 @@ def new_post():
     form = PostForm()
     if form.validate_on_submit():
         Post.create(title=form.title.data, content=form.content.data, author=current_user.id, tags='test',
-                    category='test')
+                    category=form.category.data, is_hidden=form.is_hidden.data)
         flash('Your post has been created!', 'success')
         return redirect(url_for('posts.blog_posts'))
-    return render_template('create_post.html', title='New Post', form=form)
+    return render_template('create_entry.html', title='New Post', form=form)
+
+
+@posts.route("/comment/<int:post_id>/new", methods=['GET', 'POST'])
+@login_required
+def new_comment(post_id):
+    form = CommentForm()
+    if form.validate_on_submit():
+        Comment.create(post_id=post_id, content=form.content.data, author=current_user.id)
+        flash('Your comment has been added!', 'success')
+        return redirect(url_for('posts.post', post_id=post_id))
+    return render_template('create_entry.html', title='New Comment', form=form)
 
 
 @posts.route("/post/<int:post_id>")
@@ -58,7 +69,7 @@ def update_post(post_id):
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('create_post.html', title='Update Post', form=form)
+    return render_template('create_entry.html', title='Update Post', form=form)
 
 
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])
