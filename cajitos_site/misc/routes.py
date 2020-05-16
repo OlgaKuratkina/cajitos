@@ -24,6 +24,7 @@ def cards():
         if origin_word and translation and language:
             VocabularyCard.create(origin=origin_word, translation=translation, language=language,
                                   part_of_speech=part_speech, author=current_user.id)
+            return redirect(url_for('misc.cards'))
     if request.method == 'POST':
         search = request.form.get('search_word')
     list_cards = get_cards_words(search)
