@@ -98,7 +98,7 @@ a.article-title:hover {
     background-color: #fff7f4;
 }
 
-.card, .card-body {
+.card {
     background-color: #fff7f4;
     margin: auto;
 }
