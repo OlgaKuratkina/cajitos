@@ -6,19 +6,9 @@
             <a class="mr-2"
                href="{{ url_for('posts.blog_posts', author=post.author) }}">{{ post.author.username }}</a>
             <small class="text-muted">{{ moment(post.created_at).format('LLL') }}</small>
+            <small class="text-muted"> {{ post.comments|length }} comments</small>
         </div>
         <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
         <p class="article-content">{{ post.content }}</p>
-        {% if post.comments %}
-            <br>
-            {% for comment in post.comments %}
-                <div class="article-metadata">
-                <a class="mr-2"
-               href="{{ url_for('posts.blog_posts', author=comment.author) }}">{{ comment.author.username }}</a>
-            <small class="text-muted">{{ moment(comment.created_at).format('LLL') }}</small>
-                <p class="article-content">{{ comment.content }}</p>
-                </div>
-            {% endfor %}
-        {% endif %}
     </div>
 </article>

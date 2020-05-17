@@ -1,0 +1,12 @@
+<article class="media content-section">
+        <img class="rounded-circle article-img"
+             src="{{ url_for('static', filename='images/user_pics/' + comment.author.profile_picture) }}">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2"
+               href="{{ url_for('posts.blog_posts', author=comment.author) }}">{{ comment.author.username }}</a>
+            <small class="text-muted">{{ moment(comment.created_at).format('LLL') }}</small>
+            <p class="article-content">{{ comment.content }}</p>
+        </div>
+    </div>
+</article>
