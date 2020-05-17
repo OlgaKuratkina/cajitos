@@ -3,9 +3,14 @@ import os
 
 from logging.handlers import RotatingFileHandler, SMTPHandler
 
+from oauthlib.oauth2 import WebApplicationClient
+
 
 def configure_app(application):
     if not application.debug:
+        # OAuth 2 client setup
+        # application.oauth_client = WebApplicationClient(application.config['GOOGLE_CLIENT_ID'])
+
         if application.config.get('MAIL_SERVER'):
             auth = None
             if application.config.get('MAIL_USERNAME') or application.config.get('MAIL_PASSWORD'):

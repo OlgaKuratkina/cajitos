@@ -5,7 +5,7 @@ from flask import request, render_template, flash, redirect, url_for, abort, cur
 from flask_login import login_required, current_user
 
 from cajitos_site.blog_posts.forms import PostForm, UpdatePostForm, CommentForm
-from cajitos_site.db_utils import get_post_by_id_and_author
+from cajitos_site.utils.db_utils import get_post_by_id_and_author
 from cajitos_site.models import Post, Comment
 
 

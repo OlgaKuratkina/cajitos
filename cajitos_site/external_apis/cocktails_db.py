@@ -6,7 +6,7 @@ import requests
 from flask import current_app as app
 from marshmallow import schema, fields, EXCLUDE, pre_load, post_load
 
-from cajitos_site.db_utils import cache_data
+from cajitos_site.utils.db_utils import cache_data
 from cajitos_site.models import Drink, Ingredient
 
 

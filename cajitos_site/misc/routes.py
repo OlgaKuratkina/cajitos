@@ -6,7 +6,7 @@ from peewee import fn
 import os
 from flask import send_from_directory
 
-from cajitos_site.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients
+from cajitos_site.utils.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients
 from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
