@@ -1,4 +1,9 @@
-function translate_card(translation) {
+function flip_card(face, back) {
     translation_field = document.getElementById('translation');
-    translation_field.innerText=translation;
+    if (translation_field.innerText === face) {
+        translation_field.innerText=back;
+    }
+    else {
+        translation_field.innerText=face;
+    }
 }

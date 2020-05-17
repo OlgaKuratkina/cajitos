@@ -98,6 +98,11 @@ a.article-title:hover {
     background-color: #fff7f4;
 }
 
+.card, .card-body {
+    background-color: #fff7f4;
+    margin: auto;
+}
+
 #runaimg {
     width: 10rem;
     height: 13rem;
