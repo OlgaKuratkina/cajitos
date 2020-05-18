@@ -13,11 +13,3 @@ if __name__ == '__main__':
 def make_shell_context():
     return {'db': db, 'User': User, 'Post': Post, 'Followers': Followers,
             'Ingerdient': Ingredient, 'Drink': Drink}
-
-
-# @application.before_request
-# def before_request():
-#     if request.url.startswith('http://'):
-#         url = request.url.replace('http://', 'https://', 1)
-#         code = 301
-#         return redirect(url, code=code)
