@@ -32,7 +32,7 @@ def load_user(user_id):
 
 class User(TimestampModel, UserMixin):
     username = pw.CharField(max_length=50, unique=True)
-    google_id = pw.CharField(max_length=100, unique=True)
+    google_id = pw.CharField(max_length=1000, unique=True)
     status = pw.CharField(max_length=20, default='New')
     email = pw.CharField(max_length=50, unique=True, index=True)
     password = pw.CharField(max_length=250)

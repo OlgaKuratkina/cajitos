@@ -3,6 +3,7 @@ from flask import current_app, abort
 from flask_login import current_user
 
 from cajitos_site import models as mod
+from cajitos_site.models import User
 
 
 def get_post_by_id_and_author(post_id):
@@ -68,3 +69,7 @@ def cache_data(model, data):
         return model.update(**data)
     else:
         return model.create(**data)
+
+
+def get_user_google(google_id):
+    return User.select().where(User.google_id == google_id).first()

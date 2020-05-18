@@ -9,7 +9,8 @@ from oauthlib.oauth2 import WebApplicationClient
 from cajitos_site import bcrypt
 from cajitos_site.users import users
 from cajitos_site.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
-from cajitos_site.models import User, load_user
+from cajitos_site.models import User
+from cajitos_site.utils.db_utils import get_user_google
 from cajitos_site.utils.email import send_service_email
 from cajitos_site.utils.utils import generate_random_pass, get_redirect_target, save_picture, get_google_provider_cfg
 
@@ -118,7 +119,7 @@ def callback():
         users_name = userinfo_response.json()["given_name"]
     else:
         return "User email not available or not verified by Google.", 400
-    if not load_user(unique_id):
+    if not get_user_google(unique_id):
         user = User.create(
             google_id=unique_id, username=users_name, email=users_email, password='', profile_picture=picture
         )
