@@ -97,7 +97,7 @@ def callback():
         token_url,
         headers=headers,
         data=body,
-        auth=(current_app.config('GOOGLE_CLIENT_ID'), current_app.config('GOOGLE_CLIENT_SECRET')),
+        auth=(current_app.config.get('GOOGLE_CLIENT_ID'), current_app.config.get('GOOGLE_CLIENT_SECRET')),
     )
 
     # Parse the tokens!
