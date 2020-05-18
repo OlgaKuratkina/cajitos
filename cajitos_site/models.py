@@ -31,14 +31,14 @@ def load_user(user_id):
 
 
 class User(TimestampModel, UserMixin):
-    username = pw.CharField(max_length=50, unique=True)
+    username = pw.CharField(max_length=1000, unique=True)
     google_id = pw.CharField(max_length=1000, unique=True)
     status = pw.CharField(max_length=20, default='New')
     email = pw.CharField(max_length=50, unique=True, index=True)
     password = pw.CharField(max_length=250)
     first_name = pw.CharField(max_length=50, null=True)
     last_name = pw.CharField(max_length=50, null=True)
-    profile_picture = pw.CharField(max_length=50, default='anon.jpg')
+    profile_picture = pw.CharField(max_length=100, default='anon.jpg')
     about_me = pw.CharField(max_length=250, null=True)
     last_seen = pw.DateTimeField(default=dt.datetime.utcnow)
     # followers = pw.ManyToManyField(model=self, backref='courses')

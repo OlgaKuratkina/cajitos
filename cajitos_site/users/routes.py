@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import datetime
 
 import requests
@@ -70,9 +71,10 @@ def google_login():
     # Use library to construct the request for Google login and provide
     # scopes that let you retrieve user's profile from Google
     client = WebApplicationClient(current_app.config['GOOGLE_CLIENT_ID'])
+    callback_uri = current_app.config.get('GOOGLE_CLIENT_CALLBACK')
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri=request.base_url + "/callback",
+        redirect_uri=callback_uri,
         scope=["openid", "email", "profile"],
     )
     return redirect(request_uri)
@@ -90,6 +92,11 @@ def callback():
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
     # Prepare and send a request to get tokens! Yay tokens!
+    # logging.error('-------------    ')
+    # logging.error(token_endpoint)
+    # logging.error(request.url)
+    # logging.error(callback_uri)
+    # logging.error(code)
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
         authorization_response=request.url,
@@ -121,14 +128,17 @@ def callback():
         users_name = userinfo_response.json()["given_name"]
     else:
         return "User email not available or not verified by Google.", 400
-    if not get_user_google(unique_id):
+    user = get_user_google(unique_id)
+    if not user:
+        logging.error(
+            f'google_id={unique_id}, username={users_name}, email={users_email}, profile_picture={picture}')
+        print(
+            f'google_id={unique_id}, username={users_name}, email={users_email}, profile_picture={picture}')
         user = User.create(
             google_id=unique_id, username=users_name, email=users_email, password='', profile_picture=picture
         )
-        login_user(user)
-
-        # Send user back to homepage
-        return redirect(url_for("/"))
+    login_user(user)
+    return redirect(url_for('posts.blog_posts'))
 
 
 @users.route("/logout")
