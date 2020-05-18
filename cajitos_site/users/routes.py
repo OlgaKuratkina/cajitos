@@ -15,7 +15,7 @@ from cajitos_site.utils.email import send_service_email
 from cajitos_site.utils.utils import generate_random_pass, get_redirect_target, save_picture, get_google_provider_cfg
 
 
-@users.before_app_first_request()
+@users.before_app_request
 def before_app_request():
     if current_user.is_authenticated:
         current_app.logger.warn('User last_seen has been updated!')
