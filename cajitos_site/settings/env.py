@@ -42,6 +42,7 @@ OWNERS = ['cajitos.site@gmail.com']
 COCKTAIL_API_URL = 'https://www.thecocktaildb.com/api/json'
 COCKTAIL_API_KEY = env('COCKTAIL_API_KEY', '1')
 
+GOOGLE_CLIENT_CALLBACK = 'https://www.cajitos.es/users/google_login/callback'
 GOOGLE_CLIENT_ID = env('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = env('GOOGLE_CLIENT_SECRET')
 GOOGLE_DISCOVERY_URL = 'https://accounts.google.com/.well-known/openid-configuration'
