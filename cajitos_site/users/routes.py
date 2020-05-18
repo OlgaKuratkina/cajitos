@@ -15,17 +15,12 @@ from cajitos_site.utils.email import send_service_email
 from cajitos_site.utils.utils import generate_random_pass, get_redirect_target, save_picture, get_google_provider_cfg
 
 
-@users.before_request
+@users.before_app_first_request()
 def before_app_request():
     if current_user.is_authenticated:
         current_app.logger.warn('User last_seen has been updated!')
         current_user.last_seen = datetime.utcnow()
         current_user.save()  # TODO call to save will change modified_at field
-    current_app.logger.info('Redirect!!!!!!')
-    if request.url.startswith('http://'):
-        url = request.url.replace('http://', 'https://', 1)
-        code = 301
-        return redirect(url, code=code)
 
 
 @users.route("/register", methods=['GET', 'POST'])

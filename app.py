@@ -1,12 +1,10 @@
-from flask import request, redirect
-
 from cajitos_site import create_app, db
 from cajitos_site.models import User, Post, Followers, Ingredient, Drink
 
 application = create_app()
 
 if __name__ == '__main__':
-    application.run(debug=True)
+    application.run(ssl_context='adhoc')
 
 
 @application.shell_context_processor
