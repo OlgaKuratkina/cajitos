@@ -92,14 +92,14 @@ def callback():
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
     # Prepare and send a request to get tokens! Yay tokens!
-    # logging.error('-------------    ')
-    # logging.error(token_endpoint)
-    # logging.error(request.url)
-    # logging.error(callback_uri)
-    # logging.error(code)
+    logging.error('-------------    ')
+    logging.error(token_endpoint)
+    logging.error(request.url)
+    logging.error(callback_uri)
+    logging.error(code)
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
-        authorization_response=request.url,
+        authorization_response=request.url.replace('http://', 'https://', 1),
         redirect_url=callback_uri,
         code=code
     )
