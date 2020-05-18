@@ -4,7 +4,7 @@ from cajitos_site.models import User, Post, Followers, Ingredient, Drink
 application = create_app()
 
 if __name__ == '__main__':
-    application.run(ssl_context='adhoc')
+    application.run()
 
 
 @application.shell_context_processor
