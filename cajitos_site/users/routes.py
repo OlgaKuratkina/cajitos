@@ -83,6 +83,8 @@ def callback():
     # Get authorization code Google sent back to you
     client = WebApplicationClient(current_app.config['GOOGLE_CLIENT_ID'])
     code = request.args.get("code")
+    callback_uri = current_app.config.get('GOOGLE_CLIENT_CALLBACK')
+    current_app.logger.info(callback_uri)
     # Find out what URL to hit to get tokens that allow you to ask for
     # things on behalf of a user
     google_provider_cfg = get_google_provider_cfg()
@@ -91,7 +93,7 @@ def callback():
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
         authorization_response=request.url,
-        redirect_url=current_app.config.get('GOOGLE_CLIENT_CALLBACK'),
+        redirect_url=callback_uri,
         code=code
     )
     token_response = requests.post(
