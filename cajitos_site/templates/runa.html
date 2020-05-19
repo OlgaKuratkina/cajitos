@@ -1,53 +1,56 @@
 {% extends "layout_blog.html" %}
-
 {% block keywords %}
 {java script, ява скрипт, гадание на рунах онлайн, гадание на рунах одина, гадание старший футарк онлайн
 {% endblock %}
-
 {% block content %}
-<script>
-    var runs = ["{{ url_for('static', filename='images/runa1.png') }}",
-                "{{ url_for('static', filename='images/runa2.png') }}",
-                "{{ url_for('static', filename='images/runa3.png') }}",
-                "{{ url_for('static', filename='images/runa4.png') }}",
-                "{{ url_for('static', filename='images/runa5.png') }}",
-                "{{ url_for('static', filename='images/runa6.png') }}",
-                "{{ url_for('static', filename='images/runa7.png') }}",
-                "{{ url_for('static', filename='images/runa8.png') }}",
-                "{{ url_for('static', filename='images/runa9.png') }}",
-                "{{ url_for('static', filename='images/runa10.png') }}",
-                "{{ url_for('static', filename='images/runa11.png') }}",
-                "{{ url_for('static', filename='images/runa12.png') }}",
-                "{{ url_for('static', filename='images/runa13.png') }}",
-                "{{ url_for('static', filename='images/runa14.png') }}",
-                "{{ url_for('static', filename='images/runa15.png') }}",
-                "{{ url_for('static', filename='images/runa16.png') }}",
-                "{{ url_for('static', filename='images/runa17.png') }}",
-                "{{ url_for('static', filename='images/runa18.png') }}",
-                "{{ url_for('static', filename='images/runa19.png') }}",
-                "{{ url_for('static', filename='images/runa20.png') }}",
-                "{{ url_for('static', filename='images/runa21.png') }}",
-                "{{ url_for('static', filename='images/runa22.png') }}",
-                "{{ url_for('static', filename='images/runa23.png') }}",
-                "{{ url_for('static', filename='images/runa24.png') }}",
-                "{{ url_for('static', filename='images/runa25.png') }}"];
-</script>
-<div class="header">Подумайте о своей проблеме или текущей ситуации</div>
-<div class="col"><img name="runaimg" id="runaimg" src="{{ url_for('static', filename='images/runa25.png') }}"></div>
+    <script>
+        var runs = ["{{ url_for('static', filename='images/runa1.png') }}",
+            "{{ url_for('static', filename='images/runa2.png') }}",
+            "{{ url_for('static', filename='images/runa3.png') }}",
+            "{{ url_for('static', filename='images/runa4.png') }}",
+            "{{ url_for('static', filename='images/runa5.png') }}",
+            "{{ url_for('static', filename='images/runa6.png') }}",
+            "{{ url_for('static', filename='images/runa7.png') }}",
+            "{{ url_for('static', filename='images/runa8.png') }}",
+            "{{ url_for('static', filename='images/runa9.png') }}",
+            "{{ url_for('static', filename='images/runa10.png') }}",
+            "{{ url_for('static', filename='images/runa11.png') }}",
+            "{{ url_for('static', filename='images/runa12.png') }}",
+            "{{ url_for('static', filename='images/runa13.png') }}",
+            "{{ url_for('static', filename='images/runa14.png') }}",
+            "{{ url_for('static', filename='images/runa15.png') }}",
+            "{{ url_for('static', filename='images/runa16.png') }}",
+            "{{ url_for('static', filename='images/runa17.png') }}",
+            "{{ url_for('static', filename='images/runa18.png') }}",
+            "{{ url_for('static', filename='images/runa19.png') }}",
+            "{{ url_for('static', filename='images/runa20.png') }}",
+            "{{ url_for('static', filename='images/runa21.png') }}",
+            "{{ url_for('static', filename='images/runa22.png') }}",
+            "{{ url_for('static', filename='images/runa23.png') }}",
+            "{{ url_for('static', filename='images/runa24.png') }}",
+            "{{ url_for('static', filename='images/runa25.png') }}"];
+    </script>
+    <article class="media content-section">
+        <img class="rounded-circle article-img" id="runaimg"
+             src="{{ url_for('static', filename='images/runa25.png') }}">
+        <div class="media-body">
+            <div class="article-metadata">
+                <p class="article-title text-justify" id="title_runa">Подумайте о своей проблеме или текущей ситуации</p>
+            </div>
+            <p class="article-content text-justify" id="text_runa">Тут будет Ваше предсказание</p>
+        </div>
+    </article>
 
-<textarea class="text" id="text_runa" name="answer" rows=13 cols=110 readonly>Тут будет Ваше предсказание
-</textarea>
-
-<div class="row">
-    <div class="col-3">
+    <div class="media-body">
+        <div class="article-metadata">
+            <div>
+                <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1" onClick="runa();">Получить ответ!
+                </button>
+                <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1" onClick="begin();">Начать с начала
+                </button>
+            </div>
+        </div>
     </div>
-    <div class = "col-3">
-    <button type="submit" class="btn btn-outline-secondary" onClick="runa();">Получить ответ!</button>
-    </div>
-    <div class="col-3">
-<button type="submit" class="btn btn-outline-secondary" onClick="begin();">Начать с начала</button>
-    </div>
-</div>
-<script src="{{ url_for('static', filename='runas.js') }}"></script>
-<script src="{{ url_for('static', filename='runa.js') }}"></script>
+    <script src="{{ url_for('static', filename='runas.js') }}"></script>
+    <script src="{{ url_for('static', filename='runa.js') }}"></script>
 {% endblock %}
