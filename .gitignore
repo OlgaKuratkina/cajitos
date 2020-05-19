@@ -10,6 +10,9 @@ draft_conftest.py
 cajitos.db
 logs/
 
+.DS_Store
+cajitos_site/.DS_Store
+
 # C extensions
 *.so
 
