@@ -79,9 +79,9 @@ a.article-title:hover {
     vertical-align: middle;
 }
 
-.account-img {
-    height: 125px;
-    width: 125px;
+.account-img, .runaimg {
+    height: 150px;
+    width: 150px;
     margin-right: 20px;
     margin-bottom: 16px;
 }
@@ -103,15 +103,6 @@ a.article-title:hover {
     margin: auto;
 }
 
-#runaimg {
-    width: 10rem;
-    height: 13rem;
-    display: block;
-    margin: 1rem auto;
-    border: 1rem;
-    padding: 1rem;
-
-}
 
 .header {
     font-size: 20px;
@@ -126,7 +117,7 @@ a.article-title:hover {
     margin: 1.5rem auto;
     display: block;
     font-family: Verdana, Geneva, sans-serif;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 form textarea#content {
