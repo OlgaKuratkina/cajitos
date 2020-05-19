@@ -76,6 +76,6 @@ def update_post(post_id):
 @login_required
 def delete_post(post_id):
     post = get_post_by_id_and_author(post_id)
-    post.delete_instance()
+    post.delete_instance(recursive=True)
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('posts.blog_posts'))
