@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 
 import requests
-from flask import redirect, url_for, flash, render_template, session, request, current_app
+from flask import redirect, url_for, flash, render_template, session, request, current_app, Request
 from flask_login import current_user, login_user, logout_user, login_required
 from oauthlib.oauth2 import WebApplicationClient
 
@@ -72,42 +72,13 @@ def google_login():
 
 @users.route('/google_login/callback')
 def callback():
-    client = WebApplicationClient(current_app.config['GOOGLE_CLIENT_ID'])
-    code = request.args.get('code')
-    callback_uri = current_app.config.get('GOOGLE_CLIENT_CALLBACK')
-    # Find out what URL to hit to get tokens that allow you to ask for things on behalf of a user
-    google_provider_cfg = get_google_provider_cfg()
-    token_endpoint = google_provider_cfg['token_endpoint']
-    # Prepare and send a request to get tokens
-    logging.error('-------------    ')
-    logging.error(token_endpoint)
-    logging.error(request.url)
-    logging.error(callback_uri)
-    logging.error(code)
-    token_url, headers, body = client.prepare_token_request(
-        token_endpoint,
-        authorization_response=translate_url_https(request.url),
-        redirect_url=callback_uri,
-        code=code
-    )
-    token_response = requests.post(
-        token_url,
-        headers=headers,
-        data=body,
-        auth=(current_app.config.get('GOOGLE_CLIENT_ID'), current_app.config.get('GOOGLE_CLIENT_SECRET')),
-    )
+    userinfo_response = get_google_user_info(request)
 
-    client.parse_request_body_response(json.dumps(token_response.json()))
-    # let's find and hit the URL from Google that gives you the user's profile information
-    userinfo_endpoint = google_provider_cfg['userinfo_endpoint']
-    uri, headers, body = client.add_token(userinfo_endpoint)
-    userinfo_response = requests.get(uri, headers=headers, data=body)
-    # Make sure their email is verified.
     if userinfo_response.json().get('email_verified'):
-        unique_id = userinfo_response.json()['sub']
-        users_email = userinfo_response.json()['email']
-        picture = userinfo_response.json()['picture']
-        users_name = userinfo_response.json()['given_name']
+        unique_id = userinfo_response['sub']
+        users_email = userinfo_response['email']
+        picture = userinfo_response['picture']
+        users_name = userinfo_response['given_name']
     else:
         return 'User email not available or not verified by Google.', 400
     user = get_user_google(unique_id)
@@ -118,6 +89,35 @@ def callback():
         )
     login_user(user)
     return redirect(url_for('posts.blog_posts'))
+
+
+def get_google_user_info(req: Request):
+    client = WebApplicationClient(current_app.config['GOOGLE_CLIENT_ID'])
+    code = req.args.get('code')
+    callback_uri = current_app.config.get('GOOGLE_CLIENT_CALLBACK')
+    # Find out what URL to hit to get tokens that allow you to ask for things on behalf of a user
+    google_provider_cfg = get_google_provider_cfg()
+    token_endpoint = google_provider_cfg['token_endpoint']
+    userinfo_endpoint = google_provider_cfg['userinfo_endpoint']
+    # Prepare and send a req to get tokens
+
+    token_url, headers, body = client.prepare_token_request(
+        token_endpoint,
+        authorization_response=translate_url_https(req.url),
+        redirect_url=callback_uri,
+        code=code
+    )
+    token_response = requests.post(
+        token_url,
+        headers=headers,
+        data=body,
+        auth=(current_app.config.get('GOOGLE_CLIENT_ID'), current_app.config.get('GOOGLE_CLIENT_SECRET')),
+    )
+    client.parse_request_body_response(json.dumps(token_response.json()))
+    # let's find and hit the URL from Google that gives you the user's profile information
+    uri, headers, body = client.add_token(userinfo_endpoint)
+    userinfo = requests.get(uri, headers=headers, data=body).json()
+    return userinfo
 
 
 @users.route('/logout')
