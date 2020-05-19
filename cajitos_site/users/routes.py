@@ -13,13 +13,15 @@ from cajitos_site.users.forms import RegistrationForm, LoginForm, UpdateAccountF
 from cajitos_site.models import User
 from cajitos_site.utils.db_utils import get_user_google
 from cajitos_site.utils.email import send_service_email
-from cajitos_site.utils.utils import generate_random_pass, get_redirect_target, save_picture, get_google_provider_cfg
+from cajitos_site.utils.utils import (
+    generate_random_pass, get_redirect_target, save_picture
+)
+from cajitos_site.utils.auth_utils import translate_url_https, get_google_provider_cfg, generate_google_auth_request
 
 
 @users.before_app_request
 def before_app_request():
     if current_user.is_authenticated:
-        current_app.logger.warn('User last_seen has been updated!')
         current_user.last_seen = datetime.utcnow()
         current_user.save()  # TODO call to save will change modified_at field
 
@@ -64,34 +66,19 @@ def login():
 
 @users.route('/google_login')
 def google_login():
-    # Find out what URL to hit for Google login
-    google_provider_cfg = get_google_provider_cfg()
-    authorization_endpoint = google_provider_cfg['authorization_endpoint']
-
-    # Use library to construct the request for Google login and provide
-    # scopes that let you retrieve user's profile from Google
-    client = WebApplicationClient(current_app.config['GOOGLE_CLIENT_ID'])
-    callback_uri = current_app.config.get('GOOGLE_CLIENT_CALLBACK')
-    request_uri = client.prepare_request_uri(
-        authorization_endpoint,
-        redirect_uri=callback_uri,
-        scope=["openid", "email", "profile"],
-    )
+    request_uri = generate_google_auth_request()
     return redirect(request_uri)
 
 
-@users.route("/google_login/callback")
+@users.route('/google_login/callback')
 def callback():
-    # Get authorization code Google sent back to you
     client = WebApplicationClient(current_app.config['GOOGLE_CLIENT_ID'])
-    code = request.args.get("code")
+    code = request.args.get('code')
     callback_uri = current_app.config.get('GOOGLE_CLIENT_CALLBACK')
-    current_app.logger.info(callback_uri)
-    # Find out what URL to hit to get tokens that allow you to ask for
-    # things on behalf of a user
+    # Find out what URL to hit to get tokens that allow you to ask for things on behalf of a user
     google_provider_cfg = get_google_provider_cfg()
-    token_endpoint = google_provider_cfg["token_endpoint"]
-    # Prepare and send a request to get tokens! Yay tokens!
+    token_endpoint = google_provider_cfg['token_endpoint']
+    # Prepare and send a request to get tokens
     logging.error('-------------    ')
     logging.error(token_endpoint)
     logging.error(request.url)
@@ -99,7 +86,7 @@ def callback():
     logging.error(code)
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
-        authorization_response=request.url.replace('http://', 'https://', 1),
+        authorization_response=translate_url_https(request.url),
         redirect_url=callback_uri,
         code=code
     )
@@ -110,44 +97,36 @@ def callback():
         auth=(current_app.config.get('GOOGLE_CLIENT_ID'), current_app.config.get('GOOGLE_CLIENT_SECRET')),
     )
 
-    # Parse the tokens!
     client.parse_request_body_response(json.dumps(token_response.json()))
-    # Now that you have tokens (yay) let's find and hit the URL
-    # from Google that gives you the user's profile information,
-    # including their Google profile image and email
-    userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
+    # let's find and hit the URL from Google that gives you the user's profile information
+    userinfo_endpoint = google_provider_cfg['userinfo_endpoint']
     uri, headers, body = client.add_token(userinfo_endpoint)
     userinfo_response = requests.get(uri, headers=headers, data=body)
-    # You want to make sure their email is verified.
-    # The user authenticated with Google, authorized your
-    # app, and now you've verified their email through Google!
-    if userinfo_response.json().get("email_verified"):
-        unique_id = userinfo_response.json()["sub"]
-        users_email = userinfo_response.json()["email"]
-        picture = userinfo_response.json()["picture"]
-        users_name = userinfo_response.json()["given_name"]
+    # Make sure their email is verified.
+    if userinfo_response.json().get('email_verified'):
+        unique_id = userinfo_response.json()['sub']
+        users_email = userinfo_response.json()['email']
+        picture = userinfo_response.json()['picture']
+        users_name = userinfo_response.json()['given_name']
     else:
-        return "User email not available or not verified by Google.", 400
+        return 'User email not available or not verified by Google.', 400
     user = get_user_google(unique_id)
     if not user:
-        logging.error(
-            f'google_id={unique_id}, username={users_name}, email={users_email}, profile_picture={picture}')
-        print(
-            f'google_id={unique_id}, username={users_name}, email={users_email}, profile_picture={picture}')
         user = User.create(
-            google_id=unique_id, username=users_name, email=users_email, password='', profile_picture=picture
+            google_id=unique_id, username=users_name, email=users_email, password='', profile_picture=picture,
+            status='Confirmed'
         )
     login_user(user)
     return redirect(url_for('posts.blog_posts'))
 
 
-@users.route("/logout")
+@users.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('posts.blog_posts'))
 
 
-@users.route("/account", methods=['GET', 'POST'])
+@users.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     form = UpdateAccountForm()

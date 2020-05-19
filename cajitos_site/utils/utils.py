@@ -2,17 +2,15 @@ import csv
 import importlib
 import logging
 import os
+
 import peewee as pw
 import pkgutil
 import secrets
 import string
 
-import requests
 from PIL import Image
 from flask import request, current_app, Blueprint
 from urllib.parse import urlparse, urljoin
-
-from cajitos_site.settings import GOOGLE_DISCOVERY_URL
 
 logger = logging.getLogger(__name__)
 
@@ -113,7 +111,3 @@ def read_csv(file_name):
     file_path = os.path.join(current_app.root_path, file_name)
     with open(file_path, mode='r') as infile:
         return list(csv.DictReader(strip_nulls(infile)))
-
-
-def get_google_provider_cfg():
-    return requests.get(GOOGLE_DISCOVERY_URL).json()
