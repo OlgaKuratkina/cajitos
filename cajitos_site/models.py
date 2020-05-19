@@ -1,6 +1,6 @@
 import peewee as pw
 import datetime as dt
-from flask import current_app
+from flask import current_app, url_for
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from playhouse.postgres_ext import *
 
@@ -64,6 +64,13 @@ class User(TimestampModel, UserMixin):
         if super().is_authenticated and self.status == 'Confirmed':
             return True
         return False
+
+    @property
+    def picture_url(self):
+        if self.google_id:
+            return self.profile_picture
+        else:
+            return url_for('static', filename='images/user_pics/' + self.profile_picture)
 
     def is_following(self, user):
         return Followers.select().where(
