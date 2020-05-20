@@ -6,8 +6,6 @@ from logging.handlers import RotatingFileHandler, SMTPHandler
 
 def configure_app(application):
     if not application.debug:
-        # OAuth 2 client setup
-        # application.oauth_client = WebApplicationClient(application.config['GOOGLE_CLIENT_ID'])
 
         # if application.config.get('MAIL_SERVER'):
         #     auth = None

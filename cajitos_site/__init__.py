@@ -1,5 +1,6 @@
 import peewee as pw
-from flask import Flask
+from flask import Flask, request
+from flask_babel import Babel
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_moment import Moment
@@ -12,6 +13,7 @@ db = pw.Proxy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 mail = Mail()
+babel = Babel()
 moment = Moment()
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
@@ -31,6 +33,7 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     mail.init_app(application)
     moment.init_app(application)
     bootstrap = Bootstrap(application)
+    babel.init_app(application)
 
     if application.config['TESTING']:
         db.initialize(pw.SqliteDatabase(**application.config['DATABASE']))
@@ -53,6 +56,11 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     application.logger.info('App created')
 
     return application
+
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(application.config['LANGUAGES'])
 
 
 application = create_app()

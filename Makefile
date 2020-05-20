@@ -4,6 +4,9 @@ test:
 start:
 	source venv/bin/activate && FLASK_APP=cajitos_site flask run
 
+babel_gen:
+	source venv/bin/activate && pybabel extract -F babel.cfg -k _l -o messages.pot .
+
 start_debug:
 	source venv/bin/activate && python app.py
 
