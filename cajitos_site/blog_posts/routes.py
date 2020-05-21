@@ -1,7 +1,10 @@
 import math
 
+from guess_language import guess_language
+
 from cajitos_site.blog_posts import posts
 from flask import request, render_template, flash, redirect, url_for, abort, current_app
+from flask_babel import _
 from flask_login import login_required, current_user
 
 from cajitos_site.blog_posts.forms import PostForm, UpdatePostForm, CommentForm
@@ -29,11 +32,19 @@ def blog_posts():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
+        language = get_language(form.content.data)
         Post.create(title=form.title.data, content=form.content.data, author=current_user.id, tags='test',
-                    category=form.category.data, is_hidden=form.is_hidden.data)
-        flash('Your post has been created!', 'success')
+                    category=form.category.data, is_hidden=form.is_hidden.data, language=language)
+        flash(_('Your post has been created!'), 'success')
         return redirect(url_for('posts.blog_posts'))
-    return render_template('create_entry.html', title='New Post', form=form)
+    return render_template('create_entry.html', title=_('New Post'), form=form)
+
+
+def get_language(data):
+    language = guess_language(data)
+    if language == 'UNKNOWN' or len(language) > 5:
+        language = ''
+    return language
 
 
 @posts.route("/comment/<int:post_id>/new", methods=['GET', 'POST'])
@@ -42,9 +53,9 @@ def new_comment(post_id):
     form = CommentForm()
     if form.validate_on_submit():
         Comment.create(post_id=post_id, content=form.content.data, author=current_user.id)
-        flash('Your comment has been added!', 'success')
+        flash(_('Your comment has been added!'), 'success')
         return redirect(url_for('posts.post', post_id=post_id))
-    return render_template('create_entry.html', title='New Comment', form=form)
+    return render_template('create_entry.html', title=_('New Comment'), form=form)
 
 
 @posts.route("/post/<int:post_id>")
@@ -61,15 +72,17 @@ def update_post(post_id):
     post = get_post_by_id_and_author(post_id)
     form = UpdatePostForm()
     if form.validate_on_submit():
+        language = get_language(form.content.data)
         post.title = form.title.data
         post.content = form.content.data
+        post.language = language
         post.save()
-        flash('Your post has been updated!', 'success')
+        flash(_('Your post has been updated!'), 'success')
         return redirect(url_for('posts.post', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('create_entry.html', title='Update Post', form=form)
+    return render_template('create_entry.html', title=_('Update Post'), form=form)
 
 
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])
@@ -77,5 +90,5 @@ def update_post(post_id):
 def delete_post(post_id):
     post = get_post_by_id_and_author(post_id)
     post.delete_instance(recursive=True)
-    flash('Your post has been deleted!', 'success')
+    flash(_('Your post has been deleted!'), 'success')
     return redirect(url_for('posts.blog_posts'))

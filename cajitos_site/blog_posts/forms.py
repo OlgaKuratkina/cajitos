@@ -1,22 +1,23 @@
 from flask_wtf import FlaskForm
+from flask_babel import lazy_gettext as _l
 from wtforms import StringField, TextAreaField, SubmitField, BooleanField
 from wtforms.validators import DataRequired
 
 
 class PostForm(FlaskForm):
-    legend = 'Create Post'
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    category = StringField('Category', validators=[DataRequired()])
-    is_hidden = BooleanField('Make post private')
-    submit = SubmitField('Post')
+    legend = _l('Create Post')
+    title = StringField(_l('Title'), validators=[DataRequired()])
+    content = TextAreaField(_l('Content'), validators=[DataRequired()])
+    category = StringField(_l('Category'), validators=[DataRequired()])
+    is_hidden = BooleanField(_l('Make post private'))
+    submit = SubmitField(_l('Post'))
 
 
 class UpdatePostForm(PostForm):
-    legend = 'Update Post'
+    legend = _l('Update Post')
 
 
 class CommentForm(FlaskForm):
-    legend = 'Add Comment'
-    content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Add')
+    legend = _l('Add Comment')
+    content = TextAreaField(_l('Content'), validators=[DataRequired()])
+    submit = SubmitField(_l('Add'))
