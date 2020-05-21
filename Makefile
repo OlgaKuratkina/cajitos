@@ -1,11 +1,21 @@
 test:
-	CONFIG=app.settings.tests source venv/bin/activate && py.test $(CURDIR)/$(PROJECT/tests
+	CONFIG=app.settings.tests source venv/bin/activate && py.test
 
 start:
 	source venv/bin/activate && FLASK_APP=cajitos_site flask run
 
 babel_gen:
-	source venv/bin/activate && pybabel extract -F babel.cfg -k _l -o messages.pot .
+	source venv/bin/activate && pybabel extract -F babel.cfg -k _l -o translate_mapping.pot .
+
+babel_translate:
+	source venv/bin/activate && pybabel init -i translate_mapping.pot -d cajitos_site/translations -l ru
+	source venv/bin/activate && pybabel init -i translate_mapping.pot -d cajitos_site/translations -l es
+
+babel_update:
+	source venv/bin/activate && pybabel update -i translate_mapping.pot -d cajitos_site/translations
+
+babel_compile:
+	source venv/bin/activate && pybabel compile -d cajitos_site/translations
 
 start_debug:
 	source venv/bin/activate && python app.py

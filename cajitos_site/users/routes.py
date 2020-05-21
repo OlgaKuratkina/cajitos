@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from flask import redirect, url_for, flash, render_template, session, request, current_app
+from flask import redirect, url_for, flash, render_template, session, request, current_app, g
+from flask_babel import get_locale
 from flask_login import current_user, login_user, logout_user, login_required
 
 from cajitos_site import bcrypt
@@ -18,6 +19,7 @@ from cajitos_site.utils.auth_utils import generate_google_auth_request, \
 
 @users.before_app_request
 def before_app_request():
+    g.locale = str(get_locale())
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         current_user.save()  # TODO call to save will change modified_at field

@@ -106,6 +106,7 @@ class Post(TimestampModel):
     category = pw.CharField(max_length=50)
     author = pw.ForeignKeyField(User, backref='posts')
     is_hidden = pw.BooleanField(default=False)
+    language = pw.CharField(max_length=10)
 
     def __repr__(self):
         return f"Post(title={self.title}, author={self.author})"
