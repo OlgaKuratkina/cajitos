@@ -3,6 +3,7 @@ Flask-Admin==1.5.3
 Flask-WTF==0.14.3
 Flask-Login==0.4.1
 Flask-Mail==0.9.1
+Flask-Babel==1.0.0
 Flask-Bootstrap==3.3.7.1
 Flask-Bcrypt==0.7.1
 Flask-Moment==0.7.0
