@@ -1,3 +1,4 @@
+import json
 import os
 
 file_url = "https://cajitos-my-test.s3.amazonaws.com/check/requirements.txt"
@@ -12,6 +13,7 @@ def check_file_works():
             result.append(f.readline())
 
     if os.path.exists(local_config):
-        with open(local_config, "r") as f:
-            result.append(f.readline())
+        with open(local_config) as json_file:
+            data = json.load(json_file)
+            result.append(data)
     return result
