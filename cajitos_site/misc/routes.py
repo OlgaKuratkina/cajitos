@@ -11,6 +11,7 @@ from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
 from cajitos_site.models import VocabularyCard, ExpressionCard
+from cajitos_site.utils.experiment_utils import check_file_works
 
 
 @misc.route("/cards", methods=['POST', 'GET'])
@@ -64,7 +65,7 @@ def runa():
 
 @misc.route("/debug")
 def debug():
-    data = []
+    data = check_file_works()
     return render_template('debug.html', data=data)
 
 
