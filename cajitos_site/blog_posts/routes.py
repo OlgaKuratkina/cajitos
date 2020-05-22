@@ -1,7 +1,5 @@
 import math
 
-from guess_language import guess_language
-
 from cajitos_site.blog_posts import posts
 from flask import request, render_template, flash, redirect, url_for, abort, current_app
 from flask_babel import _
@@ -10,6 +8,7 @@ from flask_login import login_required, current_user
 from cajitos_site.blog_posts.forms import PostForm, UpdatePostForm, CommentForm
 from cajitos_site.utils.db_utils import get_post_by_id_and_author
 from cajitos_site.models import Post, Comment
+from cajitos_site.utils.translate_utils import get_language
 
 
 @posts.route("/")
@@ -38,13 +37,6 @@ def new_post():
         flash(_('Your post has been created!'), 'success')
         return redirect(url_for('posts.blog_posts'))
     return render_template('create_entry.html', title=_('New Post'), form=form)
-
-
-def get_language(data):
-    language = guess_language(data)
-    if language == 'UNKNOWN' or len(language) > 5:
-        language = ''
-    return language
 
 
 @posts.route("/comment/<int:post_id>/new", methods=['GET', 'POST'])

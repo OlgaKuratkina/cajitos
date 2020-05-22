@@ -9,10 +9,16 @@
             <small class="text-muted"> {{ post.comments|length }} comments</small>
         </div>
         <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
-        <p class="article-content">{{ post.content }}</p>
+        <p class="article-content" id="post{{ post.id }}">{{ post.content }}</p>
         <p>
             {% if post.language and post.language != g.locale %}
-                <a href="#">{{ _('Translate') }}</a>
+                <span id="translation{{ post.id }}">
+                    <a href="javascript:translate(
+                                '#post{{ post.id }}',
+                                '#translation{{ post.id }}',
+                                '{{ post.language }}',
+                                '{{ g.locale }}');">{{ _('Translate') }}</a>
+                </span>
             {% endif %}
         </p>
     </div>

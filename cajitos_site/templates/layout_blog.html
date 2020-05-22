@@ -95,6 +95,21 @@
         </div>
     </div>
 </main>
+{% block scripts %}
+    <script>
+        function translate(sourceElem, destElem, destLang) {
+            $(destElem).html('<img src="{{ url_for('static', filename='images/loading.gif') }}">');
+            $.post('/translate', {
+                text: $(sourceElem).text(),
+                dest_language: destLang
+            }).done(function(response) {
+                $(destElem).text(response['text'])
+            }).fail(function() {
+                $(destElem).text("{{ _('Error: Could not contact server.') }}");
+            });
+        }
+    </script>
+{% endblock %}
 
 
 <!-- Optional JavaScript -->
