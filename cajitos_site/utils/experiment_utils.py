@@ -17,3 +17,14 @@ def check_file_works():
             data = json.load(json_file)
             result.append(data)
     return result
+
+
+def check_where_we_are():
+    current = os.path.abspath(os.getcwd())
+    result = [current]
+    for root, dirs, files in os.walk(".", topdown=True):
+        for name in files:
+            result.append(os.path.join(root, name))
+        for name in dirs:
+            result.append(os.path.join(root, name))
+    return result
