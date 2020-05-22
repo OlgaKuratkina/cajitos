@@ -44,10 +44,12 @@ def create_app(application=None, default_settings='cajitos_site.settings'):
     from cajitos_site.blog_posts.routes import posts
     from cajitos_site.misc.routes import misc
     from cajitos_site.errors.routes import errors
+    from cajitos_site.service.routes import service
     application.register_blueprint(users)
     application.register_blueprint(posts)
     application.register_blueprint(misc)
     application.register_blueprint(errors)
+    application.register_blueprint(service)
 
     # Register models
     from . import models as models
