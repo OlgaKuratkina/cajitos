@@ -12,6 +12,6 @@ def check_file_works():
             result.append(f.readline())
 
     if os.path.exists(local_config):
-        with open(local_url, "r") as f:
+        with open(local_config, "r") as f:
             result.append(f.readline())
     return result
