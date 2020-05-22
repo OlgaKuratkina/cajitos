@@ -1,0 +1,89 @@
+# Russian translations for PROJECT.
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-05-20 22:13+0300\n"
+"PO-Revision-Date: 2020-05-20 22:14+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: cajitos_site/blog_posts/forms.py:8
+msgid "Create Post"
+msgstr ""
+
+#: cajitos_site/blog_posts/forms.py:9
+msgid "Title"
+msgstr ""
+
+#: cajitos_site/blog_posts/forms.py:10 cajitos_site/blog_posts/forms.py:22
+msgid "Content"
+msgstr ""
+
+#: cajitos_site/blog_posts/forms.py:11
+msgid "Category"
+msgstr ""
+
+#: cajitos_site/blog_posts/forms.py:12
+msgid "Make post private"
+msgstr ""
+
+#: cajitos_site/blog_posts/forms.py:13
+msgid "Post"
+msgstr ""
+
+#: cajitos_site/blog_posts/forms.py:17 cajitos_site/blog_posts/routes.py:73
+msgid "Update Post"
+msgstr ""
+
+#: cajitos_site/blog_posts/forms.py:21
+msgid "Add Comment"
+msgstr ""
+
+#: cajitos_site/blog_posts/forms.py:23
+msgid "Add"
+msgstr ""
+
+#: cajitos_site/blog_posts/routes.py:35
+msgid "Your post has been created!"
+msgstr ""
+
+#: cajitos_site/blog_posts/routes.py:37
+msgid "New Post"
+msgstr ""
+
+#: cajitos_site/blog_posts/routes.py:46
+msgid "Your comment has been added!"
+msgstr ""
+
+#: cajitos_site/blog_posts/routes.py:48
+msgid "New Comment"
+msgstr ""
+
+#: cajitos_site/blog_posts/routes.py:68
+msgid "Your post has been updated!"
+msgstr ""
+
+#: cajitos_site/blog_posts/routes.py:81
+msgid "Your post has been deleted!"
+msgstr ""
+
+#: cajitos_site/templates/layout_blog.html:34
+msgid "Vocabulary"
+msgstr ""
+
+#: cajitos_site/templates/layout_blog.html:35
+msgid "Random Cocktail"
+msgstr ""
+

@@ -12,13 +12,14 @@
         <p class="article-content" id="post{{ post.id }}">{{ post.content }}</p>
         <p>
             {% if post.language and post.language != g.locale %}
-                <span id="translation{{ post.id }}">
-                    <a href="javascript:translate(
-                                '#post{{ post.id }}',
-                                '#translation{{ post.id }}',
+                <small class id="translation{{ post.id }}">
+                    <a href="javascript:translate_v2(
+                                'post{{ post.id }}',
+                                'translation{{ post.id }}',
                                 '{{ g.locale }}');">{{ _('Translate') }}</a>
-                </span>
+                </small>
             {% endif %}
         </p>
     </div>
 </article>
+    <script src="{{ url_for('static', filename='translate.js') }}"></script>

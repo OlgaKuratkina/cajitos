@@ -1,5 +1,6 @@
-from flask import jsonify, request, current_app
+from flask import request, current_app, Response
 from flask_login import login_required
+from werkzeug.exceptions import BadRequest
 
 from cajitos_site.service import service
 from cajitos_site.utils.translate_utils import translate_text
@@ -8,10 +9,10 @@ from cajitos_site.utils.translate_utils import translate_text
 @service.route('/translate', methods=['POST'])
 @login_required
 def translate_data():
-    current_app.logger.info('Recieved data for translation:')
-    current_app.logger.info(request.form['text'])
-    current_app.logger.info(request.form['dest_language'])
-    return jsonify({
-        'text': translate_text(target=request.form['dest_language'],
-                               text=request.form['text'])
-    })
+    data = request.json
+    current_app.logger.info(f'Recieved data for translation: {data}')
+    if 'dest_language' not in data or 'text' not in data:
+        return BadRequest()
+    return Response(
+        translate_text(target=data['dest_language'],text=data['text'])
+    )
