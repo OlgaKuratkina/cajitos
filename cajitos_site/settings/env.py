@@ -45,6 +45,8 @@ GOOGLE_CLIENT_ID = env('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = env('GOOGLE_CLIENT_SECRET')
 GOOGLE_DISCOVERY_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 
+GOOGLE_APPLICATION_CREDENTIALS = '/etc/cajitos/Cajitos-2ab6a7074f2a.json'
+
 LANGUAGES = ['en', 'es', 'ru']
 
 

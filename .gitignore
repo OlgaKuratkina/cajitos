@@ -13,6 +13,7 @@ logs/
 .DS_Store
 cajitos_site/.DS_Store
 Cajitos-2ab6a7074f2a.json
+app_config.json
 
 # C extensions
 *.so
