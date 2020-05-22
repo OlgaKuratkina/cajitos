@@ -17,8 +17,6 @@ DB_USER = env('DB_USER')
 DB_NAME = env('DB_NAME')
 DB_PASS = env('DB_PASS')
 
-# SQLALCHEMY_DATABASE_URI = env('DB_URI', 'sqlite:///:memory:')
-# DB_URI = env('DB_URI', "postgresql://postgres@localhost:5433/cajitos")
 
 DATABASE = {'database': DB_NAME,
             'user': DB_USER,
