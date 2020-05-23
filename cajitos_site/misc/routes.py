@@ -1,16 +1,18 @@
+import json
 import math
 
-from flask import request, render_template, current_app, redirect, url_for
+from flask import request, render_template, current_app, redirect, url_for, Response, jsonify
 from flask_login import current_user
 from peewee import fn
 import os
 from flask import send_from_directory
+from playhouse.shortcuts import model_to_dict
 
 from cajitos_site.utils.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients, get_random_record
 from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
-from cajitos_site.models import VocabularyCard, ExpressionCard
+from cajitos_site.models import VocabularyCard, ExpressionCard, User
 
 
 @misc.route("/cards", methods=['POST', 'GET'])
@@ -53,7 +55,11 @@ def expressions():
 
 @misc.route("/random_card")
 def random_card():
+    raw = request.args.get('raw')
     card = get_random_record(VocabularyCard)
+    if raw:
+        json_data = model_to_dict(card)
+        return jsonify(json_data)
     return render_template('learn_cards.html', card=card)
 
 

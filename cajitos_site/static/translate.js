@@ -30,11 +30,42 @@ function translate(sourceElemId, destElemId, destLang) {
     request.send(json);
 }
 
-function flip_card(face, back) {
-    let translation_field = document.getElementById('translation');
-    if (translation_field.innerText === face) {
-        translation_field.innerText = back;
-    } else {
-        translation_field.innerText = face;
-    }
+function flip_card_value() {
+    let faceEl = document.getElementById('translation');
+    let backEl = document.getElementById('backtranslation');
+
+
+    let facetext = faceEl.innerText;
+    faceEl.innerText = backEl.value;
+    backEl.value = facetext;
+}
+
+
+function request_new_card() {
+
+    var request = new XMLHttpRequest();
+    request.open('GET', '/things/random_card?raw=1', true);
+
+    elemTitle = document.getElementById('card_title');
+    elemAuthor = document.getElementById('author_username');
+    elemOrigin = document.getElementById('translation');
+    elemTranslation = document.getElementById('backtranslation');
+
+    request.onload = function () {
+        if (this.status >= 200 && this.status < 400) {
+            data = JSON.parse(this.response);
+            elemTitle.innerText = data.part_of_speech;
+            elemAuthor.innerText = data.author.username;
+            elemOrigin.innerText = data.origin;
+            elemTranslation.value = data.translation;
+        } else {
+            elemOrigin.innerText = _('Error occurred');
+        }
+    };
+
+    request.onerror = function () {
+        elemOrigin.innerText = _('Connection error');
+    };
+
+    request.send();
 }

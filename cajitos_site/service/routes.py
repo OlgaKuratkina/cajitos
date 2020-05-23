@@ -1,4 +1,4 @@
-from flask import request, current_app, Response
+from flask import request, current_app, jsonify
 from flask_login import login_required
 from werkzeug.exceptions import BadRequest
 
@@ -13,6 +13,6 @@ def translate_data():
     current_app.logger.info(f'Recieved data for translation: {data}')
     if 'dest_language' not in data or 'text' not in data:
         return BadRequest()
-    return Response(
+    return jsonify(
         translate_text(target=data['dest_language'],text=data['text'])
     )
