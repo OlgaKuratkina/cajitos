@@ -5,6 +5,19 @@ file_url = "https://cajitos-my-test.s3.amazonaws.com/check/requirements.txt"
 local_url = "/tmp/misc/requirements.txt"
 local_config = "/tmp/misc/app_config.json"
 
+# <script>
+#         function translate(sourceElem, destElem, destLang) {
+#             $(destElem).html('<img src="{{ url_for('static', filename='images/loading.gif') }}">');
+#             $.post('/service/translate', {
+#                 text: $(sourceElem).text(),
+#                 dest_language: destLang
+#             }).done(function(response) {
+#                 $(destElem).text(response['text'])
+#             }).fail(function() {
+#                 $(destElem).text("{{ _('Error: Could not contact server.') }}");
+#             });
+#         }
+#     </script>
 
 def check_file_works():
     result = []

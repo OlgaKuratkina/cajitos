@@ -13,7 +13,7 @@
         <p>
             {% if post.language and post.language != g.locale %}
                 <small class id="translation{{ post.id }}">
-                    <a href="javascript:translate_v2(
+                    <a href="javascript:translate(
                                 'post{{ post.id }}',
                                 'translation{{ post.id }}',
                                 '{{ g.locale }}');">{{ _('Translate') }}</a>
@@ -22,4 +22,3 @@
         </p>
     </div>
 </article>
-    <script src="{{ url_for('static', filename='translate.js') }}"></script>
