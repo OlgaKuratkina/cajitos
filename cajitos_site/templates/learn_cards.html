@@ -5,10 +5,7 @@
 
     <div class="media content-section">
         <br>
-{#        <h3>Click to see translation</h3>#}
-{#        Card here#}
         <div class="card w-75">
-{#            <img class="card-img-top" src="..." alt="Card image cap">#}
             <div class="card-body">
                 <h5 class="card-title">{{ card.part_of_speech }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">by {{ card.author.username }}</h6>
@@ -16,12 +13,10 @@
                 <h2 id="translation">{{ card.origin }}</h2>
             </div>
             <div class="card-body">
-{#                <a href="#" class="badge badge-info" >Translate Me!</a>#}
                 <button type="submit" class="btn btn-outline-secondary"
                         onClick="flip_card('{{ card.origin }}', '{{card.translation }}');">Translate Me!</button>
                 <a class="btn btn-outline-secondary" href="{{ url_for('misc.random_card') }}">Get another one</a>
             </div>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='card.js') }}"></script>
 {% endblock %}

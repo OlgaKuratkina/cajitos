@@ -29,3 +29,12 @@ function translate(sourceElemId, destElemId, destLang) {
 
     request.send(json);
 }
+
+function flip_card(face, back) {
+    let translation_field = document.getElementById('translation');
+    if (translation_field.innerText === face) {
+        translation_field.innerText = back;
+    } else {
+        translation_field.innerText = face;
+    }
+}

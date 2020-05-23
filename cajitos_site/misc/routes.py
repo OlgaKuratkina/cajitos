@@ -6,7 +6,7 @@ from peewee import fn
 import os
 from flask import send_from_directory
 
-from cajitos_site.utils.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients
+from cajitos_site.utils.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients, get_random_record
 from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm
@@ -53,7 +53,7 @@ def expressions():
 
 @misc.route("/random_card")
 def random_card():
-    card = VocabularyCard.select().order_by(fn.Random()).limit(1).first()
+    card = get_random_record(VocabularyCard)
     return render_template('learn_cards.html', card=card)
 
 

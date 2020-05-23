@@ -1,3 +1,5 @@
+import random
+
 import peewee as pw
 from flask import current_app, abort
 from flask_login import current_user
@@ -69,6 +71,11 @@ def cache_data(model, data):
         return model.update(**data)
     else:
         return model.create(**data)
+
+
+def get_random_record(model):
+    records = model.select().order_by(pw.fn.Random()).limit(30)
+    return random.choice(records)
 
 
 def get_user_google(google_id):
