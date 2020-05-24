@@ -4,6 +4,15 @@
     <div class="content-section">
     <fieldset class="form-group">
         <legend class="border-bottom mb-4">Vocabulary</legend>
+{#        <a class="btn btn-outline-secondary" href="{{ url_for('misc.cards') }}">{{ _('Check all available words') }}</a>#}
+        {% if current_user.is_authenticated %}
+        <a class="mr-2"
+               href="{{ url_for('misc.new_card') }}">{{ _('Add your words') }}</a>
+{#        <a class="btn btn-outline-secondary" href="{{ url_for('misc.new_card') }}">{{ _('Add your cards') }}</a>#}
+        {% else %}
+            <br>
+            <small class="text-muted">{{ _('Sign in to be able to add words') }}</small>
+        {% endif %}
         <form action="{{ url_for('misc.cards') }}" method="post">
             <div class="row">
                 <div class="col-sm-8">
@@ -15,42 +24,6 @@
             </div>
         </form>
     </fieldset>
-    {% if current_user.is_authenticated %}
-    <fieldset class="form-group">
-        <form action="{{ url_for('misc.cards') }}" method="post">
-            <div class="row">
-                <div class="col">
-                    <input type="text" class="form-control" name="origin_word" placeholder="Word" required>
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" name="translation" placeholder="Translation" required>
-                </div>
-                <div class="col">
-                    <select class="form-control" id="ControlSelectSpeech" name="part_speech" required>
-                        <option>{{ _('noun') }}</option>
-                        <option>{{ _('verb') }}</option>
-                        <option>{{ _('adjective') }}</option>
-                        <option>{{ _('adverb') }}</option>
-                        <option>{{ _('pronoun') }}</option>
-                        <option>{{ _('preposition') }}</option>
-                        <option>{{ _('conjunction') }}</option>
-                        <option>{{ _('interjection') }}</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <select class="form-control" id="ControlSelectLang" name="language" required>
-                        <option>es</option>
-                        <option>en</option>
-                        <option>ru</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-outline-secondary">Add translation</button>
-                </div>
-            </div>
-        </form>
-    </fieldset>
-    {% endif %}
         <div class="container">
             <br>
             <h3>Available translations</h3>

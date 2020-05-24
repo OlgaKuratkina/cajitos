@@ -1,9 +1,8 @@
-import json
 import math
 
-from flask import request, render_template, current_app, redirect, url_for, Response, jsonify
+from flask import request, render_template, current_app, redirect, url_for, Response, jsonify, flash
 from flask_login import current_user
-from peewee import fn
+from flask_babel import _
 import os
 from flask import send_from_directory
 from playhouse.shortcuts import model_to_dict
@@ -11,13 +10,32 @@ from playhouse.shortcuts import model_to_dict
 from cajitos_site.utils.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients, get_random_record
 from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
-from cajitos_site.misc.forms import ExpressionForm
+from cajitos_site.misc.forms import ExpressionForm, VocabularyCardForm
 from cajitos_site.models import VocabularyCard, ExpressionCard, User
 
 
-@misc.route("/cards", methods=['POST', 'GET'])
+# @misc.route("/cards", methods=['POST', 'GET'])
+# def cards():
+#     search = None
+#     if request.method == 'POST' and current_user.is_authenticated:
+#         origin_word = request.form.get('origin_word')
+#         translation = request.form.get('translation')
+#         part_speech = request.form.get('part_speech')
+#         language = request.form.get('language')
+#         if origin_word and translation and language:
+#             VocabularyCard.create(origin=origin_word, translation=translation, language=language,
+#                                   part_of_speech=part_speech, author=current_user.id)
+#             return redirect(url_for('misc.cards'))
+#     if request.method == 'POST':
+#         search = request.form.get('search_word')
+#     list_cards = get_cards_words(search)
+#     return render_template('vocabulary.html', cards=list_cards)
+
+
+@misc.route('/cards', methods=['POST', 'GET'])
 def cards():
     search = None
+    form = VocabularyCardForm()
     if request.method == 'POST' and current_user.is_authenticated:
         origin_word = request.form.get('origin_word')
         translation = request.form.get('translation')
@@ -30,7 +48,19 @@ def cards():
     if request.method == 'POST':
         search = request.form.get('search_word')
     list_cards = get_cards_words(search)
-    return render_template('vocabulary.html', cards=list_cards)
+    return render_template('vocabulary.html', cards=list_cards, form=form)
+
+
+@misc.route('card/new', methods=['GET', 'POST'])
+def new_card():
+    form = VocabularyCardForm()
+    if form.validate_on_submit():
+        VocabularyCard.create(origin=form.origin.data, translation=form.translation.data, author=current_user.id,
+                              part_of_speech=form.part_of_speech.data, category=form.category.data,
+                              language=form.language.data)
+        flash(_('Your word has been added! Try using it in learning'), 'success')
+        return redirect(url_for('misc.cards'))
+    return render_template('create_entry.html', title=_('Add new word'), legend=_('Add new word'), form=form)
 
 
 @misc.route("/expressions", methods=['POST', 'GET'])

@@ -2,11 +2,16 @@
 
 {% block content %}
     <h1>Learn Words</h1>
+        <a class="mr-2"
+               href="{{ url_for('misc.cards') }}">{{ _('Check all available words') }}</a>
+{#        <a class="btn btn-outline-secondary" href="{{ url_for('misc.cards') }}">{{ _('Check all available words') }}</a>#}
         {% if current_user.is_authenticated %}
         <a class="mr-2"
-               href="{{ url_for('misc.cards') }}">{{ _('Add your cards') }}</a>
+               href="{{ url_for('misc.new_card') }}">{{ _('Add your words') }}</a>
+{#        <a class="btn btn-outline-secondary" href="{{ url_for('misc.new_card') }}">{{ _('Add your cards') }}</a>#}
         {% else %}
-            <small class="text-muted">{{ _('Sign in to be able to add cards') }}</small>
+            <br>
+            <small class="text-muted">{{ _('Sign in to be able to add words') }}</small>
         {% endif %}
     <div class="media content-section">
         <div class="card w-75">

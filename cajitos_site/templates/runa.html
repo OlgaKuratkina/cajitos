@@ -32,6 +32,16 @@
     </script>
     <h3>Гадание на рунах Одина</h3>
     <br>
+        <div class="media-body">
+        <div class="article-metadata">
+            <div>
+                <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1" onClick="runa();">Получить ответ!
+                </button>
+                <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1" onClick="begin();">Начать с начала
+                </button>
+            </div>
+        </div>
+    </div>
     <article class="media content-section">
         <img class="rounded-circle article-img" id="runaimg"
              src="{{ url_for('static', filename='images/runa25.png') }}">
@@ -42,17 +52,6 @@
             <p class="article-content text-justify" id="text_runa">Тут будет Ваше предсказание</p>
         </div>
     </article>
-
-    <div class="media-body">
-        <div class="article-metadata">
-            <div>
-                <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1" onClick="runa();">Получить ответ!
-                </button>
-                <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1" onClick="begin();">Начать с начала
-                </button>
-            </div>
-        </div>
-    </div>
     <script src="{{ url_for('static', filename='runas.js') }}"></script>
     <script src="{{ url_for('static', filename='runa.js') }}"></script>
 {% endblock %}

@@ -1,6 +1,9 @@
 {% extends "layout_blog.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block content %}
+    {% if legend %}
+        <legend class="border-bottom mb-4">{{ legend }}</legend>
+    {% endif %}
 <div class="content-section">
     {{ wtf.quick_form(form) }}
 </div>
