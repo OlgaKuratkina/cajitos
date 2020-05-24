@@ -133,7 +133,9 @@ class VocabularyCard(TimestampModel):
     origin = pw.TextField(unique=True)
     translation = pw.TextField()
     language = pw.CharField(choices=('es', 'ru', 'en'), default='en')
-    part_of_speech = pw.CharField(max_length=50, null=True)
+    part_of_speech = pw.CharField(
+        choices=('noun', 'pronoun', 'verb', 'adjective', 'adverb', 'preposition', 'conjunction', 'interjection'),
+        default='noun')
     author = pw.ForeignKeyField(User, backref='words', null=True)
 
     def __str__(self):

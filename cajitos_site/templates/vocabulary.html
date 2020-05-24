@@ -26,7 +26,16 @@
                     <input type="text" class="form-control" name="translation" placeholder="Translation" required>
                 </div>
                 <div class="col">
-                    <input type="text" class="form-control" name="part_speech" placeholder="Part of speech">
+                    <select class="form-control" id="ControlSelectSpeech" name="part_speech" required>
+                        <option>{{ _('noun') }}</option>
+                        <option>{{ _('verb') }}</option>
+                        <option>{{ _('adjective') }}</option>
+                        <option>{{ _('adverb') }}</option>
+                        <option>{{ _('pronoun') }}</option>
+                        <option>{{ _('preposition') }}</option>
+                        <option>{{ _('conjunction') }}</option>
+                        <option>{{ _('interjection') }}</option>
+                    </select>
                 </div>
                 <div class="col">
                     <select class="form-control" id="ControlSelectLang" name="language" required>
