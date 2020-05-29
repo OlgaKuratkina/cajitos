@@ -2,12 +2,12 @@ import peewee as pw
 from flask import Flask, request
 from flask_babel import Babel
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
-from flask_moment import Moment
-from flask_mail import Mail
-from configure import configure_app
-
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
+from flask_mail import Mail
+from flask_moment import Moment
+
+from configure import configure_app
 
 db = pw.Proxy()
 bcrypt = Bcrypt()

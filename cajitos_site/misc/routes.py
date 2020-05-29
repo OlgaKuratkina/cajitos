@@ -1,5 +1,6 @@
 import math
 
+import markdown
 from flask import request, render_template, current_app, redirect, url_for, Response, jsonify, flash
 from flask_login import current_user
 from flask_babel import _
@@ -10,26 +11,8 @@ from playhouse.shortcuts import model_to_dict
 from cajitos_site.utils.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients, get_random_record
 from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
-from cajitos_site.misc.forms import ExpressionForm, VocabularyCardForm
-from cajitos_site.models import VocabularyCard, ExpressionCard, User
-
-
-# @misc.route("/cards", methods=['POST', 'GET'])
-# def cards():
-#     search = None
-#     if request.method == 'POST' and current_user.is_authenticated:
-#         origin_word = request.form.get('origin_word')
-#         translation = request.form.get('translation')
-#         part_speech = request.form.get('part_speech')
-#         language = request.form.get('language')
-#         if origin_word and translation and language:
-#             VocabularyCard.create(origin=origin_word, translation=translation, language=language,
-#                                   part_of_speech=part_speech, author=current_user.id)
-#             return redirect(url_for('misc.cards'))
-#     if request.method == 'POST':
-#         search = request.form.get('search_word')
-#     list_cards = get_cards_words(search)
-#     return render_template('vocabulary.html', cards=list_cards)
+from cajitos_site.misc.forms import ExpressionForm, VocabularyCardForm, DebugForm
+from cajitos_site.models import VocabularyCard, ExpressionCard
 
 
 @misc.route('/cards', methods=['POST', 'GET'])
@@ -56,7 +39,7 @@ def new_card():
     form = VocabularyCardForm()
     if form.validate_on_submit():
         VocabularyCard.create(origin=form.origin.data, translation=form.translation.data, author=current_user.id,
-                              part_of_speech=form.part_of_speech.data, category=form.category.data,
+                              part_of_speech=form.part_speech.data, category=form.category.data,
                               language=form.language.data)
         flash(_('Your word has been added! Try using it in learning'), 'success')
         return redirect(url_for('misc.cards'))
@@ -98,10 +81,16 @@ def runa():
     return render_template('runa.html', title="Runa")
 
 
-@misc.route("/debug")
+@misc.route("/debug", methods=['POST', 'GET'])
 def debug():
-    data = []
-    return render_template('debug.html', data=data)
+    form = DebugForm()
+    if form.validate_on_submit():
+        current_app.logger.info('submitted!')
+        text = form.body.data
+        html = markdown.markdown(text, extensions=['codehilite'])
+        current_app.logger.info(html)
+        return render_template('debug.html', form=form, data=html)
+    return render_template('debug.html', form=form)
 
 
 @misc.route("/random_cocktail")
@@ -134,4 +123,4 @@ def try_template():
 @misc.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(current_app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+                               'favicon.ico', mimetype='vnd.microsoft.icon')

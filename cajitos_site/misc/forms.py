@@ -19,7 +19,7 @@ class ExpressionForm(FlaskForm):
 
 class VocabularyCardForm(FlaskForm):
     legend = 'Add your word, use it for cards'
-    origin_word = StringField(
+    origin = StringField(
         _l('Word'),
         # description=_l('Enter your word in a foreign language'),
         validators=[DataRequired(), Length(min=5, max=120)]
@@ -37,3 +37,9 @@ class VocabularyCardForm(FlaskForm):
     category = StringField('Category')
     language = SelectField('Language', choices=[('es', 'es'), ('ru', 'ru'), ('en', 'en')])
     submit = SubmitField('Add')
+
+
+class DebugForm(FlaskForm):
+    body = TextAreaField('Enter your markdown')
+    submit = SubmitField('Submit')
+
