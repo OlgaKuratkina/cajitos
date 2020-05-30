@@ -137,6 +137,10 @@ form textarea#content {
 }
 
 .card {
-    /*display:inline-block;*/
     width: 21rem;
 }
+/*.btn-default {*/
+/*    color: #333;*/
+/*    background-color: #fff;*/
+/*    border-color: #ccc;*/
+/*}*/

@@ -1,8 +1,6 @@
 {% extends "layout_blog.html" %}
 
 {% block css_header %}
-{#  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">#}
-{#  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-markdown.min.css') }}">#}
 {% endblock css_header %}
 
 {% block content %}
@@ -34,7 +32,7 @@
         <input name="publish" type="checkbox"> Publish
       </label>
       <hr/>
-      <button type="submit" class="btn">Submit</button>
+      <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1">Submit</button>
     </form>
 </div>
 {% endblock content %}
