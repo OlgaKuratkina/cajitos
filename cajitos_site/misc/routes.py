@@ -89,8 +89,8 @@ def debug():
         text = form.body.data
         html = markdown.markdown(text, extensions=['codehilite'])
         current_app.logger.info(html)
-        return render_template('debug.html', form=form, data=html)
-    return render_template('debug.html', form=form)
+        return render_template('_editor.html', form=form, data=html)
+    return render_template('_editor.html', form=form)
 
 
 @misc.route("/random_cocktail")

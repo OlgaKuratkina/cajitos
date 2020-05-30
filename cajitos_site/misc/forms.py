@@ -22,12 +22,12 @@ class VocabularyCardForm(FlaskForm):
     origin = StringField(
         _l('Word'),
         # description=_l('Enter your word in a foreign language'),
-        validators=[DataRequired(), Length(min=5, max=120)]
+        validators=[DataRequired(), Length(min=2, max=120)]
     )
     translation = StringField(
         _l('Translation'),
         # description=_l('Enter translation for the word'),
-        validators=[DataRequired(), Length(min=5, max=120)]
+        validators=[DataRequired(), Length(min=2, max=120)]
     )
     part_speech = SelectField(_l('Part of the speech'), choices=[
         ('noun', 'noun'), ('pronoun', 'pronoun'), ('verb', 'verb'), ('adjective', 'adjective'),

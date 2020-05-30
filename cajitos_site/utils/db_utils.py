@@ -24,7 +24,7 @@ def get_cards_words(search=None):
     query = mod.VocabularyCard.select()
     if search:
         query = query.where(mod.VocabularyCard.origin ** search)
-    return query.order_by(mod.VocabularyCard.id.desc()).limit(20)
+    return query.order_by(mod.VocabularyCard.id.desc()).limit(30)
 
 
 def get_cards_expressions(page=0, search=None):
