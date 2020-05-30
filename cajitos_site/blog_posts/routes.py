@@ -1,5 +1,7 @@
 import math
 
+import markdown
+
 from cajitos_site.blog_posts import posts
 from flask import request, render_template, flash, redirect, url_for, abort, current_app
 from flask_babel import _
@@ -32,11 +34,12 @@ def new_post():
     form = PostForm()
     if form.validate_on_submit():
         language = get_language(form.content.data)
-        Post.create(title=form.title.data, content=form.content.data, author=current_user.id, tags='test',
+        content = markdown.markdown(form.content.data)
+        Post.create(title=form.title.data, content=content, author=current_user.id, tags='test',
                     category=form.category.data, is_hidden=form.is_hidden.data, language=language)
         flash(_('Your post has been created!'), 'success')
         return redirect(url_for('posts.blog_posts'))
-    return render_template('create_entry.html', title=_('New Post'), form=form)
+    return render_template('_editor.html', title=_('New Post'), form=form)
 
 
 @posts.route("/comment/<int:post_id>/new", methods=['GET', 'POST'])
@@ -66,7 +69,9 @@ def update_post(post_id):
     if form.validate_on_submit():
         language = get_language(form.content.data)
         post.title = form.title.data
-        post.content = form.content.data
+        post.content = markdown.markdown(form.content.data)
+        post.category = form.category.data
+        post.is_hidden = form.is_hidden.data
         post.language = language
         post.save()
         flash(_('Your post has been updated!'), 'success')
@@ -74,7 +79,9 @@ def update_post(post_id):
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('create_entry.html', title=_('Update Post'), form=form)
+        form.category.data = post.category
+        form.is_hidden.data = post.is_hidden
+    return render_template('_editor.html', title=_('Update Post'), form=form)
 
 
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])

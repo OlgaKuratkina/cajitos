@@ -139,8 +139,8 @@ form textarea#content {
 .card {
     width: 21rem;
 }
-/*.btn-default {*/
-/*    color: #333;*/
-/*    background-color: #fff;*/
-/*    border-color: #ccc;*/
-/*}*/
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}

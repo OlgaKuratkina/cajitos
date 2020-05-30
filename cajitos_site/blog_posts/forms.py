@@ -9,8 +9,8 @@ class PostForm(FlaskForm):
     title = StringField(_l('Title'), validators=[DataRequired()])
     content = TextAreaField(_l('Content'), validators=[DataRequired()])
     category = StringField(_l('Category'), validators=[DataRequired()])
-    is_hidden = BooleanField(_l('Make post private'))
-    submit = SubmitField(_l('Post'))
+    is_hidden = BooleanField(_l('Make private'))
+    submit = SubmitField(_l('Post me!'))
 
 
 class UpdatePostForm(PostForm):
