@@ -77,6 +77,3 @@ def get_random_record(model):
     records = model.select().order_by(pw.fn.Random()).limit(30)
     return random.choice(records)
 
-
-def get_user_google(google_id):
-    return User.select().where(User.google_id == google_id).first()

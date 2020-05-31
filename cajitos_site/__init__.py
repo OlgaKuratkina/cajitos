@@ -1,9 +1,12 @@
+import logging
+from datetime import datetime
+
 import peewee as pw
-from flask import Flask, request
+from flask import Flask, request, g
 from flask_babel import Babel
 from flask_bcrypt import Bcrypt
 from flask_bootstrap import Bootstrap
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_mail import Mail
 from flask_moment import Moment
 
@@ -66,3 +69,19 @@ def get_locale():
 
 
 application = create_app()
+
+
+@application.before_request
+def _before():
+    if db.is_closed():
+        db.connect()
+    g.locale = str(get_locale())
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        current_user.save()
+
+
+@application.teardown_request
+def _after(exc):
+    if not db.is_closed():
+        db.close()

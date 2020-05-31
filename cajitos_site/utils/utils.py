@@ -25,7 +25,7 @@ def get_redirect_target():
     for target in request.values.get('next'), request.referrer:
         if not target:
             continue
-        if is_safe_url(target):
+        if is_safe_url(target) and request.base_url != target:
             return target
     return None
 

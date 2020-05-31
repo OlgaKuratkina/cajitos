@@ -4,8 +4,10 @@ from flask import current_app, url_for
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from playhouse.postgres_ext import *
 
-from cajitos_site import db, login_manager
+from cajitos_site import db, login_manager, bcrypt
 from flask_login import UserMixin
+
+from cajitos_site.utils.utils import generate_random_pass
 
 
 class BaseModel(pw.Model):
@@ -41,6 +43,7 @@ class User(TimestampModel, UserMixin):
     profile_picture = pw.CharField(max_length=100, default='anon.jpg')
     about_me = pw.CharField(max_length=250, null=True)
     last_seen = pw.DateTimeField(default=dt.datetime.utcnow)
+    is_admin = pw.BooleanField(default=False)
     # followers = pw.ManyToManyField(model=self, backref='courses')
 
     def __repr__(self):
@@ -65,12 +68,21 @@ class User(TimestampModel, UserMixin):
             return True
         return False
 
+    @classmethod
+    def get_user_by_email(cls, email):
+        return cls.select().where(cls.email == email).first()
+
     @property
     def picture_url(self):
         if self.google_id:
             return self.profile_picture
         else:
             return url_for('static', filename='images/user_pics/' + self.profile_picture)
+
+    @classmethod
+    def create(cls, **query):
+        query['password'] = bcrypt.generate_password_hash(generate_random_pass()).decode('utf-8')
+        return super().create(**query)
 
     def is_following(self, user):
         return Followers.select().where(
@@ -106,6 +118,7 @@ class Post(TimestampModel):
     category = pw.CharField(max_length=50)
     author = pw.ForeignKeyField(User, backref='posts')
     is_hidden = pw.BooleanField(default=False)
+    is_confirmed = pw.BooleanField(default=False)
     language = pw.CharField(max_length=10)
 
     def __repr__(self):

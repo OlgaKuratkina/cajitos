@@ -1,28 +1,15 @@
-from datetime import datetime
-
-from flask import redirect, url_for, flash, render_template, session, request, current_app, g
-from flask_babel import get_locale
+from flask import redirect, url_for, flash, render_template, session, request, current_app
 from flask_login import current_user, login_user, logout_user, login_required
 
 from cajitos_site import bcrypt
 from cajitos_site.users import users
 from cajitos_site.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from cajitos_site.models import User
-from cajitos_site.utils.db_utils import get_user_google
 from cajitos_site.utils.email import send_service_email
 from cajitos_site.utils.utils import (
-    generate_random_pass, get_redirect_target, save_picture
+    get_redirect_target, save_picture
 )
-from cajitos_site.utils.auth_utils import generate_google_auth_request, \
-    get_google_user_info
-
-
-@users.before_app_request
-def before_app_request():
-    g.locale = str(get_locale())
-    if current_user.is_authenticated:
-        current_user.last_seen = datetime.utcnow()
-        current_user.save()  # TODO call to save will change modified_at field
+from cajitos_site.utils.auth_utils import generate_google_auth_request, get_google_user_info
 
 
 @users.route("/register", methods=['GET', 'POST'])
@@ -31,11 +18,7 @@ def register():
         return redirect(url_for('posts.blog_posts'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        password = generate_random_pass()
-
-        # TODO extract to method of the User class
-        hashed_pass = bcrypt.generate_password_hash(password).decode('utf-8')
-        user = User.create(username=form.username.data, email=form.email.data, password=hashed_pass)
+        user = User.create(username=form.username.data, email=form.email.data)
         flash(f'Account created for {form.username.data}!', 'success')
         flash(f'Check your email to confirm your new account', 'success')
         token = user.get_validation_token()
@@ -55,10 +38,8 @@ def login():
         elif user and bcrypt.check_password_hash(user.password, form.password.data):
             flash('You have been logged in!', 'success')
             login_user(user, remember=form.remember.data)
-            current_app.logger.info('current user %s, session, %s', current_user, session)
             next_page = get_redirect_target()
-            # return redirect(next_page) if next_page else redirect(url_for('posts.blog_posts'))
-            return redirect(url_for('posts.blog_posts'))
+            return redirect(next_page) if next_page else redirect(url_for('posts.blog_posts'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -75,18 +56,24 @@ def callback():
     userinfo_response = get_google_user_info(request)
 
     if userinfo_response.get('email_verified'):
-        unique_id = userinfo_response['sub']
-        users_email = userinfo_response['email']
-        picture = userinfo_response['picture']
-        users_name = userinfo_response['given_name']
+        google_id = userinfo_response['sub']
+        email = userinfo_response['email']
+        profile_picture = userinfo_response['picture']
+        username = userinfo_response['given_name']
     else:
         return 'User email not available or not verified by Google.', 400
-    user = get_user_google(unique_id)
+    user = User.get_user_by_email(email)
     if not user:
         user = User.create(
-            google_id=unique_id, username=users_name, email=users_email, password='', profile_picture=picture,
+            google_id=google_id, username=username, email=email, password='', profile_picture=profile_picture,
             status='Confirmed'
         )
+    else:
+        user.google_id = google_id
+        user.username = username
+        user.profile_picture = profile_picture
+        user.status = 'Confirmed'
+        user.save()
     login_user(user)
     return redirect(url_for('posts.blog_posts'))
 
