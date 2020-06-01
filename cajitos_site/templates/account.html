@@ -22,41 +22,41 @@
                     {{ form.about_me.label(class="form-control-label") }}
 
                     {% if form.about_me.errors %}
-                        {{ form.about_me(class="form-control form-control-lg is-invalid") }}
+                        {{ form.about_me(class="form-control form-control-sm is-invalid") }}
                         <div class="invalid-feedback">
                             {% for error in form.about_me.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.about_me(class="form-control form-control-lg") }}
+                        {{ form.about_me(class="form-control form-control-sm") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
                     {{ form.username.label(class="form-control-label") }}
 
                     {% if form.username.errors %}
-                        {{ form.username(class="form-control form-control-lg is-invalid") }}
+                        {{ form.username(class="form-control form-control-sm is-invalid") }}
                         <div class="invalid-feedback">
                             {% for error in form.username.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.username(class="form-control form-control-lg") }}
+                        {{ form.username(class="form-control form-control-sm") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}
                     {% if form.email.errors %}
-                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        {{ form.email(class="form-control form-control-sm is-invalid") }}
                         <div class="invalid-feedback">
                             {% for error in form.email.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.email(class="form-control form-control-lg") }}
+                        {{ form.email(class="form-control form-control-sm") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
@@ -70,7 +70,7 @@
                 </div>
             </fieldset>
             <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+                {{ form.submit(class="btn btn-secondary btn-sm mt-1 mb-1") }}
             </div>
         </form>
     </div>

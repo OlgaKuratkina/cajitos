@@ -1,7 +1,7 @@
 function translate(sourceElemId, destElemId, destLang) {
 
     var request = new XMLHttpRequest();
-    request.open('POST', '/service/translate', true);
+    request.open('POST', '/translate', true);
 
     var sourceElem = document.getElementById(sourceElemId);
     var destElem = document.getElementById(destElemId);

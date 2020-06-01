@@ -1,4 +1,6 @@
-from flask import request, current_app, jsonify
+import os
+
+from flask import request, current_app, jsonify, send_from_directory
 from flask_login import login_required
 from werkzeug.exceptions import BadRequest
 
@@ -16,3 +18,15 @@ def translate_data():
     return jsonify(
         translate_text(target=data['dest_language'],text=data['text'])
     )
+
+
+@service.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(current_app.root_path, 'static'),
+                               'favicon.ico', mimetype='vnd.microsoft.icon')
+
+
+@service.route('/robots.txt')
+def robots():
+    return send_from_directory(os.path.join(current_app.root_path, 'static'),
+                               'robots.txt', mimetype='plain_text')

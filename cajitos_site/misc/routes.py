@@ -1,18 +1,16 @@
 import math
 
 import markdown
-from flask import request, render_template, current_app, redirect, url_for, Response, jsonify, flash
-from flask_login import current_user
+from flask import request, render_template, current_app, redirect, url_for, jsonify, flash
 from flask_babel import _
-import os
-from flask import send_from_directory
+from flask_login import current_user
 from playhouse.shortcuts import model_to_dict
 
-from cajitos_site.utils.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients, get_random_record
 from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm, VocabularyCardForm, DebugForm
 from cajitos_site.models import VocabularyCard, ExpressionCard
+from cajitos_site.utils.db_utils import get_cards_words, get_cards_expressions, get_drink_ingredients, get_random_record
 
 
 @misc.route('/cards', methods=['POST', 'GET'])
@@ -118,9 +116,3 @@ def search_drink():
 @misc.route("/try")
 def try_template():
     return render_template('example_template.html')
-
-
-@misc.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(current_app.root_path, 'static'),
-                               'favicon.ico', mimetype='vnd.microsoft.icon')

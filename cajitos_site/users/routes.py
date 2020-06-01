@@ -71,7 +71,8 @@ def callback():
     else:
         user.google_id = google_id
         user.username = username
-        user.profile_picture = profile_picture
+        if profile_picture:
+            user.profile_picture = profile_picture
         user.status = 'Confirmed'
         user.save()
     login_user(user)
