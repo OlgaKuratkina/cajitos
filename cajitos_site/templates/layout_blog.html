@@ -2,8 +2,11 @@
 <html>
 <head>
     <!-- Required meta tags -->
+    {% block keywords %}
+    {% endblock %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="flask python development experiments" name="keywords">
     <link rel="icon" href="{{ url_for("service.favicon") }}">
     <link rel="icon" href="{{ url_for("service.robots") }}">
 
@@ -28,7 +31,7 @@
 
 
     {% block css_header %}
-    {% endblock css_header%}
+    {% endblock %}
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}">
 
