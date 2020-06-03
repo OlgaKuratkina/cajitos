@@ -30,3 +30,9 @@ def favicon():
 def robots():
     return send_from_directory(os.path.join(current_app.root_path, 'static'),
                                'robots.txt', mimetype='plain_text')
+
+
+@service.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory(os.path.join(current_app.root_path, 'static'),
+                               'sitemap.xml')

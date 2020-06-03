@@ -1,6 +1,7 @@
 import math
 
 import markdown
+from playhouse.flask_utils import object_list
 
 from cajitos_site.blog_posts import posts
 from flask import request, render_template, flash, redirect, url_for, abort, current_app
@@ -16,16 +17,12 @@ from cajitos_site.utils.translate_utils import get_language
 @posts.route("/")
 @posts.route("/blog_posts")
 def blog_posts():
-    page = request.args.get('page', 1, type=int)
     author = request.args.get('author')
     query = Post.select()
     if author:
         query = query.where(Post.author == author)
-    total_pages = int(math.ceil(query.count() / current_app.config['PER_PAGE']))
-    posts = query.order_by(Post.created_at.desc()).paginate(page=page, paginate_by=current_app.config['PER_PAGE'])
-    return render_template(
-        'posts.html', title='Blog Posts', posts=posts, author=author, page=page, total_pages=total_pages
-    )
+    posts = query.order_by(Post.created_at.desc())
+    return object_list('posts.html', posts, paginate_by=current_app.config['PER_PAGE'],  title='Blog Posts')
 
 
 @posts.route("/post/new", methods=['GET', 'POST'])
