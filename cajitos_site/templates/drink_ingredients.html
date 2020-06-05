@@ -1,16 +1,41 @@
 {% extends "layout_blog.html" %}
 {% block content %}
-    {% for ingr in ingredients %}
+    {% for ingr in object_list %}
         {% include "_ingr.html" %}
     {% endfor %}
+
+
 {% endblock content %}
-<!-- Pagination -->
-{% block footer %}
-    {% for page_num in range(1, total_pages + 1) %}
-        {% if page == page_num %}
-            <a class="btn btn-info mb-4" href="{{ url_for('misc.drink_ingredients', page=page_num) }}">{{ page_num }}</a>
-        {% else %}
-            <a class="btn btn-outline-info mb-4" href="{{ url_for('misc.drink_ingredients', page=page_num) }}">{{ page_num }}</a>
-        {% endif %}
-    {% endfor %}
-{% endblock footer %}
+
+{% block pages %}
+      <!-- Pagination -->
+    <nav aria-label="Page navigation">
+        <div class="w-100 d-inline-block mx-auto">
+            {% for page_num in range(1, pagination.get_page_count() + 1) %}
+                {% if page == page_num %}
+                    <a class="btn btn-secondary btn-sm disabled" aria-disabled="true" href="#">{{ page_num }}</a>
+                {% else %}
+                    <a class="btn btn-secondary btn-sm"
+                       href="{{ url_for('misc.drink_ingredients', page=page_num) }}">{{ page_num }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </nav>
+{% endblock %}
+
+     <!-- Pagination -->
+{#<nav aria-label="Page navigation">#}
+{#<div  class="w-100 d-inline-block mx-auto">#}
+{#    {% if page > 1 %}#}
+{#    <a class="btn btn-secondary btn-sm" href="{{ url_for('posts.blog_posts', page=page - 1) }}">{{ _('Recent') }}</a>#}
+{#{% else %}#}
+{#<a class="btn btn-secondary btn-sm disabled" aria-disabled="true" href="{{ url_for('posts.blog_posts', page=page - 1) }}">{{ _('Recent') }}</a>#}
+{#{% endif %}#}
+{#{% if pagination.get_page_count() > pagination.get_page() %}#}
+{#    <a class="btn btn-secondary btn-sm" href="{{ url_for('posts.blog_posts', page=pagination.get_page() + 1) }}">{{ _('Older') }}</a>#}
+{#    {% else %}#}
+{#    <a class="btn btn-secondary btn-sm disabled" aria-disabled="true" href="{{ url_for('posts.blog_posts', page=pagination.get_page() + 1) }}">{{ _('Older') }}</a>#}
+{#{% endif %}#}
+{#</div>#}
+{#</nav>#}
+

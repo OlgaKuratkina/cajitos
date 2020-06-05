@@ -1,5 +1,3 @@
-import math
-
 import markdown
 from playhouse.flask_utils import object_list
 
@@ -22,7 +20,7 @@ def blog_posts():
     if author:
         query = query.where(Post.author == author)
     posts = query.order_by(Post.created_at.desc())
-    return object_list('posts.html', posts, paginate_by=current_app.config['PER_PAGE'],  title='Blog Posts')
+    return object_list('posts.html', posts, paginate_by=current_app.config['PER_PAGE'], title='Blog Posts')
 
 
 @posts.route("/post/new", methods=['GET', 'POST'])

@@ -40,15 +40,11 @@ def get_cards_expressions(page=0, search=None):
 
 
 # TODO refactor out common query elements
-def get_drink_ingredients(page=0, search=None):
+def get_drink_ingredients(search=None):
     search = f"%{search}%" if search else None
-    query = mod.Ingredient.select()
+    query = mod.Ingredient.select().order_by(mod.Ingredient.name)
     if search:
         query = query.where(mod.Ingredient.name ** search)
-    if page:
-        query = query.order_by(mod.Ingredient.id.desc()).paginate(
-            page=page, paginate_by=current_app.config['PER_PAGE']
-        )
     return query
 
 

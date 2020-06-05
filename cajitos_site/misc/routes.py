@@ -4,6 +4,7 @@ import markdown
 from flask import request, render_template, current_app, redirect, url_for, jsonify, flash
 from flask_babel import _
 from flask_login import current_user
+from playhouse.flask_utils import object_list
 from playhouse.shortcuts import model_to_dict
 
 from cajitos_site.external_apis.cocktails_db import CocktailApi
@@ -99,10 +100,9 @@ def random_cocktail():
 
 @misc.route("/drink_ingredients")
 def drink_ingredients():
-    page = 0
     all_data = get_drink_ingredients()
-    total_pages = int(math.ceil(get_drink_ingredients().count() / current_app.config['PER_PAGE']))
-    return render_template('drink_ingredients.html', ingredients=all_data, page=page, total_pages=total_pages)
+    return object_list('drink_ingredients.html', all_data, paginate_by=current_app.config['PER_PAGE'],
+                       title='Drink ingredients')
 
 
 @misc.route("/search")

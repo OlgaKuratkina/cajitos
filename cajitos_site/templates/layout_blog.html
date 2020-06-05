@@ -116,10 +116,10 @@
             {% endwith %}
             {% block content %}{% endblock %}
             <nav class=" navbar navbar-expand-md navbar-dark bg-steel fixed-bottom">
-            {% block footer %}{% endblock %}
             </nav>
+            {% block footer %}{% endblock %}
         </div>
-        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+        <div class="col-sm-4 col-sm-offset-1 blog-sidebar">
             <div class="content-section">
                 <p class='text-muted'><a href="{{ url_for('posts.post', post_id=11) }}">{{ _('About') }}</a>
                 <ul class="list-group">
@@ -133,6 +133,8 @@
                 </p>
             </div>
         </div>
+        {% block pages %}
+        {% endblock %}
     </div>
 </main>
 
