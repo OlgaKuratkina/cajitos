@@ -29,7 +29,7 @@
             <h3>Available translations</h3>
             <div class="card w-75">
                 <ul class="list-group list-group-flush">
-                    {% for card in cards %}
+                    {% for card in object_list %}
                         <li class="list-group-item">{{ card }}</li>
                     {% endfor %}
                 </ul>
@@ -37,3 +37,19 @@
         </div>
     </div>
 {% endblock %}
+{% block pages %}
+
+    <nav aria-label="Page navigation">
+        <div class="w-100 d-inline-block mx-auto">
+
+            {% for page_num in range(1, pagination.get_page_count() + 1) %}
+                {% if page == page_num %}
+                    <a class="btn btn-secondary btn-sm disabled" aria-disabled="true" href="#">{{ page_num }}</a>
+                {% else %}
+                    <a class="btn btn-secondary btn-sm"
+                       href="{{ url_for('misc.cards', page=page_num) }}">{{ page_num }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </nav>
+{% endblock pages %}

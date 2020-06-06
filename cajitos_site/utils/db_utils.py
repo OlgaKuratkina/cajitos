@@ -5,7 +5,6 @@ from flask import current_app, abort
 from flask_login import current_user
 
 from cajitos_site import models as mod
-from cajitos_site.models import User
 
 
 def get_post_by_id_and_author(post_id):
@@ -23,8 +22,8 @@ def get_cards_words(search=None):
     search = f"%{search}%" if search else None
     query = mod.VocabularyCard.select()
     if search:
-        query = query.where(mod.VocabularyCard.origin ** search)
-    return query.order_by(mod.VocabularyCard.id.desc()).limit(30)
+        query = query.where(mod.VocabularyCard.origin ** search | mod.VocabularyCard.translation ** search)
+    return query.order_by(mod.VocabularyCard.id.desc())
 
 
 def get_cards_expressions(page=0, search=None):
@@ -45,18 +44,6 @@ def get_drink_ingredients(search=None):
     query = mod.Ingredient.select().order_by(mod.Ingredient.name)
     if search:
         query = query.where(mod.Ingredient.name ** search)
-    return query
-
-
-def search_model_records(model: pw.Model, page=0, search=None):
-    search = f"%{search}%" if search else None
-    query = model.select()
-    if search:
-        query = query.where(model.name ** search)
-    if page:
-        query = query.order_by(model.id.desc()).paginate(
-            page=page, paginate_by=current_app.config['PER_PAGE']
-        )
     return query
 
 

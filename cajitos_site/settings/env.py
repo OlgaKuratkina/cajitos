@@ -2,7 +2,7 @@ import logging
 import os
 
 
-PER_PAGE = 6
+PER_PAGE = 10
 
 
 def env(var_name, default=None):
