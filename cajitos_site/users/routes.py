@@ -1,3 +1,4 @@
+import markdown
 from flask import redirect, url_for, flash, render_template, session, request, current_app, abort
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -97,16 +98,20 @@ def account(user_id):
 @login_required
 def account_update(user_id):
     form = UpdateAccountForm()
+    if request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+        form.about_me.data = current_user.about_me
     if form.validate_on_submit() and current_user.id == user_id:
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.profile_picture = picture_file
         current_user.username = form.username.data
         current_user.email = form.email.data
-        current_user.about_me = form.about_me.data
+        current_user.about_me = markdown.markdown(form.about_me.data)
         current_user.save()
         flash('Your account has been updated!', 'success')
-        return redirect(url_for('users.account'))
+        return redirect(url_for('users.account', user_id=user_id))
     elif current_user.id != user_id:
         abort(403)
     return render_template('create_entry.html', title='Account', form=form)

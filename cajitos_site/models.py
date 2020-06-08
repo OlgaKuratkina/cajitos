@@ -41,7 +41,7 @@ class User(TimestampModel, UserMixin):
     first_name = pw.CharField(max_length=50, null=True)
     last_name = pw.CharField(max_length=50, null=True)
     profile_picture = pw.CharField(max_length=100, default='anon.jpg')
-    about_me = pw.CharField(max_length=250, null=True)
+    about_me = pw.CharField(max_length=600, null=True)
     last_seen = pw.DateTimeField(default=dt.datetime.utcnow)
     is_admin = pw.BooleanField(default=False)
     # followers = pw.ManyToManyField(model=self, backref='courses')
