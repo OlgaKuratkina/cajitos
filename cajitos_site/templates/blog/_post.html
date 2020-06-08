@@ -8,7 +8,7 @@
             <small class="text-muted">{{ moment(post.created_at).format('LLL') }}</small>
             <small class="text-muted"> {{ post.comments|length }} comments</small>
         </div>
-        <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+        <h2><a class="article-title" href="{{ url_for('blog.post', post_id=post.id) }}">{{ post.title }}</a></h2>
         <p class="article-content" id="post{{ post.id }}">{{ post.content|safe }}</p>
         <p>
             {% if post.language and post.language != g.locale and current_user.is_authenticated%}

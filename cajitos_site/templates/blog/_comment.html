@@ -4,7 +4,11 @@
     <div class="media-body">
         <div class="article-metadata">
             <a class="mr-2"
-               href="{{ url_for('posts.blog_posts', author=comment.author) }}">{{ comment.author.username }}</a>
+               href="{{ url_for('users.account', user_id=current_user.id) }}">{{ comment.author.username }}</a>
+            <small class="text-muted">{{ _('commented on') }}</small>
+            <a class="mr-2"
+               href="{{ url_for('blog.post', post_id=comment.post_id) }}">{{ comment.post.title }}</a>
+            <small class="text-muted">{{ _('at') }}</small>
             <small class="text-muted">{{ moment(comment.created_at).format('LLL') }}</small>
             <p class="article-content">{{ comment.content }}</p>
         </div>

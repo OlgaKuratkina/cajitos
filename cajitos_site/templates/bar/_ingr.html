@@ -4,10 +4,10 @@
     <div class="media-body">
         <div class="article-metadata">
             <a class="mr-2"
-               href="{{ url_for('misc.search_drink', ingr=ingr.name) }}">Drink by ingredient</a>
+               href="{{ url_for('bar.search_drink', ingr=ingr.name) }}">Drink by ingredient</a>
             <small class="text-muted">{{ ingr.category }}</small>
         </div>
-{#        <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>#}
+{#        <h2><a class="article-title" href="{{ url_for('blog.post', post_id=post.id) }}">{{ post.title }}</a></h2>#}
         <p class="article-content">{{ ingr.description }}</p>
     </div>
 </article>

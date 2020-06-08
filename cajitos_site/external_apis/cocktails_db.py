@@ -84,6 +84,8 @@ class CocktailApi:
 
 
 class IngrSchema(schema.Schema):
+    __model__ = Ingredient
+
     class Meta:
         unknown = EXCLUDE
     ext_id = fields.Integer(data_key='idIngredient')
@@ -107,10 +109,12 @@ class IngrSchema(schema.Schema):
         if not data:
             return None
         app.logger.info(data)
-        return cache_data(Ingredient, data)
+        return cache_data(self.__model__, data)
 
 
 class DrinkSchema(schema.Schema):
+    __model__ = Drink
+
     class Meta:
         unknown = EXCLUDE
     ext_id = fields.Integer(data_key='idDrink')
@@ -139,4 +143,4 @@ class DrinkSchema(schema.Schema):
     def make_drink(self, data, **kwargs):
         if not data:
             return None
-        return cache_data(Drink, data)
+        return cache_data(self.__model__, data)

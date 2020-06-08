@@ -23,7 +23,8 @@
     {% if current_user == user %}
         <a class="btn btn-outline-secondary mr-3" href="{{ url_for('users.account_update', user_id=user.id) }}">Edit</a>
     {% endif %}
-    <a class="btn btn-outline-secondary mr-3" href="{{ url_for('posts.blog_posts', author=user) }}">Posts</a>
+    <a class="btn btn-outline-secondary mr-3" href="{{ url_for('blog.comments', author=user) }}">Comments</a>
+    <a class="btn btn-outline-secondary mr-3" href="{{ url_for('blog.posts', author=user) }}">Posts</a>
         </div>
 
 

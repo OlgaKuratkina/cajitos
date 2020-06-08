@@ -116,7 +116,7 @@ class Post(TimestampModel):
     content = pw.TextField()
     tags = pw.CharField(max_length=50)
     category = pw.CharField(max_length=50)
-    author = pw.ForeignKeyField(User, backref='posts')
+    author = pw.ForeignKeyField(User, backref='blog')
     is_hidden = pw.BooleanField(default=False)
     is_confirmed = pw.BooleanField(default=False)
     language = pw.CharField(max_length=10)
@@ -126,9 +126,9 @@ class Post(TimestampModel):
 
 
 class Comment(TimestampModel):
-    post_id = pw.ForeignKeyField(model=Post, backref='comments')
+    post = pw.ForeignKeyField(model=Post, backref='comments')
     content = pw.TextField()
-    author = pw.ForeignKeyField(User, backref='posts')
+    author = pw.ForeignKeyField(User, backref='blog')
 
     def __repr__(self):
         return f"Comment(post={self.post_id}, author={self.author})"
@@ -174,3 +174,13 @@ class Ingredient(TimestampModel):
     description = pw.TextField(null=True)
     category = pw.TextField(null=True)
     image = pw.CharField(max_length=100, null=True)
+
+
+class DrinkReciept(TimestampModel):
+    drink_id = pw.ForeignKeyField(model=Drink, backref='reciepts')
+    # TODO relations between ingredients and their quantity
+
+
+class MyBar(TimestampModel):
+    owner_id = pw.ForeignKeyField(model=User, backref='bars')
+    ingredient_id = pw.ForeignKeyField(model=Ingredient, backref='ingredients')

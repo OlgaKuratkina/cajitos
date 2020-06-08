@@ -85,27 +85,6 @@ def debug():
     return render_template('editor.html', form=form)
 
 
-@misc.route("/random_cocktail")
-def random_cocktail():
-    cocktail = CocktailApi().get_random_cocktail()
-    return render_template('cocktails.html', drink=cocktail)
-
-
-@misc.route("/drink_ingredients")
-def drink_ingredients():
-    all_data = get_drink_ingredients()
-    return object_list('drink_ingredients.html', all_data, paginate_by=current_app.config['PER_PAGE'],
-                       title='Drink ingredients')
-
-
-@misc.route("/search")
-def search_drink():
-    # TODO allow more parameters, allow return list
-    ingredient = request.args.get('ingr')
-    cocktail = CocktailApi().get_drinks_by_ingredients([ingredient])[0]
-    return render_template('cocktails.html', drink=cocktail)
-
-
 @misc.route("/try")
 def try_template():
     return render_template('example_template.html')

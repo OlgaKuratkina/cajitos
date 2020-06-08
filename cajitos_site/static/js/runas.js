@@ -318,3 +318,13 @@ var runas_sense = {
     "\n" +
     "Как и все руны, Одина символична, так что и «рождение» и «смерть» вовсе не обязательно трактовать буквально."]
 };
+
+var runas_sense_en = {
+    "1": [
+        "Fehu is directly related to physical possessions. \n" +
+        "Possessions won or earned, earned income, luck. Abundance, financial strength in the present or near future. Sign of hope and plenty, success and happiness. Social success. Energy, foresight, fertility, creation/destruction (becoming). \n" +
+        "Fehu reminds us that comfort is not a bad thing. If we’ve worked for it and earned it honestly, we can justifiably relax and enjoy our just rewards. Fehu reminds us that we need to ensure that we have consolidated the gains we have achieved ere we loose them through neglect. \n" +
+        "Linked to the ox, and by extension the cow, Fehu speaks of nourishment. Nourishment can be for the physical body (as in the milk of the cow), but it also can be an emotional nourishment (as in the milk of human kindness). Normally portending a time of good fortune and positive energy flow, Fehu challenges you to live up to the moment.",
+        ""
+    ]
+};
