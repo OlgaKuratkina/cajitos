@@ -12,7 +12,8 @@ from cajitos_site.utils.utils import (
 from cajitos_site.utils.auth_utils import generate_google_auth_request, get_google_user_info
 
 
-@users.route("/register", methods=['GET', 'POST'])
+# Disbaled temporarily or forever
+# @users.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('posts.blog_posts'))
@@ -85,7 +86,7 @@ def logout():
     return redirect(url_for('posts.blog_posts'))
 
 
-@users.route('/account', methods=['GET', 'POST'])
+@users.route('/account')
 @login_required
 def account():
     form = UpdateAccountForm()
@@ -105,6 +106,23 @@ def account():
         form.about_me.data = current_user.about_me
 
     return render_template('account.html', title='Account', form=form)
+
+
+@users.route('/account/update', methods=['POST'])
+@login_required
+def account_update():
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.profile_picture = picture_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.about_me = form.about_me.data
+        current_user.save()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('users.account'))
+    return render_template('create_entry.html', title='Account', form=form)
 
 
 @users.route("/reset_password", methods=['GET', 'POST'])

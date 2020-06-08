@@ -152,7 +152,7 @@ class VocabularyCard(TimestampModel):
     author = pw.ForeignKeyField(User, backref='words', null=True)
 
     def __str__(self):
-        return f"'{self.origin}' - {self.language} -->  '{self.translation}'"
+        return f"{self.origin}  -  [{self.language}]   -->  {self.translation}"
 
 
 class Drink(TimestampModel):

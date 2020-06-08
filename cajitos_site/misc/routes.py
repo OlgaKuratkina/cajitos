@@ -3,7 +3,7 @@ import math
 import markdown
 from flask import request, render_template, current_app, redirect, url_for, jsonify, flash
 from flask_babel import _
-from flask_login import current_user
+from flask_login import current_user, login_required
 from playhouse.flask_utils import object_list
 from playhouse.shortcuts import model_to_dict
 
@@ -25,6 +25,7 @@ def cards():
 
 
 @misc.route('card/new', methods=['GET', 'POST'])
+@login_required
 def new_card():
     form = VocabularyCardForm()
     if form.validate_on_submit():
@@ -37,6 +38,7 @@ def new_card():
 
 
 @misc.route("/expressions", methods=['POST', 'GET'])
+@login_required
 def expressions():
     page = request.args.get('page', 1, type=int)
     form = ExpressionForm()
@@ -79,8 +81,8 @@ def debug():
         text = form.body.data
         html = markdown.markdown(text, extensions=['codehilite'])
         current_app.logger.info(html)
-        return render_template('_editor.html', form=form, data=html)
-    return render_template('_editor.html', form=form)
+        return render_template('editor.html', form=form, data=html)
+    return render_template('editor.html', form=form)
 
 
 @misc.route("/random_cocktail")

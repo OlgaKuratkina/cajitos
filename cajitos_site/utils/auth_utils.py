@@ -2,7 +2,9 @@ import json
 import urllib.parse
 
 import requests
-from flask import current_app, Request
+from functools import wraps
+from flask import current_app, Request, abort, flash
+from flask_login import current_user
 from oauthlib.oauth2 import WebApplicationClient
 
 from cajitos_site.settings import GOOGLE_DISCOVERY_URL
@@ -59,3 +61,26 @@ def get_google_user_info(req: Request):
     uri, headers, body = client.add_token(userinfo_endpoint)
     userinfo = requests.get(uri, headers=headers, data=body).json()
     return userinfo
+
+
+def admin_required(func):
+    '''
+    If you decorate a view with this, it will ensure that the current user is
+    logged in and authenticated and is admin before calling the actual view.
+        @application.route('/post')
+        @admin_required
+        def post():
+            pass
+
+    :param func: The view function to decorate.
+    :type func: function
+    '''
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        if current_app.login_manager._login_disabled:
+            return func(*args, **kwargs)
+        elif not (current_user.is_authenticated and current_user.is_admin):
+            flash('You are not an admin, request your admin status', 'warning')
+            abort(401)
+        return func(*args, **kwargs)
+    return decorated_view

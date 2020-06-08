@@ -22,3 +22,5 @@ COCKTAIL_API_URL = 'https://www.thecocktaildb.com/api/json'
 COCKTAIL_API_KEY = env('COCKTAIL_API_KEY', '1')
 
 LANGUAGES = ['en', 'es', 'ru']
+
+LOGIN_DISABLED = True

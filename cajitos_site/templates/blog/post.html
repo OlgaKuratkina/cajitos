@@ -1,6 +1,6 @@
 {% extends "layout_blog.html" %}
 {% block content %}
-    {% include "_post.html" %}
+    {% include "blog/_post.html" %}
         <div class="media-body">
             <div class="article-metadata">
                 <div>
@@ -14,7 +14,7 @@
                     <div>
                         {% if post.comments %}
                             {% for comment in post.comments %}
-                                {% include "_comment.html" %}
+                                {% include "blog/_comment.html" %}
                             {% endfor %}
                         {% endif %}
                     {% if current_user.is_authenticated %}

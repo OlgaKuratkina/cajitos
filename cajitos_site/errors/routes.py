@@ -13,6 +13,11 @@ def error_403(error):
     return render_template('error.html', message=_("You don't have permission to do that")), 403
 
 
+@errors.app_errorhandler(401)
+def error_401(error):
+    return render_template('error.html', message=_("You should be an admin to perform this operation")), 401
+
+
 @errors.app_errorhandler(400)
 def error_400(error):
     return render_template('error.html', message=_("Not verified ")), 400

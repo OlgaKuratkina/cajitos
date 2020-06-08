@@ -54,7 +54,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link" href="{{ url_for('posts.blog_posts') }}">Blog</a>
+{#                    <a class="nav-item nav-link" href="{{ url_for('posts.blog_posts') }}">Blog</a>#}
                     <a class="nav-item nav-link" href="{{ url_for('misc.runa') }}">Runa</a>
                     <a class="nav-item nav-link" href="{{ url_for('misc.random_card') }}">{{ _('Learn words') }}</a>
                     <a class="nav-item nav-link" href="{{ url_for('misc.random_cocktail') }}">{{ _('Random Cocktail') }}</a>
@@ -81,19 +81,20 @@
                             {% if current_user.is_authenticated %}
                             {{ current_user.username}}
                             {% else %}
-                            {{ _('Account ') }}
+                            {{ _('Log in ') }}
                             {% endif %}
                         </a>
                         <div class="dropdown-menu bg-steel" aria-labelledby="navbarDropdownMenuLink">
                             {% if current_user.is_authenticated %}
-                            <a class="dropdown-item" href="{{ url_for('users.account') }}">{{ _('Profile') }}</a>
-                            <a class="dropdown-item" href="{{ url_for('posts.new_post') }}">{{ _('New post') }}</a>
+                                {% if current_user.is_admin %}
+                                    <a class="dropdown-item" href="{{ url_for('posts.new_post') }}">{{ _('New post') }}</a>
+                                    {% endif %}
+                            <a class="dropdown-item" href="{{ url_for('users.account') }}">{{ _('Account') }}</a>
                                 <a class="dropdown-item" href="{{ url_for('misc.new_card') }}">{{ _('New card') }}</a>
                             <a class="dropdown-item" href="{{ url_for('users.logout') }}">{{ _('Logout') }}</a>
                             {% else %}
                             <a class="dropdown-item" href="{{ url_for('users.login') }}">{{ _('Sign in') }}</a>
                             <a class="dropdown-item" href="{{ url_for('users.google_login') }}">{{ _('Google sign in') }}</a>
-                            <a class="dropdown-item" href="{{ url_for('users.register') }}">{{ _('Register') }}</a>
                             {% endif %}
                         </div>
                     </li>
@@ -104,7 +105,7 @@
 </header>
 <main role="main" class="container">
     <div class="row">
-        <div class="col-sm-8 blog-main">
+        <div class="col-sm-9 blog-main">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -119,20 +120,37 @@
             </nav>
             {% block footer %}{% endblock %}
         </div>
-        <div class="col-sm-4 col-sm-offset-1 blog-sidebar">
-            <div class="content-section">
-                <p class='text-muted'><a href="{{ url_for('posts.post', post_id=11) }}">{{ _('About') }}</a>
-                <ul class="list-group">
+{#        <div class="col-sm-4 col-sm-offset-1 blog-sidebar">#}
+{#            <div class="content-section">#}
+{#                <p class='text-muted'><a href="{{ url_for('posts.post', post_id=11) }}">{{ _('About') }}</a>#}
+{#                <ul class="list-group">#}
 {#                <li class="list-group-item list-group-item-light">#}
 {#                    <a href="https://github.com/OlgaKuratkina/cajitos">Project on GitHub</a>#}
 {#                </li>#}
-                    <li class="list-group-item list-group-item-light">Placeholder</li>
-                    <li class="list-group-item list-group-item-light">Placeholder</li>
-                    <li class="list-group-item list-group-item-light">Placeholder</li>
-                </ul>
-                </p>
+{#                    <li class="list-group-item list-group-item-light">Placeholder</li>#}
+{#                    <li class="list-group-item list-group-item-light">Placeholder</li>#}
+{#                    <li class="list-group-item list-group-item-light">Placeholder</li>#}
+{#                </ul>#}
+{#                </p>#}
+{#            </div>#}
+{#        </div>#}
+    <nav class="col-sm-3 blog-sidebar sidebar-expand-md navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand mr-4" href="{{ url_for('posts.post', post_id=11) }}">{{ _('About') }}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleSide"
+                    aria-controls="navbarToggleSide" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggleSide">
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-item nav-link" href="#">Placeholder</a>
+                    <a class="nav-item nav-link" href="#">Placeholder</a>
+                    <a class="nav-item nav-link" href="#">Placeholder</a>
+                </div>
             </div>
+            <hr>
         </div>
+    </nav>
         {% block pages %}
         {% endblock %}
     </div>
