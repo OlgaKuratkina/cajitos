@@ -1,10 +1,10 @@
-from flask import redirect, url_for, flash, render_template, session, request, current_app
+from flask import redirect, url_for, flash, render_template, session, request, current_app, abort
 from flask_login import current_user, login_user, logout_user, login_required
 
 from cajitos_site import bcrypt
 from cajitos_site.users import users
 from cajitos_site.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
-from cajitos_site.models import User
+from cajitos_site.models import User, load_user
 from cajitos_site.utils.email import send_service_email
 from cajitos_site.utils.utils import (
     get_redirect_target, save_picture
@@ -26,7 +26,7 @@ def register():
         reset_link = f"{url_for('users.validate_token', token=token, _external=True)}"
         send_service_email(user, reset_link)
         return redirect(url_for('posts.blog_posts'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('user/register.html', title='Register', form=form)
 
 
 @users.route("/login", methods=['GET', 'POST'])
@@ -43,7 +43,7 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for('posts.blog_posts'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+    return render_template('user/login.html', title='Login', form=form)
 
 
 @users.route('/google_login')
@@ -86,11 +86,18 @@ def logout():
     return redirect(url_for('posts.blog_posts'))
 
 
-@users.route('/account')
+@users.route('/account/<int:user_id>')
 @login_required
-def account():
+def account(user_id):
+    user = load_user(user_id)
+    return render_template('user/account.html', title='Account', user=user)
+
+
+@users.route('/account/<int:user_id>/update', methods=['GET', 'POST'])
+@login_required
+def account_update(user_id):
     form = UpdateAccountForm()
-    if form.validate_on_submit():
+    if form.validate_on_submit() and current_user.id == user_id:
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.profile_picture = picture_file
@@ -100,28 +107,8 @@ def account():
         current_user.save()
         flash('Your account has been updated!', 'success')
         return redirect(url_for('users.account'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.email.data = current_user.email
-        form.about_me.data = current_user.about_me
-
-    return render_template('account.html', title='Account', form=form)
-
-
-@users.route('/account/update', methods=['POST'])
-@login_required
-def account_update():
-    form = UpdateAccountForm()
-    if form.validate_on_submit():
-        if form.picture.data:
-            picture_file = save_picture(form.picture.data)
-            current_user.profile_picture = picture_file
-        current_user.username = form.username.data
-        current_user.email = form.email.data
-        current_user.about_me = form.about_me.data
-        current_user.save()
-        flash('Your account has been updated!', 'success')
-        return redirect(url_for('users.account'))
+    elif current_user.id != user_id:
+        abort(403)
     return render_template('create_entry.html', title='Account', form=form)
 
 
@@ -137,7 +124,7 @@ def reset_request():
         send_service_email(user, reset_link, confirm_account=False)
         flash('An email has been sent with instructions to complete operation.', 'info')
         return redirect(url_for('users.login'))
-    return render_template('reset_request.html', title='Reset Password', form=form)
+    return render_template('user/reset_request.html', title='Reset Password', form=form)
 
 
 @users.route("/reset_password/<token>", methods=['GET', 'POST'])
@@ -157,4 +144,4 @@ def validate_token(token):
         user.save()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
-    return render_template('validate_token.html', title='Reset Password', form=form)
+    return render_template('user/validate_token.html', title='Reset Password', form=form)

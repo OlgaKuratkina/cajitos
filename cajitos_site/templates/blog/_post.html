@@ -4,7 +4,7 @@
     <div class="media-body">
         <div class="article-metadata">
             <a class="mr-2"
-               href="{{ url_for('posts.blog_posts', author=post.author) }}">{{ post.author.username }}</a>
+               href="{{ url_for('users.account', user_id=post.author.id) }}">{{ post.author.username }}</a>
             <small class="text-muted">{{ moment(post.created_at).format('LLL') }}</small>
             <small class="text-muted"> {{ post.comments|length }} comments</small>
         </div>

@@ -89,7 +89,7 @@
                                 {% if current_user.is_admin %}
                                     <a class="dropdown-item" href="{{ url_for('posts.new_post') }}">{{ _('New post') }}</a>
                                     {% endif %}
-                            <a class="dropdown-item" href="{{ url_for('users.account') }}">{{ _('Account') }}</a>
+                            <a class="dropdown-item" href="{{ url_for('users.account', user_id=current_user.id) }}">{{ _('Account') }}</a>
                                 <a class="dropdown-item" href="{{ url_for('misc.new_card') }}">{{ _('New card') }}</a>
                             <a class="dropdown-item" href="{{ url_for('users.logout') }}">{{ _('Logout') }}</a>
                             {% else %}

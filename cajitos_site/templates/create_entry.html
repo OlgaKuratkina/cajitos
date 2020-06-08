@@ -1,8 +1,8 @@
 {% extends "layout_blog.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block content %}
-    {% if legend %}
-        <legend class="border-bottom mb-4">{{ legend }}</legend>
+    {% if form.legend %}
+        <legend class="border-bottom mb-4">{{ form.legend }}</legend>
     {% endif %}
 <div class="content-section">
     {{ wtf.quick_form(form, button_map={'submit_button': 'secondary'}, extra_classes=[]) }}
