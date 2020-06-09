@@ -21,7 +21,7 @@
     <a class="btn btn-outline-secondary mr-3" href="{{ url_for('blog.posts', author=user) }}">Posts</a>
         </div>
      <div class="content-section">
-                <h4 class="account-heading">{{ _('About me') }}</h4>
+                <h3 class="account-heading">{{ _('About me') }}</h3>
                     {% if user.about_me %}
                         <div><p class="aticle-content">{{ user.about_me }}</p></div>
 {#                    <p class="text-secondary">{{ user.about_me }}</p>#}

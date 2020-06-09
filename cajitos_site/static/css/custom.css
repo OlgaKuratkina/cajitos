@@ -93,15 +93,15 @@ a.article-title:hover {
 }
 
 .account-img, .runaimg {
-    height: 150px;
-    width: 150px;
-    margin-right: 20px;
+    height: 130px;
+    width: 130px;
+    margin-right: 15px;
     margin-bottom: 16px;
 }
 
-.account-heading {
-    font-size: 2.5rem;
-}
+/*.account-heading {*/
+/*    font-size: 2.5rem;*/
+/*}*/
 
 .list-group-item {
     background-color: #f9ead3;
