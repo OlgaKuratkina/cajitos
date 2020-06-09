@@ -88,7 +88,6 @@ def logout():
 
 
 @users.route('/account/<int:user_id>')
-@login_required
 def account(user_id):
     user = load_user(user_id)
     return render_template('user/account.html', title='Account', user=user)

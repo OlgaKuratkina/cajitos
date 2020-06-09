@@ -51,8 +51,8 @@ a {
 .content-section {
     background: #f9ead3;
     padding: 10px 12px;
-    border: 1px solid #dddddd;
-    border-radius: 3px;
+    border: 2px solid #dddddd;
+    border-radius: 4px;
     margin-bottom: 20px;
 }
 
