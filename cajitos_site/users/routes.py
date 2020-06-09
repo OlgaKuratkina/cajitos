@@ -17,7 +17,7 @@ from cajitos_site.utils.auth_utils import generate_google_auth_request, get_goog
 # @users.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('blog.blog'))
+        return redirect(url_for('blog.posts'))
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User.create(username=form.username.data, email=form.email.data)
@@ -26,7 +26,7 @@ def register():
         token = user.get_validation_token()
         reset_link = f"{url_for('users.validate_token', token=token, _external=True)}"
         send_service_email(user, reset_link)
-        return redirect(url_for('blog.blog'))
+        return redirect(url_for('blog.posts'))
     return render_template('user/register.html', title='Register', form=form)
 
 
@@ -41,7 +41,7 @@ def login():
             flash('You have been logged in!', 'success')
             login_user(user, remember=form.remember.data)
             next_page = get_redirect_target()
-            return redirect(next_page) if next_page else redirect(url_for('blog.blog'))
+            return redirect(next_page) if next_page else redirect(url_for('blog.posts'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('user/login.html', title='Login', form=form)
@@ -78,13 +78,13 @@ def callback():
         user.status = 'Confirmed'
         user.save()
     login_user(user)
-    return redirect(url_for('blog.blog'))
+    return redirect(url_for('blog.posts'))
 
 
 @users.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('blog.blog'))
+    return redirect(url_for('blog.posts'))
 
 
 @users.route('/account/<int:user_id>')
@@ -120,7 +120,7 @@ def account_update(user_id):
 @users.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
-        return redirect(url_for('blog.blog'))
+        return redirect(url_for('blog.posts'))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.select().where(User.email == form.email.data).first()
@@ -135,7 +135,7 @@ def reset_request():
 @users.route("/reset_password/<token>", methods=['GET', 'POST'])
 def validate_token(token):
     if current_user.is_authenticated:
-        return redirect(url_for('blog.blog'))
+        return redirect(url_for('blog.posts'))
     user = User.verify_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')

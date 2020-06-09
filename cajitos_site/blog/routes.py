@@ -44,7 +44,7 @@ def new_post():
         Post.create(title=form.title.data, content=content, author=current_user.id, tags='test',
                     category=form.category.data, is_hidden=form.is_hidden.data, language=language)
         flash(_('Your post has been created!'), 'success')
-        return redirect(url_for('blog.blog'))
+        return redirect(url_for('blog.posts'))
     return render_template('blog/editor.html', title=_('New Post'), form=form)
 
 
@@ -96,4 +96,4 @@ def delete_post(post_id):
     post = get_post_by_id_and_author(post_id)
     post.delete_instance(recursive=True)
     flash(_('Your post has been deleted!'), 'success')
-    return redirect(url_for('blog.blog'))
+    return redirect(url_for('blog.posts'))

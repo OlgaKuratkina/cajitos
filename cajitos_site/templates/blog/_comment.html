@@ -4,7 +4,7 @@
     <div class="media-body">
         <div class="article-metadata">
             <a class="mr-2"
-               href="{{ url_for('users.account', user_id=current_user.id) }}">{{ comment.author.username }}</a>
+               href="{{ url_for('users.account', user_id=comment.author.id) }}">{{ comment.author.username }}</a>
             <small class="text-muted">{{ _('commented on') }}</small>
             <a class="mr-2"
                href="{{ url_for('blog.post', post_id=comment.post_id) }}">{{ comment.post.title }}</a>
