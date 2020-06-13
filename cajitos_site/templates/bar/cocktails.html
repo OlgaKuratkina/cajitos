@@ -1,8 +1,9 @@
 {% extends "layout_blog.html" %}
 
 {% block content %}
-    <h2>Random Cocktail</h2>
-
+    <div class="content-section">
+     <h3>Random Cocktail</h3>
+    <hr>
     <div class="container">
 {#        Card here#}
         <div class="card w-90">
@@ -21,5 +22,6 @@
                 {{ drink.instruction }}
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}

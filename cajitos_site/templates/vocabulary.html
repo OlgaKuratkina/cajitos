@@ -3,7 +3,7 @@
 {% block content %}
     <div class="content-section">
     <fieldset class="form-group">
-        <legend class="border-bottom mb-4">Vocabulary</legend>
+        <h3>Vocabulary</h3>
 {#        <a class="btn btn-outline-secondary" href="{{ url_for('misc.cards') }}">{{ _('Check all available words') }}</a>#}
         {% if current_user.is_authenticated %}
         <a class="mr-2"
@@ -19,15 +19,16 @@
                     <input type="text" class="form-control" name="search_word" placeholder="Search">
                 </div>
                 <div class="col-sm-4">
-                    <button type="submit" class="btn btn-outline-secondary">Search</button>
+                    <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1">Search</button>
                 </div>
             </div>
         </form>
     </fieldset>
+    </div>
+    <div class="content-section">
         <div class="container">
-            <br>
-            <h3>Available translations</h3>
-            <div class="card w-75">
+            <h4>Available translations</h4>
+            <div class="card w-100">
                 <ul class="list-group list-group-flush">
                     {% for card in object_list %}
                         <li class="list-group-item">{{ card }}</li>
@@ -37,8 +38,8 @@
         </div>
     </div>
 {% endblock %}
-{% block pages %}
 
+{% block pages %}
     <nav aria-label="Page navigation">
         <div class="w-100 d-inline-block mx-auto">
 
