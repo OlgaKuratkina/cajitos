@@ -3,7 +3,8 @@
 <meta content="cards for learning words карточки для изучения слов" name="keywords">
 {% endblock %}
 {% block content %}
-    <h1>Learn Words</h1>
+    <h2>Learn Words</h2>
+    <hr>
         <a class="mr-2"
                href="{{ url_for('misc.cards') }}">{{ _('Check all available words') }}</a>
 {#        <a class="btn btn-outline-secondary" href="{{ url_for('misc.cards') }}">{{ _('Check all available words') }}</a>#}
@@ -19,7 +20,7 @@
         <div class="card w-75">
             <div class="card-body">
                 <h5 id='card_title' class="card-title">{{ card.part_of_speech }}</h5>
-                <h6 id='author_username' class="card-subtitle mb-2 text-muted">by {{ card.author.username }}</h6>
+                <h6 id='author_username' class="card-subtitle mb-2 text-muted">{{ 'by ' + card.author.username }}</h6>
                 <hr>
                 <h2 id="translation">{{ card.origin }}</h2>
             </div>

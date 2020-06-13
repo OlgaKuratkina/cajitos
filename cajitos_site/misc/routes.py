@@ -4,10 +4,10 @@ import markdown
 from flask import request, render_template, current_app, redirect, url_for, jsonify, flash
 from flask_babel import _
 from flask_login import current_user, login_required
+from flask import Markup
 from playhouse.flask_utils import object_list
 from playhouse.shortcuts import model_to_dict
 
-from cajitos_site.external_apis.cocktails_db import CocktailApi
 from cajitos_site.misc import misc
 from cajitos_site.misc.forms import ExpressionForm, VocabularyCardForm, DebugForm
 from cajitos_site.models import VocabularyCard, ExpressionCard
@@ -32,7 +32,7 @@ def new_card():
         VocabularyCard.create(origin=form.origin.data, translation=form.translation.data, author=current_user.id,
                               part_of_speech=form.part_speech.data, category=form.category.data,
                               language=form.language.data)
-        flash(_('Your word has been added! Try using it in learning'), 'success')
+        flash(Markup(_('Your word has been added! Try using it in <a href="random_card">learning</a>')))
         return redirect(url_for('misc.cards'))
     return render_template('create_entry.html', title=_('Add new word'), legend=_('Add new word'), form=form)
 
@@ -78,11 +78,11 @@ def debug():
     form = DebugForm()
     if form.validate_on_submit():
         current_app.logger.info('submitted!')
-        text = form.body.data
+        text = form.content.data
         html = markdown.markdown(text, extensions=['codehilite'])
         current_app.logger.info(html)
-        return render_template('editor.html', form=form, data=html)
-    return render_template('editor.html', form=form)
+        return render_template('blog/editor.html', form=form, data=html)
+    return render_template('blog/editor.html', form=form)
 
 
 @misc.route("/try")

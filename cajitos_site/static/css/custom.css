@@ -29,7 +29,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-    color: #427bba;
+    color: #5f788a;
+}
+
+.alert-message {
+    font-style: italic;
+    color: #1b698e;
+}
+
+.card-body {
+    background-color: gainsboro;
 }
 
 .bg-steel {

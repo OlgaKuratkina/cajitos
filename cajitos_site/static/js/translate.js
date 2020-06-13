@@ -55,7 +55,7 @@ function request_new_card() {
         if (this.status >= 200 && this.status < 400) {
             data = JSON.parse(this.response);
             elemTitle.innerText = data.part_of_speech;
-            elemAuthor.innerText = data.author.username;
+            elemAuthor.innerText = 'by ' + data.author.username;
             elemOrigin.innerText = data.origin;
             elemTranslation.value = data.translation;
         } else {

@@ -40,6 +40,8 @@ class VocabularyCardForm(FlaskForm):
 
 
 class DebugForm(FlaskForm):
-    body = TextAreaField('Enter your markdown')
+    title = StringField()
+    content = TextAreaField('Enter your markdown')
     submit = SubmitField('Submit')
+    category = StringField('Category')
 
