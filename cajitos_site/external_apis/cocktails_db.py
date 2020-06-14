@@ -129,7 +129,8 @@ class DrinkSchema(schema.Schema):
 
     @pre_load
     def pre_load(self, row, **kwargs):
-        row['is_alcoholic'] = (row['strAlcoholic'] == 'Alcoholic')
+        row['is_alcoholic'] = (row.get('strAlcoholic') and row.get('strAlcoholic') == 'Alcoholic')
+        row['alcohol_category'] = row['is_alcoholic'] or ''
         row['idDrink'] = int(row['idDrink'])
         row['ingredients'] = self.process_ingredients(row)
         return row

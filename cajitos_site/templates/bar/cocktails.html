@@ -1,23 +1,34 @@
 {% extends "layout_blog.html" %}
 
 {% block content %}
-    <div class="content-section">
-     <h3>Random Cocktail</h3>
+    <h3>Random Cocktail</h3>
     <hr>
+    <article class="media content-section">
+    <img class="card-img-top img-responsive rounded-circle cocktail mr-3" src="{{ drink.image }}" alt="Drink image cap">
+    <div class="media-body">
+        <div class="article-metadata">
+
+            <h5>{{ drink.name }}</h5>
+        <hr>
+        <h6 class="mb-2 text-muted">{{'Alcoholic' if drink.is_alcoholic else 'Non Alcoholic'}}</h6>
+            {% for a, b in drink.ingredients.items() %}
+                <div>
+            <small class="text-muted">{{ a  }} - {{  b }}</small>
+                </div>
+                {%  endfor %}
+        </div>
+
+{#        <h2><a class="article-title" href="{{ url_for('blog.post', post_id=post.id) }}">{{ post.title }}</a></h2>#}
+    </div>
+</article>
+    <div class="content-section">
+{#     <h3>Random Cocktail</h3>#}
+{#    <img class="card-img-top img-responsive rounded-circle cocktail" src="{{ drink.image }}" alt="Drink image cap">#}
+{#    <hr>#}
     <div class="container">
 {#        Card here#}
-        <div class="card w-90">
-            <img class="card-img-top" src="{{ drink.image }}" alt="Drink image cap">
-            <div class="card-body">
-                <h4 class="card-title">{{ drink.name }}</h4>
-                <h6 class="card-subtitle mb-2 text-muted">{{'Alcoholic' if drink.is_alcoholic else 'Non Alcoholic'}}</h6>
-                <hr>
-
-                {% for a, b in drink.ingredients.items() %}
-                     <p>{{ a  }} - {{  b }}</p>
-                {%  endfor %}
-{#                <h3 id="ingredients">{{ drink.ingredients }}</h3>#}
-            </div>
+{#    <img class="card-img-top img-responsive rounded-circle cocktail" src="{{ drink.image }}" alt="Drink image cap">#}
+        <div class="card w-100">
             <div class="card-body">
                 {{ drink.instruction }}
             </div>

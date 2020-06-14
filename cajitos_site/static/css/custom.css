@@ -35,10 +35,21 @@ a {
 .alert-message {
     font-style: italic;
     color: #1b698e;
+    padding: 3px;
+    border: 1px solid #dddddd;
+    border-radius: 6px;
 }
 
 .card-body {
     background-color: gainsboro;
+}
+
+.cocktail {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2px;
+  width: 40%;
 }
 
 .bg-steel {
