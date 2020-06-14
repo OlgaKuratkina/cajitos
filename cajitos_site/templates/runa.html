@@ -36,9 +36,9 @@
         <div class="media-body">
         <div class="article-metadata">
             <div>
-                <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1" onClick="runa();">Получить ответ!
+                <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1 mr-3" onClick="runa();">Получить ответ!
                 </button>
-                <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1" onClick="begin();">Начать с начала
+                <button type="submit" class="btn btn-secondary btn-sm mt-1 mb-1 mr-2" onClick="begin();">Начать с начала
                 </button>
             </div>
         </div>
@@ -46,13 +46,13 @@
     <article class="media content-section">
         <img class="rounded-circle article-img" id="runaimg"
              src="{{ url_for('static', filename='images/runa25.png') }}">
-        <div class="media-body">
-            <div class="article-metadata">
-                <p class="article-title text-justify" id="title_runa">Подумайте о своей проблеме или текущей ситуации</p>
-            </div>
-            <p class="article-content text-justify" id="text_runa">Тут будет Ваше предсказание</p>
+        <div class="media-body mt-3">
+                <p class="text-muted text-justify" id="title_runa">Подумайте о своей проблеме или текущей ситуации</p>
         </div>
     </article>
+    <div class="content-section">
+    <p class="article-content text-justify" id="text_runa">Тут будет Ваше предсказание</p>
+    </div>
     <script src="{{ url_for('static', filename='js/runas.js') }}"></script>
     <script src="{{ url_for('static', filename='js/runa.js') }}"></script>
 {% endblock %}
