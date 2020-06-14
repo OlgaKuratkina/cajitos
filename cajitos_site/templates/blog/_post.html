@@ -12,15 +12,24 @@
     </div>
 </article>
 <div class="content-section">
-        <p class="article-content" id="post{{ post.id }}">{{ post.content|safe }}</p>
-        <p>
-            {% if post.language and post.language != g.locale and current_user.is_authenticated%}
-                <small class id="translation{{ post.id }}">
-                    <a href="javascript:translate(
-                                'post{{ post.id }}',
-                                'translation{{ post.id }}',
-                                '{{ g.locale }}');">{{ _('Translate') }}</a>
+{% if preview and post.preview %}
+    <p class="article-content" id="post{{ post.id }}">{{ post.preview|safe }}</p>
+            <p class id="switch_preview">
+            <small>
+                <a href="{{ url_for('blog.post', post_id=post.id) }}">{{ _('Read more') }}</a>
                 </small>
-            {% endif %}
+            </p>
+    {% else %}
+    <p class="article-content" id="post{{ post.id }}">{{ post.content|safe }}</p>
+{% endif %}
+        <p>
+{#            {% if post.language and post.language != g.locale and current_user.is_authenticated%}#}
+{#                <small class id="translation{{ post.id }}">#}
+{#                    <a href="javascript:translate(#}
+{#                                'post{{ post.id }}',#}
+{#                                'translation{{ post.id }}',#}
+{#                                '{{ g.locale }}');">{{ _('Translate') }}</a>#}
+{#                </small>#}
+{#            {% endif %}#}
         </p>
     </div>

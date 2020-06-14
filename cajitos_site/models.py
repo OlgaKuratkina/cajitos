@@ -113,6 +113,7 @@ class Followers(TimestampModel):
 
 class Post(TimestampModel):
     title = pw.CharField(max_length=100)
+    preview = pw.TextField(null=True)
     content = pw.TextField()
     tags = pw.CharField(max_length=50)
     category = pw.CharField(max_length=50)

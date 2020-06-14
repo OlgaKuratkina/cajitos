@@ -1,10 +1,13 @@
 import random
 
+import markdown
 import peewee as pw
 from flask import current_app, abort
 from flask_login import current_user
 
 from cajitos_site import models as mod
+from cajitos_site.models import Post
+from cajitos_site.utils.translate_utils import get_language
 
 
 def get_post_by_id_and_author(post_id):
@@ -60,3 +63,25 @@ def get_random_record(model):
     records = model.select().order_by(pw.fn.Random()).limit(30)
     return random.choice(records)
 
+
+def create_or_update_post(form, post=None):
+    separator = current_app.config['POST_SEPARATOR']
+    language = get_language(form.content.data)
+    raw_content = form.content.data
+    if separator in raw_content:
+        preview = raw_content.split(separator, 1)[0]
+        preview = markdown.markdown(preview)
+    else:
+        preview = None
+    content = markdown.markdown(form.content.data)
+    if post:
+        post.title = form.title.data
+        post.preview = preview
+        post.content = content
+        post.category = form.category.data
+        post.is_hidden = form.is_hidden.data
+        post.language = language
+        post.save()
+    else:
+        Post.create(title=form.title.data, content=content, preview=preview, author=current_user.id, tags='test',
+                    category=form.category.data, is_hidden=form.is_hidden.data, language=language)

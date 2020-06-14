@@ -1,4 +1,3 @@
-import markdown
 from playhouse.flask_utils import object_list
 
 from cajitos_site.blog import blog
@@ -8,9 +7,8 @@ from flask_login import login_required, current_user
 
 from cajitos_site.blog.forms import PostForm, UpdatePostForm, CommentForm
 from cajitos_site.utils.auth_utils import admin_required
-from cajitos_site.utils.db_utils import get_post_by_id_and_author
+from cajitos_site.utils.db_utils import get_post_by_id_and_author, create_or_update_post
 from cajitos_site.models import Post, Comment
-from cajitos_site.utils.translate_utils import get_language
 
 
 @blog.route("/")
@@ -21,7 +19,9 @@ def posts():
     if author:
         query = query.where(Post.author == author)
     posts = query.order_by(Post.created_at.desc())
-    return object_list('blog/posts.html', posts, paginate_by=current_app.config['PER_PAGE'], title='Blog Posts')
+    return object_list(
+        'blog/posts.html', posts, paginate_by=current_app.config['PER_PAGE'], title='Blog Posts', preview=True
+    )
 
 
 @blog.route("/comments")
@@ -39,10 +39,7 @@ def comments():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        language = get_language(form.content.data)
-        content = markdown.markdown(form.content.data)
-        Post.create(title=form.title.data, content=content, author=current_user.id, tags='test',
-                    category=form.category.data, is_hidden=form.is_hidden.data, language=language)
+        create_or_update_post(form)
         flash(_('Your post has been created!'), 'success')
         return redirect(url_for('blog.posts'))
     return render_template('blog/editor.html', title=_('New Post'), form=form)
@@ -73,13 +70,7 @@ def update_post(post_id):
     post = get_post_by_id_and_author(post_id)
     form = UpdatePostForm()
     if form.validate_on_submit():
-        language = get_language(form.content.data)
-        post.title = form.title.data
-        post.content = markdown.markdown(form.content.data)
-        post.category = form.category.data
-        post.is_hidden = form.is_hidden.data
-        post.language = language
-        post.save()
+        create_or_update_post(form, post)
         flash(_('Your post has been updated!'), 'success')
         return redirect(url_for('blog.post', post_id=post.id))
     elif request.method == 'GET':
