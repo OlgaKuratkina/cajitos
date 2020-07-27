@@ -121,6 +121,7 @@ class Post(TimestampModel):
     is_hidden = pw.BooleanField(default=False)
     is_confirmed = pw.BooleanField(default=False)
     language = pw.CharField(max_length=10)
+    parent = pw.DeferredForeignKey('Post', null=True)
 
     def __repr__(self):
         return f"Post(title={self.title}, author={self.author})"

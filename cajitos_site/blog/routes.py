@@ -78,6 +78,7 @@ def update_post(post_id):
         form.content.data = post.content
         form.category.data = post.category
         form.is_hidden.data = post.is_hidden
+        form.tags.data = post.tags
     return render_template('blog/editor.html', title=_('Update Post'), form=form)
 
 

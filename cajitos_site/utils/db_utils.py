@@ -81,7 +81,8 @@ def create_or_update_post(form, post=None):
         post.category = form.category.data
         post.is_hidden = form.is_hidden.data
         post.language = language
+        post.tags = form.tags.data
         post.save()
     else:
-        Post.create(title=form.title.data, content=content, preview=preview, author=current_user.id, tags='test',
-                    category=form.category.data, is_hidden=form.is_hidden.data, language=language)
+        Post.create(title=form.title.data, content=content, preview=preview, author=current_user.id,
+                    tags=form.tags.data, category=form.category.data, is_hidden=form.is_hidden.data, language=language)

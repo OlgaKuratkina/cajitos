@@ -11,6 +11,7 @@ class PostForm(FlaskForm):
     category = StringField(_l('Category'), validators=[DataRequired()])
     is_hidden = BooleanField(_l('Make private'))
     submit = SubmitField(_l('Post me!'))
+    tags = StringField(_l('Tags'), validators=[DataRequired()])
 
 
 class UpdatePostForm(PostForm):
