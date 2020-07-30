@@ -15,9 +15,15 @@ from cajitos_site.models import Post, Comment
 @blog.route("/blog")
 def posts():
     author = request.args.get('author')
+    category = request.args.get('category')
+    tag = request.args.get('tag')
     query = Post.select()
     if author:
         query = query.where(Post.author == author)
+    if category:
+        query = query.where(Post.category == category)
+    if tag:
+        query = query.where(Post.tags ** f"%{tag}%")
     posts = query.order_by(Post.created_at.desc())
     return object_list(
         'blog/posts.html', posts, paginate_by=current_app.config['PER_PAGE'], title='Blog Posts', preview=True
