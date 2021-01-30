@@ -144,7 +144,7 @@
             <div class="collapse navbar-collapse" id="navbarToggleSide">
                 <div class="navbar-nav mr-auto">
                     <a class="nav-item nav-link" href="{{ url_for('blog.comments') }}">{{ _('Recent comments') }}</a>
-                    <a class="nav-item nav-link" href="#">Placeholder</a>
+                    <a class="nav-item nav-link" href="{{ url_for('blog.posts', category="travel") }}">{{ _('Travel') }}</a>
                     <a class="nav-item nav-link" href="#">Placeholder</a>
                 </div>
             </div>

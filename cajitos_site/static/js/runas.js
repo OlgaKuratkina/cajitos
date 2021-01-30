@@ -321,10 +321,14 @@ var runas_sense = {
 
 var runas_sense_en = {
     "1": [
-        "Fehu is directly related to physical possessions. \n" +
-        "Possessions won or earned, earned income, luck. Abundance, financial strength in the present or near future. Sign of hope and plenty, success and happiness. Social success. Energy, foresight, fertility, creation/destruction (becoming). \n" +
-        "Fehu reminds us that comfort is not a bad thing. If we’ve worked for it and earned it honestly, we can justifiably relax and enjoy our just rewards. Fehu reminds us that we need to ensure that we have consolidated the gains we have achieved ere we loose them through neglect. \n" +
-        "Linked to the ox, and by extension the cow, Fehu speaks of nourishment. Nourishment can be for the physical body (as in the milk of the cow), but it also can be an emotional nourishment (as in the milk of human kindness). Normally portending a time of good fortune and positive energy flow, Fehu challenges you to live up to the moment.",
+        "Rune Fehu, associated with the goddess Freya, in the classical interpretation denotes livestock, and in the wider and more modern interpretation - material wealth, wealth, high standard of living. \n" +
+        "It's appearance during fortune telling tells about the importance of practical issues and predicts the speedy resolution of material problems, and also it says about successful investments and purchases, transactions that will be more profitable then expected. \n" +
+        "This rune warns about the need to work hard to get what you want. In other words, a lazy person who got this rune in prediction, has a chance to stay with nothing despite of favorable circumstances.\n" +
+        "While to an energetic, active and hardworking person Fehu promises prosperity, victory in a difficult struggle and the realization of undertakings. \n" +
+        "However, it will be a mistake to consider Fehu to be exclusively “mercantile,” since it means not only life blessings. When appeared in the prediction, it portends luck, speaks of the presence of the spiritual and physical forces, at the same time recalling the need to be kinder to others, share with them the fruits of own success.\n" +
+        "Fehu also promises a change for the better in a romantic relationship, a solution to many problems. \n" +
+        "But precondition to the \"work\" this rune must be a willingness to compromise, altruism, a willingness to fight your own egoism.\n" +
+        "Fehu tells that you have enough mental strength to cope with those manifestations of self that interfere with happiness. Intuition will help to overcome difficulties, but you should listen to it's warnings and try to interpret them correctly.",
         ""
     ]
 };
